@@ -1,141 +1,112 @@
 import type { MetaFunction } from "@remix-run/node";
-import { Link } from "@remix-run/react";
+import Slider from "react-slick";
 
-import { useOptionalUser } from "~/utils";
+import FadeInImage from "../components/fadeInImage";
 
-export const meta: MetaFunction = () => [{ title: "Remix Notes" }];
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+export const meta: MetaFunction = () => [{ title: "Winner Circle" }];
 
 export default function Index() {
-  const user = useOptionalUser();
-  return (
-    <main className="relative min-h-screen bg-white sm:flex sm:items-center sm:justify-center">
-      <div className="relative sm:pb-16 sm:pt-8">
-        <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <div className="relative shadow-xl sm:overflow-hidden sm:rounded-2xl">
-            <div className="absolute inset-0">
-              <img
-                className="h-full w-full object-cover"
-                src="https://user-images.githubusercontent.com/1500684/157774694-99820c51-8165-4908-a031-34fc371ac0d6.jpg"
-                alt="Sonic Youth On Stage"
-              />
-              <div className="absolute inset-0 bg-[color:rgba(254,204,27,0.5)] mix-blend-multiply" />
-            </div>
-            <div className="relative px-4 pb-8 pt-16 sm:px-6 sm:pb-14 sm:pt-24 lg:px-8 lg:pb-20 lg:pt-32">
-              <h1 className="text-center text-6xl font-extrabold tracking-tight sm:text-8xl lg:text-9xl">
-                <span className="block uppercase text-yellow-500 drop-shadow-md">
-                  Indie Stack
-                </span>
-              </h1>
-              <p className="mx-auto mt-6 max-w-lg text-center text-xl text-white sm:max-w-3xl">
-                Check the README.md file for instructions on how to get this
-                project deployed.
-              </p>
-              <div className="mx-auto mt-10 max-w-sm sm:flex sm:max-w-none sm:justify-center">
-                {user ? (
-                  <Link
-                    to="/notes"
-                    className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-yellow-700 shadow-sm hover:bg-yellow-50 sm:px-8"
-                  >
-                    View Notes for {user.email}
-                  </Link>
-                ) : (
-                  <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5 sm:space-y-0">
-                    <Link
-                      to="/join"
-                      className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-yellow-700 shadow-sm hover:bg-yellow-50 sm:px-8"
-                    >
-                      Sign up
-                    </Link>
-                    <Link
-                      to="/login"
-                      className="flex items-center justify-center rounded-md bg-yellow-500 px-4 py-3 font-medium text-white hover:bg-yellow-600"
-                    >
-                      Log In
-                    </Link>
-                  </div>
-                )}
-              </div>
-              <a href="https://remix.run">
-                <img
-                  src="https://user-images.githubusercontent.com/1500684/158298926-e45dafff-3544-4b69-96d6-d3bcc33fc76a.svg"
-                  alt="Remix"
-                  className="mx-auto mt-16 w-full max-w-[12rem] md:max-w-[16rem]"
-                />
-              </a>
-            </div>
-          </div>
-        </div>
+  const sliderSettings = {
+    arrows: false,
+    dots: true,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    infinite: true,
+    fade: true,
+    speed: 1000,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    waitForAnimate: false
+  }
 
-        <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
-          <div className="mt-6 flex flex-wrap justify-center gap-8">
-            {[
-              {
-                src: "https://user-images.githubusercontent.com/1500684/157764397-ccd8ea10-b8aa-4772-a99b-35de937319e1.svg",
-                alt: "Fly.io",
-                href: "https://fly.io",
-              },
-              {
-                src: "https://user-images.githubusercontent.com/1500684/157764395-137ec949-382c-43bd-a3c0-0cb8cb22e22d.svg",
-                alt: "SQLite",
-                href: "https://sqlite.org",
-              },
-              {
-                src: "https://user-images.githubusercontent.com/1500684/157764484-ad64a21a-d7fb-47e3-8669-ec046da20c1f.svg",
-                alt: "Prisma",
-                href: "https://prisma.io",
-              },
-              {
-                src: "https://user-images.githubusercontent.com/1500684/157764276-a516a239-e377-4a20-b44a-0ac7b65c8c14.svg",
-                alt: "Tailwind",
-                href: "https://tailwindcss.com",
-              },
-              {
-                src: "https://user-images.githubusercontent.com/1500684/157764454-48ac8c71-a2a9-4b5e-b19c-edef8b8953d6.svg",
-                alt: "Cypress",
-                href: "https://www.cypress.io",
-              },
-              {
-                src: "https://user-images.githubusercontent.com/1500684/157772386-75444196-0604-4340-af28-53b236faa182.svg",
-                alt: "MSW",
-                href: "https://mswjs.io",
-              },
-              {
-                src: "https://user-images.githubusercontent.com/1500684/157772447-00fccdce-9d12-46a3-8bb4-fac612cdc949.svg",
-                alt: "Vitest",
-                href: "https://vitest.dev",
-              },
-              {
-                src: "https://user-images.githubusercontent.com/1500684/157772662-92b0dd3a-453f-4d18-b8be-9fa6efde52cf.png",
-                alt: "Testing Library",
-                href: "https://testing-library.com",
-              },
-              {
-                src: "https://user-images.githubusercontent.com/1500684/157772934-ce0a943d-e9d0-40f8-97f3-f464c0811643.svg",
-                alt: "Prettier",
-                href: "https://prettier.io",
-              },
-              {
-                src: "https://user-images.githubusercontent.com/1500684/157772990-3968ff7c-b551-4c55-a25c-046a32709a8e.svg",
-                alt: "ESLint",
-                href: "https://eslint.org",
-              },
-              {
-                src: "https://user-images.githubusercontent.com/1500684/157773063-20a0ed64-b9f8-4e0b-9d1e-0b65a3d4a6db.svg",
-                alt: "TypeScript",
-                href: "https://typescriptlang.org",
-              },
-            ].map((img) => (
-              <a
-                key={img.href}
-                href={img.href}
-                className="flex h-16 w-32 justify-center p-1 grayscale transition hover:grayscale-0 focus:grayscale-0"
-              >
-                <img alt={img.alt} src={img.src} className="object-contain" />
-              </a>
-            ))}
-          </div>
+  return (
+    <div className="flex flex-col justify-center" style={{ minHeight: "calc(100vh - 100px)" }}>
+      <div className="mx-auto w-full min-h-full bg-cover bg-center" style={{ backgroundImage: "url('/assets/home_background.jpeg')", minHeight: "calc(100vh - 100px)" }}>
+        <h1 className="text-white text-4xl font-bold text-center pt-4">Welcome to Winner Circle Trucking</h1>
+      </div>
+      <div className="w-full h-[90vh] flex">
+        <div className="w-[50%]">
+          <FadeInImage className="mx-auto h-full py-4" src="/assets/couple.jpg" alt="Chet and Nanette" />
+        </div>
+        <div className="w-[50%] flex flex-col justify-center">
+          <h1 className="text-3xl font-bold mb-8 mx-8">First of All</h1>
+          <span className="text-xl mx-8">
+            Discover Winner Circle, a highly professional and personalized hauler based in 
+            northern Utah, travelling the nation. With over 50 years of combined horse experience,
+            our Husband/Wife team, along with our son, Logan Child, take great pride in bringing
+            your horse home.
+          </span>
         </div>
       </div>
-    </main>
+      <div className="w-full h-[90vh] flex">
+        <div className="w-[50%] flex flex-col justify-center">
+          <span className="text-lg uppercase mb-8 mx-8">Not to Mention</span>
+          <h1 className="text-3xl font-bold mb-8 mx-8">Our Professional Team</h1>
+          <span className="text-xl mx-8">
+            Meet our highly professional and personalized hauler team based in northern Utah,
+            With over 50 years of combined horse experience, we take great pride in bringing
+            your horse home.
+          </span>
+        </div>
+        <div className="w-[50%]">
+          <Slider
+            className="h-full"
+            {...sliderSettings}
+          >
+            <div className="h-[90vh]">
+              <FadeInImage
+                className="h-full mx-auto"
+                src="/assets/man_and_horse.jpg"
+                alt="Chet with horse"
+              />
+            </div>
+            <div className="h-[90vh]">
+              <FadeInImage
+                className="h-full mx-auto"
+                src="/assets/woman_and_horse.jpg"
+                alt="Nanette with horse"
+              />
+            </div>
+          </Slider>
+        </div>
+      </div>
+      <div className="w-full h-[70vh] flex">
+        <div className="w-[50%]">
+          <Slider
+            className="h-full ml-4"
+            {...sliderSettings}
+          >
+            <div className="h-[70vh]">
+              <FadeInImage
+                className="w-full mt-20"
+                src="/assets/chet_and_logan.jpeg"
+                alt="Chet and Logan"
+              />
+            </div>
+            <div className="h-[70vh]">
+              <FadeInImage
+                className="w-full mt-20"
+                src="/assets/red_truck.jpeg"
+                alt="Red truck with trailer"
+              />
+            </div>
+          </Slider>
+        </div>
+        <div className="w-[50%] flex flex-col justify-center">
+          <span className="text-lg uppercase mb-8 mx-8">And Let&apos;s Not Forget</span>
+          <h1 className="text-3xl font-bold mb-8 mx-8">Our Equipment</h1>
+          <span className="text-xl mx-8">
+            Our Team consists of Chet, Nanette and Logan Child. We maintain two rigs
+            on the road to ensure greater availability of service. Our fleet includes
+            a 2023 Ford F-450 with a 7-horse head-to-head trailer, box stalls available
+            depending on your needs. Additionally, we operate an F-350 with a 6-horse
+            slant load trailer.
+          </span>
+        </div>
+      </div>
+    </div>
   );
 }
