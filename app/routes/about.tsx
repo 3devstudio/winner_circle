@@ -69,17 +69,31 @@ export default function About() {
           <h1 className="text-4xl">Meet the best team ever!</h1>
         </div>
         <div className="w-full h-[90%] flex justify-center">
-          <div className="h-full bg-cover bg-center flex flex-col justify-center items-center text-white text-xl" style={{ backgroundImage: "url('/assets/couple.jpg')", width: "30vw" }}>
-            <span>
-              Meet Chet & Nanette
-            </span>
-            <span>
-              Partner Founders and Owners of Winners Circle
-            </span>
+          <div className="h-full bg-cover bg-center flex justify-center items-center" style={{ backgroundImage: "url('/assets/couple.jpg')", width: "30vw" }}>
+            <div className="w-full h-full px-4 flex flex-col justify-center items-center text-white text-xl opacity-0 transition-all duration-300 ease-in-out hover:opacity-100 bg-black bg-opacity-0 hover:bg-opacity-50">
+              <span className="mb-2">
+                Meet Chet & Nanette
+              </span>
+              <span>
+                Partner Founders and Owners of Winners Circle
+              </span>
+            </div>
           </div>
           <div className="h-full w-[10%]" />
           <div className="h-full bg-cover bg-center flex justify-center items-center" style={{ backgroundImage: "url('/assets/logan.jpeg')", width: "30vw" }}>
-            <span></span>
+            <div className="w-full h-full px-4 flex flex-col justify-center items-center text-white text-xl opacity-0 transition-all duration-300 ease-in-out hover:opacity-100 bg-black bg-opacity-0 hover:bg-opacity-50">
+              <span className="mb-2">
+                Meet Logan
+              </span>
+              <span className="mb-2">
+                Winner Circle Trucking is proud to have our driver Logan Child on the road, providing
+                a reliable and professional hand in bringing your horse home!
+              </span>
+              <span>
+                Logan brings a wealth of horsemanship to the table and our clients are thrilled with his 
+                patience and skill.
+              </span>
+            </div>
           </div>
         </div>
       </div>

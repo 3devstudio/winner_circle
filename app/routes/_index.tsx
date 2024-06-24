@@ -25,11 +25,25 @@ export default function Index() {
   return (
     <div className="flex flex-col justify-center" style={{ minHeight: "calc(100vh - 100px)" }}>
       <div className="mx-auto w-full min-h-full bg-cover bg-center" style={{ backgroundImage: "url('/assets/home_background.jpeg')", minHeight: "calc(100vh - 100px)" }}>
-        <h1 className="text-white text-4xl font-bold text-center pt-4">Welcome to Winner Circle Trucking</h1>
+        <h1 className="text-white text-4xl font-bold text-center pt-4">Come Join the Winner Circle!</h1>
+        <p className="text-white text-2xl font-bold text-center pt-4 px-8">
+          Whether it&apos;s Race or Ranch, Old Friend or New Ride, at Winner Circle Transport, we know that your
+          horse represents the thrill of racing, the anticipation of competition and the comfort of companionship!
+        </p>
+        <p className="text-white text-2xl font-bold text-center pt-4 px-8">
+          Our purpose is to bring your horse home with personalized service and the utmost safety.
+        </p>
+        <p className="text-white text-2xl font-bold text-center pt-4 px-8">
+          We love bringing your horse home!
+        </p>
+        <p className="text-white text-2xl font-bold text-center pt-4 px-8">
+          As always, please submit your requests for ANY HAUL. We have routes in the making and are glad to 
+          consider yours! We respond quickly!
+        </p>
       </div>
       <div className="w-full h-[90vh] flex">
         <div className="w-[50%]">
-          <FadeInImage className="mx-auto h-full py-4" src="/assets/couple.jpg" alt="Chet and Nanette" />
+          <FadeInImage className="mx-auto h-full py-4" src="/assets/chet_and_nanette.jpeg" alt="Chet and Nanette" />
         </div>
         <div className="w-[50%] flex flex-col justify-center">
           <h1 className="text-3xl font-bold mb-8 mx-8">First of All</h1>
