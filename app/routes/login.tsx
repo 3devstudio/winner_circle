@@ -6,6 +6,7 @@ import type {
 import { json, redirect } from "@remix-run/node";
 import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
 import { useEffect, useRef } from "react";
+import Button from "~/components/button";
 
 import { verifyLogin } from "~/models/user.server";
 import { createUserSession, getUserId } from "~/session.server";
@@ -80,100 +81,119 @@ export default function LoginPage() {
   }, [actionData]);
 
   return (
-    <div className="flex min-h-full flex-col justify-center">
-      <div className="mx-auto w-full max-w-md px-8">
-        <Form method="post" className="space-y-6">
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email address
-            </label>
-            <div className="mt-1">
-              <input
-                ref={emailRef}
-                id="email"
-                required
-                // eslint-disable-next-line jsx-a11y/no-autofocus
-                autoFocus={true}
-                name="email"
-                type="email"
-                autoComplete="email"
-                aria-invalid={actionData?.errors?.email ? true : undefined}
-                aria-describedby="email-error"
-                className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
-              />
-              {actionData?.errors?.email ? (
-                <div className="pt-1 text-red-700" id="email-error">
-                  {actionData.errors.email}
-                </div>
-              ) : null}
-            </div>
-          </div>
-
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Password
-            </label>
-            <div className="mt-1">
-              <input
-                id="password"
-                ref={passwordRef}
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                aria-invalid={actionData?.errors?.password ? true : undefined}
-                aria-describedby="password-error"
-                className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
-              />
-              {actionData?.errors?.password ? (
-                <div className="pt-1 text-red-700" id="password-error">
-                  {actionData.errors.password}
-                </div>
-              ) : null}
-            </div>
-          </div>
-
-          <input type="hidden" name="redirectTo" value={redirectTo} />
-          <button
-            type="submit"
-            className="w-full rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-400"
-          >
-            Log in
-          </button>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
-                id="remember"
-                name="remember"
-                type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-              />
+    <div className="md:flex h-screen w-full bg-secondary">
+      <div className="hidden md:flex w-full h-full justify-center items-center bg-secondary p-8">
+        <img src="/assets/logo.png" alt="Logo" className="h-52 xl:h-72" />
+      </div>
+      <div className="w-full h-full flex justify-center items-center p-8 relative md:bg-tertiary">
+        <div className="absolute md:hidden top-8 inset-x-0 flex justify-center items-center">
+          <img src="/assets/logo.png" alt="Logo" className="h-44" />
+        </div>
+        <div className="flex flex-col max-w-2xl p-8 rounded-lg bg-white w-full">
+          <h1 className="w-full text-xl md:text-2xl font-bold text-stone-700 mb-8">
+            Sign in to your account
+          </h1>
+          <Form method="post" className="space-y-6">
+            <div>
               <label
-                htmlFor="remember"
-                className="ml-2 block text-sm text-gray-900"
+                htmlFor="email"
+                className="block text-sm font-medium text-stone-700"
               >
-                Remember me
+                Email address
               </label>
+              <div className="mt-1">
+                <input
+                  ref={emailRef}
+                  id="email"
+                  required
+                  // eslint-disable-next-line jsx-a11y/no-autofocus
+                  autoFocus={true}
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  aria-invalid={actionData?.errors?.email ? true : undefined}
+                  aria-describedby="email-error"
+                  className="w-full rounded border border-stone-300 px-2 py-1.5 text-lg focus:border-primary focus:ring-primary focus:ring-1 focus:ring-opacity-50 text-sm"
+                />
+                {actionData?.errors?.email ? (
+                  <div className="pt-1 text-red-700" id="email-error">
+                    {actionData.errors.email}
+                  </div>
+                ) : null}
+              </div>
             </div>
-            <div className="text-center text-sm text-gray-500">
-              Don&apos;t have an account?{" "}
-              <Link
-                className="text-blue-500 underline"
-                to={{
-                  pathname: "/join",
-                  search: searchParams.toString(),
-                }}
+
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-stone-700"
               >
-                Sign up
-              </Link>
+                Password
+              </label>
+              <div className="mt-1">
+                <input
+                  id="password"
+                  ref={passwordRef}
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  aria-invalid={
+                    actionData?.errors?.password ? true : undefined
+                  }
+                  aria-describedby="password-error"
+                  className="w-full rounded border border-stone-300 px-2 py-1.5 text-lg focus:border-primary focus:ring-primary focus:ring-1 focus:ring-opacity-50 text-sm"
+                />
+                {actionData?.errors?.password ? (
+                  <div className="pt-1 text-red-700" id="password-error">
+                    {actionData.errors.password}
+                  </div>
+                ) : null}
+              </div>
             </div>
-          </div>
-        </Form>
+
+            <input type="hidden" name="redirectTo" value={redirectTo} />
+            <Button
+              primary
+              className="w-full rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-400"
+            >
+              Log in
+            </Button>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <input
+                  id="remember"
+                  name="remember"
+                  type="checkbox"
+                  className="h-4 w-4 rounded border-stone-300 text-primary focus:ring-primary"
+                />
+                <label
+                  htmlFor="remember"
+                  className="ml-2 block text-sm text-stone-900"
+                >
+                  Remember me
+                </label>
+              </div>
+              {/* <div className="text-center text-sm text-stone-500">
+                Don&apos;t have an account?{" "}
+                <Link
+                  className="text-blue-500 underline"
+                  to={{
+                    pathname: "/join",
+                    search: searchParams.toString(),
+                  }}
+                >
+                  Sign up
+                </Link>
+              </div> */}
+            </div>
+          </Form>
+        </div>
+        <Link
+          to="/"
+          className="absolute bottom-4 right-4 bg-white px-2 py-1.5 rounded-md text-sm text-stone-700"
+        >
+          Visit Website
+        </Link>
       </div>
     </div>
   );
