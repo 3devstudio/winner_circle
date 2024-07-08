@@ -9,7 +9,7 @@ type ButtonProps = {
 };
 
 const Button: React.FC<ButtonProps> = ({ primary, secondary, onClick, link, children }) => {
-    const buttonClasses = `px-4 py-2 text-stone-700 transition min-w-[7rem] text-center ${primary ? 'bg-primary hover:bg-primary/75' : 'bg-tertiary'} ${secondary ? 'bg-tertiary hover:bg-tertiary/75' : ''}`;
+    const buttonClasses = `px-4 py-2 transition min-w-[7rem] text-center w-full rounded-md whitespace-nowrap ${primary ? 'bg-primary hover:bg-primary/75 text-white' : 'bg-tertiary'} ${secondary ? 'bg-tertiary hover:bg-tertiary/75 text-stone-700' : ''}`;
 
     if (link) {
         return (

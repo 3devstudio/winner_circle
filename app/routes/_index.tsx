@@ -3,6 +3,7 @@ import Slider from "react-slick";
 import Principles from "../components/principles";
 import FadeInImage from "../components/fadeInImage";
 import Button from "../components/button";
+import RegularRoutes from "../components/RegularRoutes";
 import ContactUs from "../components/contactus";
 
 import "slick-carousel/slick/slick.css";
@@ -36,15 +37,18 @@ export default function Index() {
             Come Join the Winner Circle!
           </h1>
           <p className="relative text-white text-sm md:text-lg text-center pt-4 w-full max-w-[80%] md:max-w-[50%] mx-auto">
-            Discover Winner Circle, a highly professional and personalized
-            hauler based in northern Utah, travelling the nation. With over 50
-            years of combined horse experience, our Husband/Wife team, along
-            with our son, Logan Child, take great pride in bringing your horse
-            home.
+            Whether it’s Race or Ranch, Old Friend or New Ride, at Winner Circle
+            Horse Transport, we know that your horse represents the thrill of
+            racing, the anticipation of competition and the comfort of
+            companionship!
           </p>
-          <div className="flex flex-col md:flex-row items-center gap-4 justify-center text-sm">
-            <Button secondary>Quick Quote</Button>
-            <Button primary>Book Now</Button>
+          <div className="flex flex-col md:flex-row items-center gap-4 justify-center text-sm w-full">
+            <div className="my-auto">
+              <Button secondary>Quick Quote</Button>
+            </div>
+            <div className="my-auto">
+              <Button primary>Book Now</Button>
+            </div>
           </div>
         </div>
       </div>
@@ -70,10 +74,12 @@ export default function Index() {
         </Slider>
         <div className="h-full w-full md:w-1/2 flex flex-col gap-4 md:gap-6 justify-center">
           <div className="flex flex-col gap-4 md:gap-6 justify-center items-center md:justify-start md:items-start">
-            <h1 className="text-center md:text-start text-secondary text-2xl md:text-4xl font-semibold uppercase">Our Equipment</h1>
+            <h1 className="text-center md:text-start text-secondary text-2xl md:text-4xl font-semibold uppercase">
+              Our Equipment
+            </h1>
             <div className="w-1/2 h-1 bg-primary" />
           </div>
-          <span className="text-center md:text-start">
+          <span className="text-center md:text-start text-stone-700">
             Our Team consists of Chet, Nanette and Logan Child. We maintain two
             rigs on the road to ensure greater availability of service. Our
             fleet includes a 2023 Ford F-450 with a 7-horse head-to-head
@@ -82,12 +88,31 @@ export default function Index() {
           </span>
         </div>
       </div>
+      <div className="flex flex-col gap-4">
+        <div className="h-full w-full flex flex-col gap-4 md:gap-6 justify-center p-4">
+          <div className="flex flex-col gap-4 md:gap-6 justify-center items-center md:justify-start md:items-start">
+            <h1 className="text-center md:text-start text-secondary text-2xl md:text-4xl font-semibold uppercase">
+              Our Regular Routes
+            </h1>
+            <div className="w-1/2 h-1 bg-primary" />
+          </div>
+          <span className="text-center md:text-start text-stone-700">
+            With 16 routine routes, Winner Circle is able to provide a reliable
+            and consistent service to all of our customers. We are always
+            looking to add new routes to our schedule, so if you don’t see your
+            location listed, please reach out to us and we will do our best to
+            accommodate your needs.
+          </span>
+        </div>
+        <RegularRoutes />
+      </div>
       <ContactUs />
     </div>
   );
 }
 
-{/* <div className="w-full h-[70vh] flex">
+{
+  /* <div className="w-full h-[70vh] flex">
   <div className="w-[50%]">
     <Slider className="h-full ml-4" {...sliderSettings}>
       <div className="h-[70vh]">
@@ -119,7 +144,8 @@ export default function Index() {
       a 6-horse slant load trailer.
     </span>
   </div>
-</div> */}
+</div> */
+}
 {
   /* <div className="w-full h-[90vh] flex">
         <div className="w-[50%]">

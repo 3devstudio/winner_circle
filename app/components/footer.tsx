@@ -16,92 +16,92 @@ export default function Footer() {
           </a>
           <div className="flex gap-24">
             <div className="flex flex-col gap-4">
-                <h2 className="font-bold text-primary border-b border-primary pb-1 text-xs w-[8rem]">
+              <h2 className="font-bold text-primary border-b border-primary pb-1 text-xs w-[8rem]">
                 Helpful Links
-                </h2>
-                <ul className="grid grid-rows-4 grid-flow-col gap-4 text-xs">
+              </h2>
+              <ul className="grid grid-rows-4 grid-flow-col gap-4 text-xs">
                 <Link
-                    to="/"
-                    className={`my-auto ${
+                  to="/"
+                  className={`my-auto ${
                     location.pathname === "/"
-                        ? "text-primary"
-                        : "text-stone-300 hover:text-stone-200"
-                    }`}
+                      ? "text-primary"
+                      : "text-stone-300 hover:text-stone-200"
+                  }`}
                 >
-                    Home
+                  Home
                 </Link>
                 <Link
-                    to="/about"
-                    className={`my-auto ${
+                  to="/about"
+                  className={`my-auto ${
                     location.pathname === "/about"
-                        ? "text-white"
-                        : "hover:text-white"
-                    }`}
+                      ? "text-white"
+                      : "hover:text-white"
+                  }`}
                 >
-                    About
+                  About
                 </Link>
                 <Link
-                    to="/photo-gallery"
-                    className={`my-auto ${
+                  to="/photo-gallery"
+                  className={`my-auto ${
                     location.pathname === "/photo-gallery"
-                        ? "text-white"
-                        : "hover:text-white"
-                    }`}
+                      ? "text-white"
+                      : "hover:text-white"
+                  }`}
                 >
-                    Photo Gallery
+                  Photo Gallery
                 </Link>
                 <Link
-                    to="/submit-review"
-                    className={`my-auto ${
+                  to="/submit-review"
+                  className={`my-auto ${
                     location.pathname === "/submit-review"
-                        ? "text-white"
-                        : "hover:text-white"
-                    }`}
+                      ? "text-white"
+                      : "hover:text-white"
+                  }`}
                 >
-                    Submit Review
+                  Submit Review
                 </Link>
                 <Link
-                    to="/reviews"
-                    className={`my-auto ${
+                  to="/reviews"
+                  className={`my-auto ${
                     location.pathname === "/reviews"
-                        ? "text-white"
-                        : "hover:text-white"
-                    }`}
+                      ? "text-white"
+                      : "hover:text-white"
+                  }`}
                 >
-                    Our Reviews
+                  Our Reviews
                 </Link>
                 <Link
-                    to="/submit-waiver"
-                    className={`my-auto ${
+                  to="/submit-waiver"
+                  className={`my-auto ${
                     location.pathname === "/submit-waiver"
-                        ? "text-white"
-                        : "hover:text-white"
-                    }`}
+                      ? "text-white"
+                      : "hover:text-white"
+                  }`}
                 >
-                    Waiver
+                  Waiver
                 </Link>
-                </ul>
+              </ul>
             </div>
             <div className="flex flex-col gap-4">
-                <h2 className="font-bold text-primary border-b border-primary pb-1 text-xs w-[8rem]">
+              <h2 className="font-bold text-primary border-b border-primary pb-1 text-xs w-[8rem]">
                 Social Media
-                </h2>
-                <ul className="flex flex-col gap-2 text-xs">
+              </h2>
+              <ul className="flex flex-col gap-2 text-xs">
                 <a
-                    href="https://www.facebook.com/profile.php?id=100091977494740"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="my-auto flex gap-2"
+                  href="https://www.facebook.com/profile.php?id=100091977494740"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="my-auto flex gap-2"
                 >
-                    <img
+                  <img
                     src="/assets/facebook.png"
                     alt="Go to Facebook page"
                     className="h-4 w-4"
-                    />
-                    <span className="my-auto">Facebook</span>
+                  />
+                  <span className="my-auto">Facebook</span>
                 </a>
                 {/* More social media? */}
-                </ul>
+              </ul>
             </div>
           </div>
         </div>

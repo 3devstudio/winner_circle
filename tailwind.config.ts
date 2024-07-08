@@ -7,7 +7,7 @@ export default {
       colors: {
         'primary': '#FC9D38',
         'secondary': '#0D1A10',
-        'tertiary': '#f2edeb',
+        'tertiary': '#f5f5f5',
         'accent': '#050302',
       },
       clipPath: {

@@ -13,7 +13,7 @@ const ContactUs = () => {
         {/* Left Side */}
         <div className="w-full h-full">
           <div className="absolute left-0 top-6 pl-8 pr-20 py-2 clip-angle-r-sm bg-primary flex flex-col gap-6">
-            <h1 className="text-4xl font-bold text-secondary">
+            <h1 className="text-4xl font-bold text-secondary uppercase">
               Get in touch
             </h1>
           </div>

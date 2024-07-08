@@ -14,14 +14,20 @@ export default function Navigation() {
   return (
     <nav className="flex flex-col xl:flex-row gap-4 justify-end">
       <div className="hidden md:flex gap-2 xl:hidden justify-end text-sm">
-        <Button secondary link="/contact-us">
-          Contact Us
-        </Button>
-        <Button secondary>Quick Quote</Button>
-        <Button primary>Book Now</Button>
-        <button>
+        <div className="my-auto">
+          <Button secondary link="/contact-us">
+            Contact Us
+          </Button>
+        </div>
+        <div className="my-auto">
+          <Button secondary>Quick Quote</Button>
+        </div>
+        <div className="my-auto">
+          <Button primary>Book Now</Button>
+        </div>
+        <Link to="/login" className="my-auto">
           <UserCircleIcon className="h-8 w-8 text-stone-300 hover:text-slate-100 transition ml-4" />
-        </button>
+        </Link>
       </div>
       <ul className="hidden md:flex justify-end gap-6 lg:gap-10 text-stone-300 text-xs 2xl:text-sm font-light uppercase transition">
         <Link
@@ -86,21 +92,29 @@ export default function Navigation() {
         </Link>
       </ul>
       <div className="hidden xl:flex gap-2 justify-end text-sm">
-        <Button secondary link="/contact-us">
-          Contact Us
-        </Button>
-        <Button secondary>Quick Quote</Button>
-        <Button primary>Book Now</Button>
-        <button>
+      <div className="my-auto">
+          <Button secondary link="/contact-us">
+            Contact Us
+          </Button>
+        </div>
+        <div className="my-auto">
+          <Button secondary>Quick Quote</Button>
+        </div>
+        <div className="my-auto">
+          <Button primary>Book Now</Button>
+        </div>
+        <Link to="/login" className="my-auto">
           <UserCircleIcon className="h-8 w-8 text-stone-300 hover:text-slate-100 transition ml-4" />
-        </button>
+        </Link>
       </div>
       <div className="md:hidden flex justify-end gap-6 text-stone-300 text-sm font-light uppercase">
         <Bars3Icon
           className="h-10 w-10 text-white hover:text-primary transition cursor-pointer"
           onClick={openMobileNav}
         />
-        <UserCircleIcon className="h-10 w-10 text-white hover:text-primary transition cursor-pointer" />
+        <Link to="/login" className="my-auto">
+          <UserCircleIcon className="h-8 w-8 text-stone-300 hover:text-slate-100 transition ml-4" />
+        </Link>
       </div>
       <MobileNav isOpen={isMobileNavOpen} onClose={closeMobileNav} />
     </nav>
