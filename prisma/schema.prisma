@@ -15,7 +15,6 @@ model User {
   updatedAt DateTime @updatedAt
 
   password Password?
-  notes    Note[]
 }
 
 model Password {
@@ -25,14 +24,83 @@ model Password {
   userId String @unique
 }
 
-model Note {
-  id    String @id @default(cuid())
-  title String
-  body  String
+model Quote {
+  id              String @id @default(cuid())
+  firstName       String
+  lastName        String
+  phoneNumber     String
+  pickUpLocation  String
+  dropOffLocation String
+  timeFramePickUp DateTime
+  healthCert      Boolean
+  comments        String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  openedAt  DateTime
+
+  horses Horse[]
+}
+
+model Trip {
+  id                   String @id @default(cuid())
+  firstName            String
+  lastName             String
+  phoneNumber          String
+  email                String
+  pickUpDate           DateTime
+  pickUpAddress        String
+  pickUpContactName    String
+  pickUpContactNumber  String
+  dropOffAddress       String
+  dropOffContactName   String
+  dropOffContactNumber String
+  bidAmount            Decimal
+  healthCert           Boolean
+  comments             String?
+
+  horses Horse[]
+}
+
+model Horse {
+  id      String @id @default(cuid())
+  breed   String
+  gender  String
+  age     Int
+  height  String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String
+  quote   Quote   @relation(fields: [quoteId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  quoteId String
+  trip    Trip    @relation(fields: [tripId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  tripId  String
+}
+
+model Review {
+  id String @id @default(cuid())
+  firstName String
+  lastName String
+  email String
+  publishable Boolean
+  active Boolean
+  comments String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  photos Photo[]
+}
+
+model Photo {
+  id     String @id @default(cuid())
+  url    String
+  active Boolean
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  review   Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  reviewId String
 }
