@@ -3,9 +3,9 @@ import { CheckIcon } from "@heroicons/react/20/solid";
 const Principles = () => {
   return (
     <div className="flex flex-col gap-14 fade-in">
-      <div className="flex flex-col w-full max-w-6xl mx-auto justify-start items-center gap-2">
-        <div className="flex flex-col gap-4">
-          <h1 className="flex justify-start text-secondary text-2xl md:text-4xl font-semibold uppercase">
+      <div className="flex flex-col w-full max-w-6xl mx-auto justify-start items-center gap-4">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-xl flex justify-start text-secondary font-semibold uppercase">
             Our Principles
           </h1>
           <div className="w-full h-1 bg-primary" />

@@ -1,7 +1,7 @@
 // mobilenav.tsx
 import { Link, useLocation } from "@remix-run/react";
 import { UserCircleIcon, XMarkIcon } from "@heroicons/react/20/solid";
-import Button from "./button";
+import Button from "./Button";
 
 export default function MobileNav({ isOpen, onClose }) {
   const location = useLocation();
