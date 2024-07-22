@@ -1,4 +1,7 @@
 import type { MetaFunction } from "@remix-run/node";
+import Slider from "react-slick";
+import Button from "../components/button";
+import FadeInImage from "../components/fadeInImage";
 // Components
 import Hero from "../components/Hero";
 import Principles from "../components/principles";
