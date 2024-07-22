@@ -1,8 +1,9 @@
+import { Bars3Icon, HomeIcon, UserCircleIcon } from "@heroicons/react/20/solid";
 import { Link, useLocation } from "@remix-run/react";
 import { useState } from "react";
-import { Bars3Icon, HomeIcon, UserCircleIcon } from "@heroicons/react/20/solid";
-import MobileNav from "./mobilenav";
+
 import Button from "./button";
+import MobileNav from "./mobilenav";
 
 export default function Navigation() {
   const location = useLocation();

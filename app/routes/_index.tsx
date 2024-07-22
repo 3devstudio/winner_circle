@@ -1,10 +1,11 @@
 import type { MetaFunction } from "@remix-run/node";
+// eslint-disable-next-line import/order
 import Slider from "react-slick";
-import Principles from "../components/principles";
-import FadeInImage from "../components/fadeInImage";
 import Button from "../components/button";
-import RegularRoutes from "../components/RegularRoutes";
 import ContactUs from "../components/contactus";
+import FadeInImage from "../components/fadeInImage";
+import Principles from "../components/principles";
+import RegularRoutes from "../components/RegularRoutes";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";

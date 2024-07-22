@@ -1,10 +1,10 @@
 // AppLayout.tsx
-import { useEffect, useState } from "react";
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
 import { PhoneIcon, MapPinIcon } from "@heroicons/react/24/outline";
+import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
+import { useEffect, useState } from "react";
 
-import Navigation from "app/components/navigation";
 import Footer from "app/components/footer";
+import Navigation from "app/components/navigation";
 
 export default function AppLayout() {
   const [scrollCount, setScrollCount] = useState(0);
@@ -64,7 +64,7 @@ export default function AppLayout() {
             </div>
             <div className="flex gap-1">
               <PhoneIcon className="h-4 w-4 my-auto" />
-              <span className="my-auto text-xs font-semibold">Nanet:</span>
+              <span className="my-auto text-xs font-semibold">Nanette:</span>
               <a href="tel:4356020959" className="my-auto text-sm">
                 (435) 602-0959
               </a>
