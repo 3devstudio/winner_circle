@@ -1,6 +1,6 @@
 import Input from "./input";
 import TextArea from "./textarea";
-import Button from "./button";
+import Button from "./Button";
 
 const ContactUs = () => {
   return (
