@@ -97,8 +97,8 @@ export default function AppLayout() {
           </div>
         </div>
       </header>
-      <body className="flex flex-col fade-in">
-        <main className="">
+      <body className="flex flex-col fade-in background-pattern">
+        <main>
           <Outlet />
           <ScrollRestoration />
           <Scripts />

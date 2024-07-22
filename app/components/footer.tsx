@@ -14,7 +14,7 @@ export default function Footer() {
               className="h-20 md:h-24 w-full pr-8 md:pr-12"
             />
           </a>
-          <div className="flex gap-24">
+          <div className="flex flex-col md:flex-row gap-24">
             <div className="flex flex-col gap-4">
               <h2 className="font-bold text-primary border-b border-primary pb-1 text-xs w-[8rem]">
                 Helpful Links
@@ -107,7 +107,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="py-2 flex justify-center items-center text-xs bg-accent">
-        <span>&copy; Winner Circle Trucking 2024 All Rights Reserved</span>
+        <span>&copy; Winner Circle Trucking 2024 All Rights Reserved | Built by 3Dev Studio</span>
       </div>
     </footer>
   );
