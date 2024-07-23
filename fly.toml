@@ -1,4 +1,4 @@
-app = "winner_circle-d8bc"
+app = "winner-circle-d8bc"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = [ ]
