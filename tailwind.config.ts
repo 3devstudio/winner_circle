@@ -4,6 +4,14 @@ export default {
   content: ["./app/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      rotate: {
+        '-12': '-12deg',
+      },
+      skew: {
+        '-12': '-12deg',
+        '12': '12deg',
+      },
+
       colors: {
         'primary': '#FC9D38',
         'secondary': '#0D1A10',
@@ -12,9 +20,12 @@ export default {
       },
       clipPath: {
         // Parallelogram shapes
+        'parallelogram-xs': 'polygon(2.5% 0%, 100% 0%, 97.5% 100%, 0% 100%)',
         'parallelogram-sm': 'polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%)',
         'parallelogram-md': 'polygon(05% 0%, 100% 0%, 95% 100%, 0% 100%)',
         'parallelogram-lg': 'polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)',
+        //Custom
+        'parallelogram-breadcrumb': 'polygon(08% 0%, 100% 0%, 92% 100%, 0% 100%)',
         // Right side angles
         'angle-r-sm': 'polygon(0 0, 100% 0, 90% 100%, 0% 100%)',
         'angle-r-md': 'polygon(0 0, 100% 0, 85% 100%, 0% 100%)',
@@ -33,6 +44,9 @@ export default {
     function ({ addUtilities }) {
       addUtilities({
         // Parallelogram shapes
+        '.clip-parallelogram-xs': {
+          'clip-path': 'polygon(2.5% 0%, 100% 0%, 97.5% 100%, 0% 100%)',
+        },
         '.clip-parallelogram-sm': {
           'clip-path': 'polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%)',
         },
@@ -41,6 +55,10 @@ export default {
         },
         '.clip-parallelogram-lg': {
           'clip-path': 'polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)',
+        },
+        //Custom
+        '.clip-parallelogram-breadcrumb': {
+          'clip-path': 'polygon(08% 0%, 100% 0%, 92% 100%, 0% 100%)',
         },
         // Right side angles
         '.clip-angle-r-sm': {

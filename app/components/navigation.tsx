@@ -1,9 +1,12 @@
 import { Link, useLocation } from "@remix-run/react";
 import { useState } from "react";
-import { Bars3Icon, HomeIcon, UserCircleIcon } from "@heroicons/react/20/solid";
+import { Bars3Icon, HomeIcon } from "@heroicons/react/20/solid";
 import MobileNav from "./mobilenav";
 import Button from "./Button";
-import Dropdown from "./dropdown";
+import Dropdown from "./Dropdown";
+import LoginButton, { loader as loginButtonLoader } from "./LoginButton";
+
+export const loader = loginButtonLoader;
 
 export default function Navigation() {
   const location = useLocation();
@@ -27,9 +30,7 @@ export default function Navigation() {
         <div className="my-auto">
           <Button primary>Book Now</Button>
         </div>
-        <Link to="/login" className="my-auto">
-          <UserCircleIcon className="h-8 w-8 text-stone-300 hover:text-slate-100 transition ml-4" />
-        </Link>
+        <LoginButton />
       </div>
 
       <ul className="hidden md:flex justify-end gap-6 lg:gap-10 text-stone-300 text-xs 2xl:text-sm font-light uppercase transition">
@@ -47,6 +48,7 @@ export default function Navigation() {
         <Dropdown
           triggerText="About Us"
           triggerClassName="uppercase text-stone-300 hover:text-stone-200"
+          showChevron
         >
           <div className="flex flex-col py-2">
             <Link
@@ -117,20 +119,16 @@ export default function Navigation() {
         <div className="my-auto">
           <Button primary>Book Now</Button>
         </div>
-        <Link to="/login" className="my-auto">
-          <UserCircleIcon className="h-8 w-8 text-stone-300 hover:text-slate-100 transition ml-4" />
-        </Link>
+        <LoginButton />
       </div>
 
       {/* Mobile navigation */}
-      <div className="md:hidden flex justify-end gap-6 text-stone-300 text-sm font-light uppercase">
+      <div className="md:hidden flex justify-end text-stone-300 text-sm font-light uppercase">
         <Bars3Icon
           className="h-10 w-10 text-white hover:text-primary transition cursor-pointer"
           onClick={openMobileNav}
         />
-        <Link to="/login" className="my-auto">
-          <UserCircleIcon className="h-8 w-8 text-stone-300 hover:text-slate-100 transition" />
-        </Link>
+        <LoginButton />
       </div>
       <MobileNav isOpen={isMobileNavOpen} onClose={closeMobileNav} />
     </nav>

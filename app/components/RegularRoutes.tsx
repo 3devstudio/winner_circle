@@ -1,30 +1,33 @@
 // NOTE: We should probably consider storing location data in the database
 // incase routes change or we need to add more locations
 import { useEffect, useState } from "react";
+import SectionTitle from "./SectionTitle";
+import Button from "./Button";
+import { MapIcon, ListBulletIcon } from "@heroicons/react/24/outline";
 
 const locations = [
-  { name: "LEXINGTON, KY", coords: [38.0406, -84.5037] },
-  { name: "HOUSTON, TX", coords: [29.7601, -95.3701] },
-  { name: "KATY, TX", coords: [29.7858, -95.8245] },
-  { name: "DALLAS, TX", coords: [32.7767, -96.797] },
-  { name: "HOUSTON, TX", coords: [29.7604, -95.3698] },
-  { name: "SAN FRANCISCO, CA", coords: [37.7749, -122.4194] },
-  { name: "LOS ANGELES, CA", coords: [34.0522, -118.2437] },
-  { name: "ST. LOUIS, MO", coords: [38.627, -90.1994] },
-  { name: "KANSAS CITY, MO", coords: [39.0997, -94.5786] },
-  { name: "CHICAGO, IL", coords: [41.8781, -87.6298] },
-  { name: "LAS VEGAS, NV", coords: [36.1699, -115.1398] },
-  { name: "SCOTTSDALE, AZ", coords: [33.4949, -111.9217] },
-  { name: "PHOENIX, AZ", coords: [33.4484, -112.074] },
-  { name: "DENVER, CO", coords: [39.7392, -104.9903] },
-  { name: "PORTLAND, OR", coords: [45.5152, -122.6784] },
-  { name: "BOISE, ID", coords: [43.615, -116.2023] },
-  { name: "SALT LAKE CITY, UT", coords: [40.7608, -111.891] },
-  { name: "BILLINGS, MT", coords: [45.7833, -108.5007] },
-  { name: "ROCK SPRINGS, WY", coords: [41.5875, -109.2029] },
+  { name: "Lexington, Kentucky", coords: [38.0406, -84.5037] },
+  { name: "Houston, Texas", coords: [29.7601, -95.3701] },
+  { name: "Katy, Texas", coords: [29.7858, -95.8245] },
+  { name: "Dallas, Texas", coords: [32.7767, -96.797] },
+  { name: "San Fransisco, California", coords: [37.7749, -122.4194] },
+  { name: "Los Angeles, California", coords: [34.0522, -118.2437] },
+  { name: "St. Louis, Missouri", coords: [38.627, -90.1994] },
+  { name: "Kansas City, Missouri", coords: [39.0997, -94.5786] },
+  { name: "Chicago, Illinois", coords: [41.8781, -87.6298] },
+  { name: "Las Vegas, Nevada", coords: [36.1699, -115.1398] },
+  { name: "Scottsdale, Arizona", coords: [33.4949, -111.9217] },
+  { name: "Phoenix, Arizona", coords: [33.4484, -112.074] },
+  { name: "Denver, Colorado", coords: [39.7392, -104.9903] },
+  { name: "Portland, Oregon", coords: [45.5152, -122.6784] },
+  { name: "Boise, Idaho", coords: [43.615, -116.2023] },
+  { name: "Salt Lake City, Utah", coords: [40.7608, -111.891] },
+  { name: "Billings, Montana", coords: [45.7833, -108.5007] },
+  { name: "Rock Springs, Wyoming", coords: [41.5875, -109.2029] },
 ];
 
 export default function RegularRoutes() {
+  const [view, setView] = useState("map");
   const [Leaflet, setLeaflet] = useState(null);
   const [ReactLeaflet, setReactLeaflet] = useState(null);
 
@@ -35,7 +38,6 @@ export default function RegularRoutes() {
       setLeaflet(leafletModule);
       setReactLeaflet(reactLeafletModule);
 
-      // Fix for default marker icon not showing
       delete leafletModule.Icon.Default.prototype._getIconUrl;
       leafletModule.Icon.Default.mergeOptions({
         iconRetinaUrl:
@@ -66,39 +68,91 @@ export default function RegularRoutes() {
     popupAnchor: [0, -24],
   });
 
+  const renderMapView = () => (
+    <MapContainer
+      center={[39.8283, -98.5795]}
+      zoom={4}
+      style={{ height: "50vh", width: "100%" }}
+      className="z-20"
+    >
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      />
+      {locations.map((location, idx) => (
+        <Marker key={idx} position={location.coords} icon={customIcon}>
+          <Popup>{location.name}</Popup>
+        </Marker>
+      ))}
+    </MapContainer>
+  );
+
+  const renderListView = () => {
+    const locationsByState = locations.reduce((acc, location) => {
+      const state = location.name.split(", ")[1];
+      if (!acc[state]) acc[state] = [];
+      acc[state].push(location.name);
+      return acc;
+    }, {});
+
+    return (
+      <div className="flex flex-col w-full max-w-6xl max-h-[35rem] overflow-auto mx-auto bg-white rounded-md px-4 pb-4 pt-20 divide-y divide-stone-300">
+        {Object.keys(locationsByState).map((state) => (
+          <div key={state} className="flex flex-col gap-2 py-4">
+            <h2 className="font-semibold text-xl text-primary">{state}</h2>
+            <ul className="list-disc ml-6">
+              {locationsByState[state].map((location, idx) => (
+                <li key={idx} className="text-stone-500">
+                  {location}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <div className="flex flex-col gap-4">
-      <div className="h-full w-full flex flex-col gap-4 md:gap-6 justify-center p-4">
-        <div className="flex flex-col gap-4 md:gap-6 justify-center items-center md:justify-start md:items-start">
-          <h1 className="text-center md:text-start text-secondary text-2xl md:text-4xl font-semibold uppercase">
-            Our Regular Routes
-          </h1>
-          <div className="w-1/2 h-1 bg-primary" />
-        </div>
-        <span className="text-center md:text-start text-stone-700">
-          With 16 routine routes, Winner Circle is able to provide a reliable
-          and consistent service to all of our customers. We are always looking
-          to add new routes to our schedule, so if you don’t see your location
-          listed, please reach out to us and we will do our best to accommodate
-          your needs.
-        </span>
-      </div>
-      <MapContainer
-        center={[39.8283, -98.5795]}
-        zoom={4}
-        style={{ height: "50vh", width: "100%" }}
-        className="z-20"
-      >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      <div className="p-4">
+        <SectionTitle
+          title="Our Regular Routes"
+          description="With 16 routine routes, Winner Circle is able to provide a reliable and consistent service to all of our customers. We are always looking to add new routes to our schedule, so if you don’t see your location listed, please reach out to us and we will do our best to accommodate your needs."
         />
-        {locations.map((location, idx) => (
-          <Marker key={idx} position={location.coords} icon={customIcon}>
-            <Popup>{location.name}</Popup>
-          </Marker>
-        ))}
-      </MapContainer>
+      </div>
+      <div className="relative">
+        <div
+          className={`absolute inset-x-0 flex gap-4 z-30 ${
+            view === "list" ? "bg-stone-300/50 rounded-t-md p-4 w-full md:max-w-6xl mx-auto justify-center" : "pl-16 w-fit pt-4"
+          }`}
+        >
+          <div className={view === "list" ? "w-full max-w-sm" : ""}>
+            <Button
+              secondary
+              icon={MapIcon}
+              active={view === "map"}
+              onClick={() => setView("map")}
+              className={`w-full ${view === "list" ? "bg-stone-300/50" : ""}`}
+            >
+              Map View
+            </Button>
+          </div>
+          <div className={view === "list" ? " w-full max-w-sm" : ""}>
+            <Button
+              secondary
+              icon={ListBulletIcon}
+              active={view === "list"}
+              onClick={() => setView("list")}
+              className={`w-full ${view === "list" ? "bg-stone-300/50" : ""}`}
+            >
+              List View
+            </Button>
+          </div>
+        </div>
+
+        {view === "map" ? renderMapView() : renderListView()}
+      </div>
     </div>
   );
 }
