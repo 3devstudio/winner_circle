@@ -28,8 +28,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export default function App() {
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
+  const areAdminPages = location.pathname.startsWith("/admin");
 
-  return isLoginPage ? (
+  return isLoginPage || areAdminPages ? (
     <html lang="en">
       <head>
         <meta charSet="utf-8" />

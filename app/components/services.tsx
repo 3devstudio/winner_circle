@@ -1,52 +1,49 @@
-import Slider from "react-slick";
-import FadeInImage from "./fadeInImage";
+import SectionTitle from "./SectionTitle";
+import InfoCard from "./InfoCard";
 
 const Services = () => {
-  const sliderSettings = {
-    arrows: false,
-    dots: true,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    infinite: true,
-    fade: true,
-    speed: 1000,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    waitForAnimate: false,
-  };
-
   return (
-    <div className="flex flex-col md:flex-row gap-8 p-4 w-full max-w-[90rem] mx-auto">
-      {/* Image */}
-      <Slider
-        className="flex flex-col justify-center items-center w-full md:w-1/2 overflow-hidden"
-        {...sliderSettings}
-      >
-        <FadeInImage
-          src="/assets/IMG_7418.jpg"
-          alt="Chet and Horse"
-          className="rotate-90 object-contain w-full max-h-full"
-        />
-        <FadeInImage
-          src="/assets/IMG_7418.jpg"
-          alt="Chet and Horse"
-          className="rotate-90 object-contain w-full max-h-full"
-        />
-      </Slider>
-      {/* Header */}
-      <div className="flex flex-col gap-4 w-full md:w-1/2">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-xl flex text-secondary font-semibold uppercase">
-            Our Services
-          </h1>
-          <div className="w-full h-1 bg-primary" />
-        </div>
-        <span className="text-stone-700">
-          Whether you're needing a single stall for an experienced traveler, a
+    <div className="flex flex-col gap-8">
+      <div className="p-4">
+        <SectionTitle
+          title="Our Services"
+          description="Traveling the lower 48 states, we provide single hauls, large volume transports, Charters to shows, moving your farm - we specialize in meeting your needs! Whether you're needing a single stall for an experienced traveler, a
           box stall for a special traveler, or room for a mare and baby, we
           provide a variety of stall configurations to meet your needs. We
-          provide:
-        </span>
+          provide:"
+        />
+      </div>
+      <div className="bg-secondary/25 p-8">
+        <div className="flex flex-wrap gap-8 justify-center w-full max-w-6xl mx-auto">
+          <InfoCard
+            title="Single straight-load stalls"
+            description="Ideal for single horses that prefer traveling alone, these straight-load stalls offer a focused and stress-free environment. Perfect for owners who need to transport their horses individually, ensuring maximum comfort and attention to each horse’s specific needs."
+            imageSrc="/assets/single-straight-load-stalls.jpg"
+            imageAlt="Single straight-load stall"
+            link="/our-services"
+          />
+          <InfoCard
+            title="Stalls and a half with full dividers"
+            description="For those who have horses that need a bit more space, stalls and a half with full dividers provide extra room and privacy. This option is excellent for horses that may be nervous around others or need a bit more space to feel comfortable during transport."
+            imageSrc="/assets/stalls-and-half-dividers.jpg"
+            imageAlt="Stalls and a half with full dividers"
+            link="/our-services"
+          />
+          <InfoCard
+            title="Box stalls"
+            description="Box stalls offer ample space for horses to move around freely during the journey. Available in various sizes, these stalls are perfect for long-distance travel, providing a roomy and relaxed environment that reduces stress and ensures the horse’s well-being."
+            imageSrc="/assets/box-stall.jpg"
+            imageAlt="Box stall"
+            link="/our-services"
+          />
+          <InfoCard
+            title="Slant stalls"
+            description="Slant stalls are a versatile option for transporting one or two horses, with the added benefit of full dividers for safety and comfort. This setup is great for horses that are comfortable traveling at an angle and need secure, spacious stalls that allow for easy loading and unloading."
+            imageSrc="/assets/stalls-and-half-dividers.jpg"
+            imageAlt="Slant stalls"
+            link="/our-services"
+          />
+        </div>
       </div>
     </div>
   );

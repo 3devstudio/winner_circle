@@ -107,7 +107,16 @@ export default function Footer() {
         </div>
       </div>
       <div className="py-2 flex justify-center items-center text-xs bg-accent">
-        <span>&copy; Winner Circle Trucking 2024 All Rights Reserved | Built by 3Dev Studio</span>
+        <span>
+          &copy; Winner Circle Trucking 2024 All Rights Reserved | Built by
+        </span>
+        <a
+          href="https://3devstudio.com/"
+          className="hover:text-primary ml-1"
+          target="_blank"
+        >
+          3Dev Studio
+        </a>
       </div>
     </footer>
   );

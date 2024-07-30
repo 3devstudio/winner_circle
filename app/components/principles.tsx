@@ -1,23 +1,17 @@
 import { CheckIcon } from "@heroicons/react/20/solid";
+import SectionTitle from "./SectionTitle";
 
 const Principles = () => {
   return (
     <div className="flex flex-col gap-14 fade-in">
-      <div className="flex flex-col w-full max-w-6xl mx-auto justify-start items-center gap-4">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-xl flex justify-start text-secondary font-semibold uppercase">
-            Our Principles
-          </h1>
-          <div className="w-full h-1 bg-primary" />
-        </div>
-        <span className="text-center text-stone-700">
-          Our purpose is to bring your horse home with personalized service and
-          the utmost safety. Whether it's Race or Ranch, Old Friend or New Ride,
-          at Winner Circle Transport, we know that your horse represents the
-          thrill of racing, the anticipation of competition, and the comfort of
-          companionship! We love bringing your horse home!
-        </span>
-      </div>
+      <SectionTitle
+        title="Our Principles"
+        description="Our purpose is to bring your horse home with personalized service and
+        the utmost safety. Whether it's Race or Ranch, Old Friend or New Ride,
+        at Winner Circle Transport, we know that your horse represents the
+        thrill of racing, the anticipation of competition, and the comfort of
+        companionship! We love bringing your horse home!"
+      />
       <div className="flex flex-col lg:flex-row lg:justify-around">
         <div className="relative flex flex-col gap-4 items-center bg-secondary w-full h-[20rem] py-6">
           <div className="absolute -top-5 inset-x-0 flex justify-center items-center">

@@ -1,6 +1,15 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 
-const Textarea = ({ placeholder, label, required = false }) => {
+interface TextareaProps {
+  placeholder: string;
+  label?: string;
+  required?: boolean;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+}
+
+const Textarea: React.FC<TextareaProps> = ({ placeholder, label, required = false, value, onChange }) => {
   return (
     <div className="flex flex-col mb-4">
       {label && (
@@ -11,8 +20,9 @@ const Textarea = ({ placeholder, label, required = false }) => {
       <textarea
         placeholder={placeholder}
         required={required}
-        className="p-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-stone-700"
-        rows="4"
+        className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition w-full text-sm text-stone-700"
+        value={value}
+        onChange={onChange}
       ></textarea>
     </div>
   );

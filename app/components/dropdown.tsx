@@ -1,4 +1,4 @@
-// File: components/Dropdown.tsx
+// components/Dropdown.tsx
 
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
@@ -6,9 +6,10 @@ import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 interface DropdownProps {
   triggerText: string;
   triggerClassName?: string;
+  showChevron?: boolean;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ triggerText, triggerClassName, children }) => {
+const Dropdown: React.FC<DropdownProps> = ({ triggerText, triggerClassName, showChevron = false, children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -36,10 +37,12 @@ const Dropdown: React.FC<DropdownProps> = ({ triggerText, triggerClassName, chil
         className={`flex items-center ${triggerClassName}`}
       >
         {triggerText}
-        {isOpen ? (
-          <ChevronUpIcon className="w-5 h-5 ml-2 transition-transform duration-300" />
-        ) : (
-          <ChevronDownIcon className="w-5 h-5 ml-2 transition-transform duration-300" />
+        {showChevron && (
+          isOpen ? (
+            <ChevronUpIcon className="w-5 h-5 ml-2 transition-transform duration-300" />
+          ) : (
+            <ChevronDownIcon className="w-5 h-5 ml-2 transition-transform duration-300" />
+          )
         )}
       </button>
       <div

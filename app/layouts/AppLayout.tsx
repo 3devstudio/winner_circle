@@ -38,7 +38,7 @@ export default function AppLayout() {
         <Links />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
       </head>
-      <header className="sticky top-0 z-50">
+      <header className="sticky top-0 z-40">
         {/* Contact Bar */}
         <div className="hidden lg:flex gap-8 bg-accent justify-end text-tertiary px-4 py-1">
           <div className="flex gap-2">
