@@ -19,10 +19,10 @@ const Hero = () => {
         </p>
         <div className="flex flex-col md:flex-row items-center gap-4 justify-center text-sm w-full">
           <div className="my-auto">
-            <Button secondary>Quick Quote</Button>
+            <Button secondary text="Quick Quote" />
           </div>
           <div className="my-auto">
-            <Button primary>Book Now</Button>
+            <Button primary text="Book Now" />
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@ import { Link, useLocation } from "@remix-run/react";
 import { UserCircleIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import Button from "./Button";
 
-export default function MobileNav({ isOpen, onClose }) {
+export default function MobileNav({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
   const location = useLocation();
 
   return (
