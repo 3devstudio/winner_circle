@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Input from "./Input";
-import Textarea from "./Textarea";
-import Button from "./Button";
-import Breadcrumb from "./Breadcrumb";
-import AddHorse from "./AddHorse";
+import Input from "../Inputs/Input";
+import Textarea from "../Inputs/Textarea";
+import Button from "../Buttons/Button";
+import Breadcrumb from "../Pages/Home/Breadcrumb";
+import AddHorse from "../Pages/Home/AddHorse";
 
 interface Horse {
   name: string;

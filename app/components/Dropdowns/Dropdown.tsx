@@ -7,6 +7,7 @@ interface DropdownProps {
   triggerText: string;
   triggerClassName?: string;
   showChevron?: boolean;
+  children?: React.ReactNode;
 }
 
 const Dropdown: React.FC<DropdownProps> = ({ triggerText, triggerClassName, showChevron = false, children }) => {

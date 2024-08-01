@@ -2,7 +2,7 @@
 
 import React from "react";
 import { CheckIcon } from "@heroicons/react/24/solid";
-import "../styles/breadcrumb.css";
+import "app/styles/breadcrumb.css";
 
 interface BreadcrumbProps {
   step: number;

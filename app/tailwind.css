@@ -21,10 +21,6 @@
   }
 }
 
-body:not(.initialized) .logo-container {
-  display: none;
-}
-
 .logo-container img {
   transition: all 0.3s ease;
 }

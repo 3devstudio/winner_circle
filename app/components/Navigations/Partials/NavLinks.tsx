@@ -1,10 +1,10 @@
 import { Link, useLocation } from "@remix-run/react";
 import { useState } from "react";
 import { Bars3Icon, HomeIcon } from "@heroicons/react/20/solid";
-import MobileNav from "./mobilenav";
-import Button from "./Button";
-import Dropdown from "./Dropdown";
-import LoginButton, { loader as loginButtonLoader } from "./LoginButton";
+import MobileNav from "../../Navigations/MobileNav";
+import Button from "../../Buttons/Button";
+import Dropdown from "../../Dropdowns/Dropdown";
+import LoginButton, { loader as loginButtonLoader } from "../../Navigations/Partials/LoginButton";
 
 export const loader = loginButtonLoader;
 
@@ -16,24 +16,9 @@ export default function Navigation() {
   const closeMobileNav = () => setIsMobileNavOpen(false);
 
   return (
-    <nav className="flex flex-col xl:flex-row gap-4 justify-end">
-      {/* Action buttons (medium screens) */}
-      <div className="hidden md:flex gap-2 xl:hidden justify-end text-sm">
-        <div className="my-auto">
-          <Button secondary link="/contact-us">
-            Contact Us
-          </Button>
-        </div>
-        <div className="my-auto">
-          <Button secondary>Quick Quote</Button>
-        </div>
-        <div className="my-auto">
-          <Button primary>Book Now</Button>
-        </div>
-        <LoginButton />
-      </div>
-
-      <ul className="hidden md:flex justify-end gap-6 lg:gap-10 text-stone-300 text-xs 2xl:text-sm font-light uppercase transition">
+    <nav className="flex gap-4 justify-end">
+      {/* Links */}
+      <ul className="hidden lg:flex justify-end gap-6 lg:gap-10 text-stone-300 text-xs 2xl:text-sm font-light uppercase transition">
         <Link
           to="/"
           className={`my-auto ${
@@ -58,13 +43,13 @@ export default function Navigation() {
               Our Services
             </Link>
             <Link
-              to="/principles"
+              to="/our-principles"
               className="text-stone-700 hover:bg-stone-100 transition px-4 py-2 capitalize"
             >
               Our Principles
             </Link>
             <Link
-              to="/team"
+              to="/meet-our-team"
               className="text-stone-700 hover:bg-stone-100 transition px-4 py-2 capitalize"
             >
               Meet Our Team
@@ -106,24 +91,16 @@ export default function Navigation() {
         </Link>
       </ul>
 
-      {/* Action buttons (large screens) */}
-      <div className="hidden xl:flex gap-2 justify-end text-sm">
+      {/* Quick Quote and Login */}
+      <div className="hidden lg:flex gap-2 justify-end text-sm ml-4">
         <div className="my-auto">
-          <Button secondary link="/contact-us">
-            Contact Us
-          </Button>
-        </div>
-        <div className="my-auto">
-          <Button secondary>Quick Quote</Button>
-        </div>
-        <div className="my-auto">
-          <Button primary>Book Now</Button>
+          <Button primary link="/quick-quote">Quick Quote</Button>
         </div>
         <LoginButton />
       </div>
 
       {/* Mobile navigation */}
-      <div className="md:hidden flex justify-end text-stone-300 text-sm font-light uppercase">
+      <div className="lg:hidden flex justify-end text-stone-300 text-sm font-light uppercase">
         <Bars3Icon
           className="h-10 w-10 text-white hover:text-primary transition cursor-pointer"
           onClick={openMobileNav}
