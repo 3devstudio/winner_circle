@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Input from "./Input";
-import Button from "./Button";
-import Modal from "./Modal";
+import Input from "../../Inputs/Input";
+import Button from "../../Buttons/Button";
+import Modal from "../../Modals/Modal";
 import {
   TrashIcon,
   PencilIcon,

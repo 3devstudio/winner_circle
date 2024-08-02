@@ -3,7 +3,7 @@
 .breadcrumb-container {
   display: flex;
   margin-bottom: 1rem;
-  background-color: #f0f0f0;
+  background-color: #e1e1e1;
   transform: skewX(-16deg);
   overflow: hidden;
 }
@@ -16,7 +16,7 @@
   transition:
     background-color 0.3s,
     color 0.3s;
-  padding: 0.5rem 2rem;
+  padding: 0.5rem 1rem;
 }
 
 .breadcrumb-title {

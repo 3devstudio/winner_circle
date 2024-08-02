@@ -1,7 +1,8 @@
 import type { Config } from "tailwindcss";
+import type { PluginAPI } from "tailwindcss/types/config";
 
-export default {
-  content: ["./app/**/*.{js,jsx,ts,tsx}"],
+const config: Config = {
+  content: ['./app/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       rotate: {
@@ -11,7 +12,6 @@ export default {
         '-12': '-12deg',
         '12': '12deg',
       },
-
       colors: {
         'primary': '#FC9D38',
         'secondary': '#0D1A10',
@@ -24,7 +24,7 @@ export default {
         'parallelogram-sm': 'polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%)',
         'parallelogram-md': 'polygon(05% 0%, 100% 0%, 95% 100%, 0% 100%)',
         'parallelogram-lg': 'polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)',
-        //Custom
+        // Custom
         'parallelogram-breadcrumb': 'polygon(08% 0%, 100% 0%, 92% 100%, 0% 100%)',
         // Right side angles
         'angle-r-sm': 'polygon(0 0, 100% 0, 90% 100%, 0% 100%)',
@@ -41,7 +41,7 @@ export default {
   },
   plugins: [
     require('@tailwindcss/forms'),
-    function ({ addUtilities }) {
+    function ({ addUtilities }: PluginAPI) {
       addUtilities({
         // Parallelogram shapes
         '.clip-parallelogram-xs': {
@@ -56,7 +56,7 @@ export default {
         '.clip-parallelogram-lg': {
           'clip-path': 'polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)',
         },
-        //Custom
+        // Custom
         '.clip-parallelogram-breadcrumb': {
           'clip-path': 'polygon(08% 0%, 100% 0%, 92% 100%, 0% 100%)',
         },
@@ -89,4 +89,6 @@ export default {
       });
     },
   ],
-} satisfies Config;
+};
+
+export default config;

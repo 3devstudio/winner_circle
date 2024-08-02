@@ -1,10 +1,15 @@
 import { Link, useLocation } from "@remix-run/react";
 
-export default function Footer() {
+interface FooterProps {
+  className?: string;
+  ref?: React.RefObject<HTMLDivElement>;
+}
+
+export default function Footer({ className = "" }: FooterProps) {
   const location = useLocation();
 
   return (
-    <footer className="bg-secondary text-stone-100">
+    <footer className={`bg-secondary text-stone-100 ${className}`}>
       <div className="flex justify-between gap-8 p-4">
         <div className="flex gap-8">
           <a href="/" className="my-auto ml-10">
