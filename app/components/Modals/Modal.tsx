@@ -1,6 +1,5 @@
-// path: src/components/Modal.tsx
-
 import React, { useEffect, useState } from "react";
+import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 
 interface ModalProps {
@@ -11,12 +10,23 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ show, onClose, children }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true); // Ensure this runs only on the client side.
+  }, []);
 
   useEffect(() => {
     if (show) {
       setIsVisible(true);
+      // Prevent scrolling when modal is open
+      document.body.style.overflow = 'hidden';
     } else {
-      const timeoutId = setTimeout(() => setIsVisible(false), 300);
+      const timeoutId = setTimeout(() => {
+        setIsVisible(false);
+        // Restore scrolling when modal is closed
+        document.body.style.overflow = '';
+      }, 300);
       return () => clearTimeout(timeoutId);
     }
   }, [show]);
@@ -27,9 +37,13 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, children }) => {
     }
   };
 
-  return (
+  if (!isClient) {
+    return null;
+  }
+
+  const modalContent = (
     <div
-      className={`fixed inset-0 flex items-center justify-center z-50 transition-opacity duration-300 ${
+      className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 ${
         show && isVisible ? "opacity-100 visible" : "opacity-0 invisible"
       }`}
     >
@@ -40,7 +54,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, children }) => {
         onClick={handleBackdropClick}
       ></div>
       <div
-        className={`bg-white rounded-lg shadow-lg w-full max-w-md mx-auto p-6 z-10 transform transition-transform duration-300 ${
+        className={`bg-white rounded-lg shadow-lg w-full max-w-3xl mx-auto p-6 z-10 transform transition-transform duration-300 ${
           show ? "scale-100" : "scale-95"
         }`}
       >
@@ -69,6 +83,8 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, children }) => {
       </div>
     </div>
   );
+
+  return ReactDOM.createPortal(modalContent, document.body);
 };
 
 Modal.propTypes = {
