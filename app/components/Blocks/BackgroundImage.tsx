@@ -2,7 +2,7 @@ import React from "react";
 
 interface BackgroundImageProps {
   image: string;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xl";
   children?: React.ReactNode;
 }
 
@@ -11,6 +11,7 @@ const BackgroundImage: React.FC<BackgroundImageProps> = ({ image, size = "md", c
     sm: "h-[30vh]",
     md: "h-[40vh]",
     lg: "h-[50vh]",
+    xl: "h-[60vh]",
   };
 
   return (

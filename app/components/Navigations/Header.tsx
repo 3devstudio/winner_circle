@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import { PhoneIcon, MapPinIcon } from "@heroicons/react/24/solid";
 import NavLinks from "~/components/Navigations/Partials/NavLinks";
 import PropTypes from "prop-types";
+import useSlideUp from "~/hooks/useSlideUp";
 
 interface HeaderProps {
   className?: string;
 }
 
 export default function Header({ className }: HeaderProps) {
+  const [logoRef, logoVisible] = useSlideUp();
+
   const [scrollCount, setScrollCount] = useState(0);
   const [lastScrollY, setLastScrollY] = useState(0);
 
@@ -69,20 +72,17 @@ export default function Header({ className }: HeaderProps) {
         </div>
       </div>
       {/* Logo & NavLinks */}
-      <div
-        className="relative bg-secondary flex justify-between gap-4 w-full"
-      >
+      <div className="relative bg-secondary flex justify-between gap-4 w-full">
         {/* Logo */}
-        <div
-          className="absolute left-0 clip-angle-r-xl bg-accent px-12 py-8 lg:py-0 lg:pb-8 logo-container"
-        >
+        <div className="absolute left-0 clip-angle-r-xl bg-accent px-8 md:px-12 py-6 md:py-8 lg:py-0 lg:pb-8 logo-container">
           <a href="/">
             <img
+              ref={logoRef}
               src="/assets/logo.png"
               alt="Winner Circle Trucking Logo"
               className={`pr-8 md:pr-12 lg:pr-16 ${
-                isScrolled ? "h-14 md:h-20" : "h-16 md:h-24 lg:h-32"
-              }`}
+                isScrolled ? "h-14 md:h-20" : "h-20 md:h-24 lg:h-32"
+              } slide-up ${logoVisible ? "show" : ""}`}
             />
           </a>
         </div>

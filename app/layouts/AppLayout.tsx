@@ -27,7 +27,9 @@ export default function AppLayout() {
           <Scripts />
           <LiveReload />
         </main>
-        <Footer className="flex-none z-20" />
+        <Footer
+          className={`flex-none z-20`}
+        />
       </body>
     </html>
   );

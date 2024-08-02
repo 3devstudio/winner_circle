@@ -1,7 +1,7 @@
 // mobilenav.tsx
 import { Link, useLocation } from "@remix-run/react";
-import { XMarkIcon } from "@heroicons/react/20/solid";
-import Button from "../Buttons/Button";
+import { UserCircleIcon, XMarkIcon } from "@heroicons/react/20/solid";
+import Button from "~/components/Buttons/Button";
 
 export default function MobileNav({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
   const location = useLocation();
@@ -38,14 +38,14 @@ export default function MobileNav({ isOpen, onClose }: { isOpen: boolean, onClos
           <p className="pl-4">Home</p>
         </Link>
         <Link
-          to="/meet-the-team"
+          to="/meet-our-team"
           className={`${
-            location.pathname === "/meet-the-team"
+            location.pathname === "/meet-our-team"
               ? "border-l-2 border-primary text-primary"
               : "hover:border-l-2 hover:text-white"
           }`}
         >
-          <p className="pl-4">Meet the Team</p>
+          <p className="pl-4">Meet Our Team</p>
         </Link>
         <Link
           to="/our-services"
@@ -67,7 +67,7 @@ export default function MobileNav({ isOpen, onClose }: { isOpen: boolean, onClos
         >
           <p className="pl-4">Our Principles</p>
         </Link>
-        {/* <Link
+        <Link
           to="/photo-gallery"
           className={`${
             location.pathname === "/photo-gallery"
@@ -76,8 +76,18 @@ export default function MobileNav({ isOpen, onClose }: { isOpen: boolean, onClos
           }`}
         >
           <p className="pl-4">Photo Gallery</p>
-        </Link> */}
-        {/* <Link
+        </Link>
+        <Link
+          to="/submit-review"
+          className={`${
+            location.pathname === "/submit-review"
+              ? "border-l-2 border-primary text-primary"
+              : "hover:border-l-2 hover:text-white"
+          }`}
+        >
+          <p className="pl-4">Submit a Review</p>
+        </Link>
+        <Link
           to="/reviews"
           className={`${
             location.pathname === "/reviews"
@@ -86,7 +96,7 @@ export default function MobileNav({ isOpen, onClose }: { isOpen: boolean, onClos
           }`}
         >
           <p className="pl-4">Our Reviews</p>
-        </Link> */}
+        </Link>
         <Link
           to="/submit-waiver"
           className={`${
@@ -100,8 +110,10 @@ export default function MobileNav({ isOpen, onClose }: { isOpen: boolean, onClos
       </ul>
 
       <div className="absolute bottom-0 inset-x-0 p-4 flex flex-col gap-4 text-xl px-8">
-        <Button primary link="/quick-quote">Quick Quote</Button>
-        <Button secondary link="/login">Login</Button>
+        <Button secondary>Contact Us</Button>
+        <Button secondary>Quick Quote</Button>
+        <Button primary>Book Now</Button>
+        <Button tertiary>Login</Button>
       </div>
     </div>
   );

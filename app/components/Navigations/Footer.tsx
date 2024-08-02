@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 interface FooterProps {
   className?: string;
+  ref?: React.RefObject<HTMLDivElement>;
 }
 
 export default function Footer({ className }: FooterProps) {

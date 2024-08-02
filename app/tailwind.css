@@ -1,9 +1,9 @@
 @import url("https://unpkg.com/leaflet@1.7.1/dist/leaflet.css");
-@import './styles/breadcrumb.css';
+@import "./styles/breadcrumb.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 
 @keyframes fadeIn {
   from {
@@ -27,4 +27,13 @@
 
 .fade-in {
   animation: fadeIn 1s ease-in;
+}
+
+@layer utilities {
+  .slide-up {
+    @apply transform translate-y-10 opacity-0 transition-all duration-700;
+  }
+  .slide-up.show {
+    @apply translate-y-0 opacity-100;
+  }
 }
