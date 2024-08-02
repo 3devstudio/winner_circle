@@ -27,13 +27,14 @@ const FadeInImage: React.FC<FadeInImageProps> = ({ src, alt, className }) => {
       });
     }, options);
 
-    if (imgRef.current) {
-      observer.observe(imgRef.current);
+    const currentImgRef = imgRef.current;
+    if (currentImgRef) {
+      observer.observe(currentImgRef);
     }
 
     return () => {
-      if (imgRef.current) {
-        observer.unobserve(imgRef.current);
+      if (currentImgRef) {
+        observer.unobserve(currentImgRef);
       }
     };
   }, []);
@@ -44,7 +45,7 @@ const FadeInImage: React.FC<FadeInImageProps> = ({ src, alt, className }) => {
       src={src}
       alt={alt}
       className={`transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'} ${className || ''}`}
-      style={{ transitionProperty: 'opacity' }} // Add Tailwind transition classes
+      style={{ transitionProperty: 'opacity' }}
     />
   );
 };

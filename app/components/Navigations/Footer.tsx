@@ -119,6 +119,7 @@ export default function Footer({ className = "" }: FooterProps) {
           href="https://3devstudio.com/"
           className="hover:text-primary ml-1"
           target="_blank"
+          rel="noopener noreferrer"
         >
           3Dev Studio
         </a>

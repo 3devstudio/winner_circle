@@ -1,5 +1,3 @@
-import Header from "app/components/Navigations/Header";
-import Footer from "~/components/Navigations/Footer";
 import {
   Links,
   LiveReload,
@@ -8,6 +6,9 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+
+import Header from "app/components/Navigations/Header";
+import Footer from "~/components/Navigations/Footer";
 
 export default function AppLayout() {
   return (

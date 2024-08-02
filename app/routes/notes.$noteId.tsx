@@ -1,9 +1,8 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import {
   Form,
   isRouteErrorResponse,
-  useLoaderData,
   useRouteError,
 } from "@remix-run/react";
 import invariant from "tiny-invariant";
@@ -12,7 +11,7 @@ import invariant from "tiny-invariant";
 import { requireUserId } from "~/session.server";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
-  const userId = await requireUserId(request);
+  await requireUserId(request);
   invariant(params.noteId, "noteId not found");
 
   // const note = await getNote({ id: params.noteId, userId });
@@ -23,7 +22,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ params, request }: ActionFunctionArgs) => {
-  const userId = await requireUserId(request);
+  await requireUserId(request);
   invariant(params.noteId, "noteId not found");
 
   // await deleteNote({ id: params.noteId, userId });
@@ -32,7 +31,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
 };
 
 export default function NoteDetailsPage() {
-  const data = useLoaderData<typeof loader>();
+  // const data = useLoaderData<typeof loader>();
 
   return (
     <div>

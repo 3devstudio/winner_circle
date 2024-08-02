@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import Input from "../../Inputs/Input";
-import Button from "../../Buttons/Button";
-import Modal from "../../Modals/Modal";
 import {
   TrashIcon,
   PencilIcon,
   PlusCircleIcon,
 } from "@heroicons/react/24/outline";
+import React, { useState, useEffect } from "react";
+import Button from "../../Buttons/Button";
+import Input from "../../Inputs/Input";
+import Modal from "../../Modals/Modal";
 
 interface Horse {
   name: string;
@@ -104,6 +104,7 @@ const AddHorse: React.FC<AddHorseProps> = ({ onAddHorse, horses: initialHorses }
             <img
               src="/assets/running-horses.avif"
               className="w-96 opacity-50 mx-auto"
+              alt=""
             />
             <p className="text-stone-600">
               Add your horses that need transportation.

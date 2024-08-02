@@ -1,6 +1,6 @@
+import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import PropTypes from "prop-types";
 
 interface ModalProps {
   show: boolean;
@@ -52,6 +52,9 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, children }) => {
           show ? "opacity-50" : "opacity-0"
         }`}
         onClick={handleBackdropClick}
+        role="button"
+        tabIndex={0}
+        onKeyPress={(e) => e.key === 'Enter' && handleBackdropClick(e as any)}
       ></div>
       <div
         className={`bg-white rounded-lg shadow-lg w-full max-w-3xl mx-auto p-6 z-10 transform transition-transform duration-300 ${

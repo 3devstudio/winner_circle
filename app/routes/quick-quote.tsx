@@ -1,9 +1,9 @@
 import type { MetaFunction } from "@remix-run/node";
 import { useState, useEffect } from "react";
 import BackgroundImage from "~/components/Blocks/BackgroundImage";
+import Button from "~/components/Buttons/Button";
 import Input from "~/components/Inputs/Input";
 import Textarea from "~/components/Inputs/Textarea";
-import Button from "~/components/Buttons/Button";
 import AddHorse from "~/components/Pages/Home/AddHorse";
 import useSlideUp from "~/hooks/useSlideUp";
 
@@ -30,11 +30,8 @@ export default function Contact() {
     termsChecked: false,
   });
 
-  const [titleRef, titleVisible] = useSlideUp();
-  const [formRef, formVisible] = useSlideUp();
-
+  const [formRef, formVisible] = useSlideUp<HTMLDivElement>();
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
-  const [step, setStep] = useState(1);
   const [horses, setHorses] = useState<Horse[]>([]);
 
   const handleInputChange = (field: string, value: string) => {
@@ -102,24 +99,18 @@ export default function Contact() {
 
   useEffect(() => {
     checkIfAllFieldsAreFilled(formData, horses);
-  }, [formData, horses]);
-
-  const handleStepChange = (newStep: number) => {
-    setStep(newStep);
-    checkIfAllFieldsAreFilled(formData, horses);
-  };
+  }, [formData, horses, checkIfAllFieldsAreFilled]);
 
   return (
     <div className="w-full h-full">
       <BackgroundImage
         image="/assets/truck_and_trailer.jpg"
         size="sm"
-        children={
-          <div className="text-white text-center">
-            <h1 className="text-4xl md:text-6xl font-semibold">Get a Quote</h1>
-          </div>
-        }
-      />
+      >
+        <div className="text-white text-center">
+          <h1 className="text-4xl md:text-6xl font-semibold">Get a Quote</h1>
+        </div>
+      </BackgroundImage>
       <div className="w-full max-w-6xl mx-auto flex flex-col gap-4 md:gap-8 p-4 md:p-8">
         <h1 className="text-xl md:text-2xl font-semibold text-stone-800">
           Get a free, no obligation quote today!

@@ -1,5 +1,3 @@
-// path: ~/components/ContactCard.tsx
-
 import React from "react";
 
 interface ContactCardProps {
@@ -16,15 +14,15 @@ const ContactCard: React.FC<ContactCardProps> = ({ imageUrl, name, phone, nameWi
     <div className="relative w-full h-[50rem] group">
       <div
         style={{ backgroundImage: `url('${imageUrl}')` }}
-        className="relative w-full h-full bg-center bg-norepeat bg-cover"
+        className="relative w-full h-full bg-center bg-no-repeat bg-cover"
       >
-        {hoverText && (
+        {hoverText ? (
           <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition duration-300 ease-in-out flex justify-center items-center opacity-0 group-hover:opacity-100">
             <span className="text-white text-lg md:text-xl lg:text-2xl font-semibold">
               {hoverText}
             </span>
           </div>
-        )}
+        ) : null}
       </div>
       <div className="absolute top-0 inset-x-0 h-14 w-full">
         <div className="relative flex w-full h-full bg-secondary">

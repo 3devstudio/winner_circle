@@ -1,5 +1,5 @@
-import React from "react";
 import type { MetaFunction } from "@remix-run/node";
+import React from "react";
 import BackgroundImage from "~/components/Blocks/BackgroundImage";
 import Principles from "~/components/Pages/Home/Principles";
 import QuickQuoteBanner from "~/components/Pages/Home/QuickQuoteBanner";
@@ -8,9 +8,9 @@ import useSlideUp from "~/hooks/useSlideUp";
 export const meta: MetaFunction = () => [{ title: "Our Principles" }];
 
 const OurPrinciples: React.FC = () => {
-  const [h1Ref, h1Visible] = useSlideUp();
-  const [h2Ref, h2Visible] = useSlideUp();
-  const [pRef, pVisible] = useSlideUp();
+  const [h1Ref, h1Visible] = useSlideUp<HTMLDivElement>();
+  const [h2Ref, h2Visible] = useSlideUp<HTMLDivElement>();
+  const [pRef, pVisible] = useSlideUp<HTMLDivElement>();
 
   return (
     <div>
@@ -32,7 +32,7 @@ const OurPrinciples: React.FC = () => {
                 ref={h2Ref}
                 className={`text-4xl font-semibold text-stone-800 w-full slide-up ${h2Visible ? "show" : ""}`}
               >
-                Your Horse's <span className="text-primary font-semibold">Safe Passage</span>
+                Your Horse&apos;s <span className="text-primary font-semibold">Safe Passage</span>
               </h2>
             </div>
             <div className="w-full md:w-1/2 my-auto">
@@ -41,7 +41,7 @@ const OurPrinciples: React.FC = () => {
                 className={`text-stone-500 w-full slide-up ${pVisible ? "show" : ""}`}
               >
                 Our purpose is to bring your horse home with personalized
-                service and the utmost safety. Whether it's Race or Ranch, Old
+                service and the utmost safety. Whether it&apos;s Race or Ranch, Old
                 Friend or New Ride, at Winner Circle Transport, we know that
                 your horse represents the thrill of racing, the anticipation of
                 competition, and the comfort of companionship! We love bringing

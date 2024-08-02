@@ -1,13 +1,14 @@
 import { CheckIcon } from "@heroicons/react/20/solid";
+
 import useSlideUp from "~/hooks/useSlideUp";
 
 const Principles = () => {
-  const [profTitleRef, profTitleVisible] = useSlideUp();
-  const [profPRef, profPVisible] = useSlideUp();
-  const [relTitleRef, relTitleVisible] = useSlideUp();
-  const [relPRef, relPVisible] = useSlideUp();
-  const [expTitleRef, expTitleVisible] = useSlideUp();
-  const [expPRef, expPVisible] = useSlideUp();
+  const [profTitleRef, profTitleVisible] = useSlideUp<HTMLDivElement>();
+  const [profPRef, profPVisible] = useSlideUp<HTMLDivElement>();
+  const [relTitleRef, relTitleVisible] = useSlideUp<HTMLDivElement>();
+  const [relPRef, relPVisible] = useSlideUp<HTMLDivElement>();
+  const [expTitleRef, expTitleVisible] = useSlideUp<HTMLDivElement>();
+  const [expPRef, expPVisible] = useSlideUp<HTMLDivElement>();
 
   return (
     <div className="flex flex-col lg:flex-row lg:justify-around">

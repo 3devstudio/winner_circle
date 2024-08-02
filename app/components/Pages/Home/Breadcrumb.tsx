@@ -1,7 +1,5 @@
-// path: app/components/Breadcrumb.tsx
-
-import React from "react";
 import { CheckIcon } from "@heroicons/react/24/solid";
+import React from "react";
 import "app/styles/breadcrumb.css";
 
 interface BreadcrumbProps {
@@ -24,6 +22,9 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
           key={index}
           className={`breadcrumb-item ${step === index + 1 ? "active" : ""}`}
           onClick={() => setStep(index + 1)}
+          role="button"
+          tabIndex={0}
+          onKeyPress={(e) => e.key === 'Enter' && setStep(index + 1)}
         >
           <div className="breadcrumb-title text-xs md:text-sm whitespace-nowrap items-center gap-2">
             <div>

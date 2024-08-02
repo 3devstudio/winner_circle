@@ -1,18 +1,18 @@
-import React from "react";
 import type { MetaFunction } from "@remix-run/node";
-import ImageWithText from "~/components/Blocks/ImageWithText";
+import React from "react";
 import ContactCard from "~/components/Blocks/ContactCard";
+import BackgroundImage from "~/components/Blocks/BackgroundImage";
+import ImageWithText from "~/components/Blocks/ImageWithText";
 import QuickQuoteBanner from "~/components/Pages/Home/QuickQuoteBanner";
 import useSlideUp from "~/hooks/useSlideUp";
-import BackgroundImage from "~/components/Blocks/BackgroundImage";
 
 export const meta: MetaFunction = () => [{ title: "Meet Our Team" }];
 
 const MeetOurTeam: React.FC = () => {
-  const [titleRef, titleVisible] = useSlideUp();
-  const [imgRef, imgVisible] = useSlideUp();
-  const [card1Ref, card1Visible] = useSlideUp();
-  const [card2Ref, card2Visible] = useSlideUp();
+  const [titleRef, titleVisible] = useSlideUp<HTMLDivElement>();
+  const [imgRef, imgVisible] = useSlideUp<HTMLDivElement>();
+  const [card1Ref, card1Visible] = useSlideUp<HTMLDivElement>();
+  const [card2Ref, card2Visible] = useSlideUp<HTMLDivElement>();
 
   return (
     <div>
