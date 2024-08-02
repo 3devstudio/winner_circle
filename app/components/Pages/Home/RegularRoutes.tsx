@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import SectionTitle from "../../Text/SectionTitle";
 import Button from "../../Buttons/Button";
+import SectionTitle from "../../Text/SectionTitle";
 import { MapIcon, ListBulletIcon } from "@heroicons/react/24/outline";
 import type { LatLngTuple } from "leaflet";
 
@@ -40,7 +40,7 @@ export default function RegularRoutes() {
   const [ReactLeaflet, setReactLeaflet] = useState<
     typeof import("react-leaflet") | null
   >(null);
-  const [customIcon, setCustomIcon] = useState<any>(null);
+  const [customIcon, setCustomIcon] = useState<import("leaflet").Icon | null>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -87,7 +87,7 @@ export default function RegularRoutes() {
     if (Leaflet && ReactLeaflet && customIcon) {
       setView(view);
     }
-  }, [Leaflet, ReactLeaflet, customIcon]);
+  }, [Leaflet, ReactLeaflet, customIcon, view]);
 
   if (!ReactLeaflet || !Leaflet || !customIcon) {
     return <div>Loading map...</div>;

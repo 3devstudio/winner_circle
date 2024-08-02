@@ -1,8 +1,6 @@
-// path: src/components/Select.tsx
-
-import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface SelectProps {
   options: string[];
@@ -32,7 +30,7 @@ const Select: React.FC<SelectProps> = ({ options, onSelect, placeholder, label, 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [selectRef]);
+  }, []);
 
   const handleSelect = (option: string) => {
     setSelectedOption(option);
@@ -42,11 +40,11 @@ const Select: React.FC<SelectProps> = ({ options, onSelect, placeholder, label, 
 
   return (
     <div ref={selectRef} className="flex flex-col relative w-full">
-      {label && (
+      {label ? (
         <label className="mb-1 text-sm text-gray-700">
-          {label} {required && <span className="text-red-500">*</span>}
+          {label} {required ? <span className="text-red-500">*</span> : null}
         </label>
-      )}
+      ) : null}
       <div className="relative">
         <input
           type="text"
@@ -65,19 +63,22 @@ const Select: React.FC<SelectProps> = ({ options, onSelect, placeholder, label, 
           )}
         </div>
       </div>
-      {isOpen && (
+      {isOpen ? (
         <ul className="absolute top-16 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-[20rem] overflow-auto">
           {options.map((option, index) => (
             <li
               key={index}
               onClick={() => handleSelect(option)}
+              onKeyPress={(e) => e.key === 'Enter' && handleSelect(option)}
               className="px-4 py-2 cursor-pointer hover:bg-gray-100 transition text-stone-600"
+              role="button"
+              tabIndex={0}
             >
               {option}
             </li>
           ))}
         </ul>
-      )}
+      ) : null}
     </div>
   );
 };

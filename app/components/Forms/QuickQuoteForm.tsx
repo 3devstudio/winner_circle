@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+
+import useSlideUp from "~/hooks/useSlideUp";
+
+import Button from "../Buttons/Button";
 import Input from "../Inputs/Input";
 import Textarea from "../Inputs/Textarea";
-import Button from "../Buttons/Button";
-import Breadcrumb from "../Pages/Home/Breadcrumb";
 import AddHorse from "../Pages/Home/AddHorse";
-import useSlideUp from "~/hooks/useSlideUp";
+import Breadcrumb from "../Pages/Home/Breadcrumb";
 
 interface Horse {
   name: string;
@@ -14,7 +16,7 @@ interface Horse {
   height: string;
 }
 
-const QuickQuoteForm = () => {
+const QuickQuoteForm: React.FC = () => {
   const [formData, setFormData] = useState({
     date: "",
     location: "",
@@ -27,14 +29,17 @@ const QuickQuoteForm = () => {
     termsChecked: false,
   });
 
-  const [h1Ref, h1InView] = useSlideUp();
-  const [breadcrumRef, breadcrumbInView] = useSlideUp();
-  const [formRef, formInView] = useSlideUp();
+  const [h1Ref, h1InView] = useSlideUp<HTMLDivElement>();
+  const [breadcrumRef, breadcrumbInView] = useSlideUp<HTMLDivElement>();
+  const [formRef, formInView] = useSlideUp<HTMLDivElement>();
 
   const [isNextEnabled, setIsNextEnabled] = useState(false);
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
   const [step, setStep] = useState(1);
-  const [completedSteps, setCompletedSteps] = useState<boolean[]>([false, false]);
+  const [completedSteps, setCompletedSteps] = useState<boolean[]>([
+    false,
+    false,
+  ]);
   const [horses, setHorses] = useState<Horse[]>([]);
 
   const handleInputChange = (field: string, value: string) => {
@@ -42,7 +47,10 @@ const QuickQuoteForm = () => {
   };
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prevData) => ({ ...prevData, termsChecked: e.target.checked }));
+    setFormData((prevData) => ({
+      ...prevData,
+      termsChecked: e.target.checked,
+    }));
   };
 
   const areTransportFieldsFilled = (data: typeof formData) => {
@@ -83,26 +91,29 @@ const QuickQuoteForm = () => {
     );
   };
 
-  const checkIfAllFieldsAreFilled = (data: typeof formData, horses: Horse[]) => {
-    const contactFieldsFilled = areContactFieldsFilled(data);
-    const transportFieldsFilled = areTransportFieldsFilled(data);
-    const horsesFilled = areHorsesFilled(horses);
+  const checkIfAllFieldsAreFilled = useCallback(
+    (data: typeof formData, horses: Horse[]) => {
+      const contactFieldsFilled = areContactFieldsFilled(data);
+      const transportFieldsFilled = areTransportFieldsFilled(data);
+      const horsesFilled = areHorsesFilled(horses);
 
-    const step1Completed = transportFieldsFilled && horsesFilled;
-    const step2Completed = contactFieldsFilled;
+      const step1Completed = transportFieldsFilled && horsesFilled;
+      const step2Completed = contactFieldsFilled;
 
-    setCompletedSteps([step1Completed, step2Completed]);
+      setCompletedSteps([step1Completed, step2Completed]);
 
-    if (step === 1) {
-      setIsNextEnabled(step1Completed);
-    }
+      if (step === 1) {
+        setIsNextEnabled(step1Completed);
+      }
 
-    setIsSubmitEnabled(step1Completed && step2Completed);
-  };
+      setIsSubmitEnabled(step1Completed && step2Completed);
+    },
+    [step],
+  );
 
   useEffect(() => {
     checkIfAllFieldsAreFilled(formData, horses);
-  }, [formData, horses]);
+  }, [formData, horses, checkIfAllFieldsAreFilled]);
 
   const handleStepChange = (newStep: number) => {
     setStep(newStep);
@@ -132,7 +143,9 @@ const QuickQuoteForm = () => {
         <div className="w-full lg:w-1/2 min-h-[20rem] lg:min-h-[40rem] flex justify-center items-center">
           <h1
             ref={h1Ref}
-            className={`h-fit md:w-5/6 text-3xl md:text-4xl lg:text-4xl xl:text-6xl text-stone-100 font-semibold px-8 pb-8 pt-16 md:mt-0 slide-up ${h1InView ? "show" : ""}`}
+            className={`h-fit md:w-5/6 text-3xl md:text-4xl lg:text-4xl xl:text-6xl text-stone-100 font-semibold px-8 pb-8 pt-16 md:mt-0 slide-up ${
+              h1InView ? "show" : ""
+            }`}
           >
             Reliable Equine Transport, Every Mile of the Way.
           </h1>
@@ -154,7 +167,7 @@ const QuickQuoteForm = () => {
               ref={formRef}
               className={`slide-up ${formInView ? "show" : ""}`}
             >
-              {step === 1 && (
+              {step === 1 ? (
                 <>
                   {/* Section 2: Horse Transport Details */}
                   <div className="mb-4">
@@ -218,8 +231,8 @@ const QuickQuoteForm = () => {
                     </div>
                   </div>
                 </>
-              )}
-              {step === 2 && (
+              ) : null}
+              {step === 2 ? (
                 <>
                   {/* Section 1: Contact Information */}
                   <div className="mb-4">
@@ -282,8 +295,12 @@ const QuickQuoteForm = () => {
                           onChange={handleCheckboxChange}
                           className="form-checkbox h-4 w-4 text-primary rounded-sm border-stone-300 focus:ring-2 focus:ring-primary"
                         />
-                        <label htmlFor="terms" className="text-stone-600 text-sm">
-                          I acknowledge a current Coggins and Health Certificate will be completed before pickup.
+                        <label
+                          htmlFor="terms"
+                          className="text-stone-600 text-sm"
+                        >
+                          I acknowledge a current Coggins and Health Certificate
+                          will be completed before pickup.
                         </label>
                       </div>
                     </div>
@@ -305,7 +322,7 @@ const QuickQuoteForm = () => {
                     />
                   </div>
                 </>
-              )}
+              ) : null}
             </div>
           </div>
         </div>

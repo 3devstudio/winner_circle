@@ -1,13 +1,15 @@
 import type { MetaFunction } from "@remix-run/node";
+
 // Components
 import QuickQuoteForm from "~/components/Forms/QuickQuoteForm";
-import Principles from "../components/Pages/Home/Principles";
-import Services from "../components/Pages/Home/Services";
-import OurEquipment from "../components/Pages/Home/OurEquipment";
+// import OurEquipment from "../components/Pages/Home/OurEquipment";
 import RegularRoutes from "../components/Pages/Home/RegularRoutes";
 import QuickQuoteBanner from "../components/Pages/Home/QuickQuoteBanner";
+import Principles from "../components/Pages/Home/Principles";
+import Services from "../components/Pages/Home/Services";
 import SectionTitle from "../components/Text/SectionTitle";
 import useSlideUp from "../hooks/useSlideUp";
+
 // CSS
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -15,11 +17,11 @@ import "slick-carousel/slick/slick-theme.css";
 export const meta: MetaFunction = () => [{ title: "Winner Circle" }];
 
 export default function Index() {
-  const [principlesTitleRef, principlesTitleVisible] = useSlideUp();
-  const [principlesRef, principlesVisible] = useSlideUp();
-  const [servicesTitleRef, servicesTitleVisible] = useSlideUp();
-  const [regularRoutesRef, regularRoutesVisible] = useSlideUp();
-  const [quickQuoteRef, quickQuoteVisible] = useSlideUp();
+  const [principlesTitleRef, principlesTitleVisible] = useSlideUp<HTMLDivElement>();
+  const [principlesRef, principlesVisible] = useSlideUp<HTMLDivElement>();
+  const [servicesTitleRef, servicesTitleVisible] = useSlideUp<HTMLDivElement>();
+  const [regularRoutesRef, regularRoutesVisible] = useSlideUp<HTMLDivElement>();
+  const [quickQuoteRef, quickQuoteVisible] = useSlideUp<HTMLDivElement>();
 
   return (
     <div className="flex flex-col gap-12 md:gap-20 justify-center">
@@ -39,15 +41,11 @@ export default function Index() {
         <div ref={servicesTitleRef} className={`p-4 slide-up ${servicesTitleVisible ? 'show' : ''}`}>
           <SectionTitle
             title="Our Services"
-            description="Traveling the lower 48 states, we provide single hauls, large volume transports, Charters to shows, moving your farm - we specialize in meeting your needs! Whether you're needing a single stall for an experienced traveler, a
-          box stall for a special traveler, or room for a mare and baby, we
-          provide a variety of stall configurations to meet your needs. We
-          provide:"
+            description="Traveling the lower 48 states, we provide single hauls, large volume transports, Charters to shows, moving your farm - we specialize in meeting your needs! Whether you're needing a single stall for an experienced traveler, a box stall for a special traveler, or room for a mare and baby, we provide a variety of stall configurations to meet your needs. We provide:"
           />
         </div>
         <Services />
       </div>
-      {/* <OurEquipment /> */}
       <div
         ref={regularRoutesRef}
         className={`slide-up ${regularRoutesVisible ? 'show' : ''}`}

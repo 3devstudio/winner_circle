@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import { PhoneIcon, MapPinIcon } from "@heroicons/react/24/solid";
+import React, { useEffect, useState } from "react";
 import NavLinks from "~/components/Navigations/Partials/NavLinks";
 import useSlideUp from "~/hooks/useSlideUp";
 
@@ -8,7 +8,7 @@ interface HeaderProps {
 }
 
 export default function Header({ className = "" }: HeaderProps) {
-  const [logoRef, logoVisible] = useSlideUp();
+  const [logoRef, logoVisible] = useSlideUp<HTMLImageElement>();
   const [scrollCount, setScrollCount] = useState(0);
   const [lastScrollY, setLastScrollY] = useState(0);
 

@@ -1,7 +1,5 @@
-// path: src/components/Input.tsx
-
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 
 interface InputProps {
   placeholder: string;
@@ -15,11 +13,11 @@ interface InputProps {
 const Input: React.FC<InputProps> = ({ placeholder, label, type, required = false, onChange, value }) => {
   return (
     <div className="flex flex-col">
-      {label && (
+      {label ? (
         <label className="mb-1 text-sm text-gray-700">
-          {label} {required && <span className="text-red-500">*</span>}
+          {label} {required ? <span className="text-red-500">*</span> : null}
         </label>
-      )}
+      ) : null}
       <input
         placeholder={placeholder}
         type={type || 'text'}

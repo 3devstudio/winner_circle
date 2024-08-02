@@ -1,19 +1,19 @@
-import React from "react";
 import { Link } from "@remix-run/react";
+import React from "react";
 
-type ButtonProps = {
+interface ButtonProps {
   primary?: boolean;
   secondary?: boolean;
   tertiary?: boolean;
   onClick?: () => void;
   link?: string;
-  icon?: React.ComponentType<{ className?: string }>; // Updated to accept any React component
+  icon?: React.ComponentType<{ className?: string }>;
   active?: boolean;
   text?: string;
   disabled?: boolean;
   className?: string;
   children?: React.ReactNode;
-};
+}
 
 const Button: React.FC<ButtonProps> = ({
   primary,
@@ -37,24 +37,26 @@ const Button: React.FC<ButtonProps> = ({
     ${className ? className : ""}
   `;
 
-  const content = (
-    <>
-      {Icon && <Icon className="inline-block mr-2 h-5 w-5" />}
-      {text || children}
-    </>
-  );
+  const renderContent = () => {
+    return (
+      <>
+        {Icon && <Icon className="inline-block mr-2 h-5 w-5" />}
+        {text || children}
+      </>
+    );
+  };
 
   if (link) {
     return (
       <Link to={link} className={buttonClasses}>
-        {content}
+        {renderContent()}
       </Link>
     );
   }
 
   return (
     <button className={buttonClasses} onClick={onClick} disabled={disabled}>
-      {content}
+      {renderContent()}
     </button>
   );
 };

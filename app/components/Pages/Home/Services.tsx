@@ -1,11 +1,12 @@
-import InfoCard from "../../Blocks/InfoCard";
 import useSlideUp from "~/hooks/useSlideUp";
 
+import InfoCard from "../../Blocks/InfoCard";
+
 const Services = () => {
-  const [card1Ref, card1Visible] = useSlideUp();
-  const [card2Ref, card2Visible] = useSlideUp();
-  const [card3Ref, card3Visible] = useSlideUp();
-  const [card4Ref, card4Visible] = useSlideUp();
+  const [card1Ref, card1Visible] = useSlideUp<HTMLDivElement>();
+  const [card2Ref, card2Visible] = useSlideUp<HTMLDivElement>();
+  const [card3Ref, card3Visible] = useSlideUp<HTMLDivElement>();
+  const [card4Ref, card4Visible] = useSlideUp<HTMLDivElement>();
 
   return (
     <div className="bg-secondary/25 p-4 md:p-8">

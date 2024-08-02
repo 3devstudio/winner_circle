@@ -1,4 +1,3 @@
-// root.tsx
 import { cssBundleHref } from "@remix-run/css-bundle";
 import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
@@ -12,9 +11,9 @@ import {
   useLocation,
 } from "@remix-run/react";
 
+import AppLayout from "~/layouts/AppLayout";
 import { getUser } from "~/session.server";
 import stylesheet from "~/tailwind.css";
-import AppLayout from "~/layouts/AppLayout";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
