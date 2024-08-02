@@ -1,12 +1,11 @@
 import { Link, useLocation } from "@remix-run/react";
-import PropTypes from "prop-types";
 
 interface FooterProps {
   className?: string;
   ref?: React.RefObject<HTMLDivElement>;
 }
 
-export default function Footer({ className }: FooterProps) {
+export default function Footer({ className = "" }: FooterProps) {
   const location = useLocation();
 
   return (
@@ -127,11 +126,3 @@ export default function Footer({ className }: FooterProps) {
     </footer>
   );
 }
-
-Footer.propTypes = {
-  className: PropTypes.string,
-};
-
-Footer.defaultProps = {
-  className: "",
-};
