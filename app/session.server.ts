@@ -35,13 +35,15 @@ export async function getUser(request: Request) {
   if (userId === undefined) return null;
 
   const user = await getUserById(userId);
+
   if (user) {
     console.log("Fetched user:", user); // Debug output
-    return {
-      id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-    };
+    // return {
+    //   id: user.id,
+    //   firstName: user.firstName,
+    //   lastName: user.lastName,
+    // };
+    return user;
   }
 
   throw await logout(request);
