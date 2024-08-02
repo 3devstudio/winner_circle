@@ -1,8 +1,8 @@
 // NOTE: We should probably consider storing location data in the database
 // incase routes change or we need to add more locations
 import { useEffect, useState } from "react";
-import SectionTitle from "./SectionTitle";
-import Button from "./Button";
+import SectionTitle from "../../Text/SectionTitle";
+import Button from "../../Buttons/Button";
 import { MapIcon, ListBulletIcon } from "@heroicons/react/24/outline";
 
 const locations = [

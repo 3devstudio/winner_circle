@@ -1,6 +1,6 @@
 // components/InfoCard.tsx
 import React from 'react';
-import Button from './Button';
+import Button from '../Buttons/Button';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 
 interface InfoCardProps {
@@ -9,11 +9,12 @@ interface InfoCardProps {
   title: string;
   description?: string;
   link?: string;
+  className?: string;
 }
 
-const InfoCard: React.FC<InfoCardProps> = ({ imageSrc, imageAlt, title, description, link }) => {
+const InfoCard: React.FC<InfoCardProps> = ({ imageSrc, imageAlt, title, description, link, className }) => {
   return (
-    <div className="flex flex-col md:flex-row bg-white rounded-lg w-full">
+    <div className={`flex flex-col md:flex-row bg-white rounded-lg w-full ${className}`}>
       {imageSrc && (
         <div className="w-full md:w-2/5 h-full max-h-[20rem]">
           <img

@@ -1,4 +1,4 @@
-import Button from "./Button";
+import Button from "../../Buttons/Button";
 
 const Hero = () => {
   return (
@@ -15,14 +15,16 @@ const Hero = () => {
           Whether it’s Race or Ranch, Old Friend or New Ride, at Winner Circle
           Horse Transport, we know that your horse represents the thrill of
           racing, the anticipation of competition and the comfort of
-          companionship!
+          companionship. Get a free, no obligation quote today!
         </p>
-        <div className="flex flex-col md:flex-row items-center gap-4 justify-center text-sm w-full">
-          <div className="my-auto">
-            <Button secondary text="Quick Quote" />
-          </div>
-          <div className="my-auto">
-            <Button primary text="Book Now" />
+        <div className="flex justify-center text-sm w-full">
+          <div className="w-fit mt-4">
+            <Button
+              primary
+              text="Quick Quote"
+              link="/quick-quote"
+              className="px-16 py-4 text-lg"
+            />
           </div>
         </div>
       </div>

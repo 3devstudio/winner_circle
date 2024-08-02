@@ -3,7 +3,7 @@ import { Link, useLoaderData, Form } from "@remix-run/react";
 import { UserCircleIcon, ArrowLeftOnRectangleIcon } from "@heroicons/react/20/solid";
 import { getUser } from "~/session.server";
 import type { LoaderFunction } from "@remix-run/node";
-import Dropdown from "~/components/Dropdown";
+import Dropdown from "~/components/Dropdowns/Dropdown";
 
 // Fetch user data in loader
 export const loader: LoaderFunction = async ({ request }) => {

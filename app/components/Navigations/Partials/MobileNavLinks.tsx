@@ -1,7 +1,7 @@
 // mobilenav.tsx
 import { Link, useLocation } from "@remix-run/react";
 import { UserCircleIcon, XMarkIcon } from "@heroicons/react/20/solid";
-import Button from "./Button";
+import Button from "~/components/Buttons/Button";
 
 export default function MobileNav({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
   const location = useLocation();
@@ -38,14 +38,34 @@ export default function MobileNav({ isOpen, onClose }: { isOpen: boolean, onClos
           <p className="pl-4">Home</p>
         </Link>
         <Link
-          to="/about"
+          to="/meet-our-team"
           className={`${
-            location.pathname === "/about"
+            location.pathname === "/meet-our-team"
               ? "border-l-2 border-primary text-primary"
               : "hover:border-l-2 hover:text-white"
           }`}
         >
-          <p className="pl-4">About</p>
+          <p className="pl-4">Meet Our Team</p>
+        </Link>
+        <Link
+          to="/our-services"
+          className={`${
+            location.pathname === "/our-services"
+              ? "border-l-2 border-primary text-primary"
+              : "hover:border-l-2 hover:text-white"
+          }`}
+        >
+          <p className="pl-4">Our Services</p>
+        </Link>
+        <Link
+          to="/our-principles"
+          className={`${
+            location.pathname === "/our-principles"
+              ? "border-l-2 border-primary text-primary"
+              : "hover:border-l-2 hover:text-white"
+          }`}
+        >
+          <p className="pl-4">Our Principles</p>
         </Link>
         <Link
           to="/photo-gallery"
