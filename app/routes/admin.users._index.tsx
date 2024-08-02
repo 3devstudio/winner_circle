@@ -1,12 +1,18 @@
-import { Link } from "@remix-run/react";
+import type { MetaFunction } from "@remix-run/node";
 
-export default function UserIndexPage() {
+import { requireUser } from "../session.server";
+
+export const meta: MetaFunction = () => [{ title: "Users | Admin Portal" }];
+
+export async function loader({ request }: { request: Request }) {
+  await requireUser(request);
+  return {};
+}
+
+export default function AdminUsers() {
   return (
-    <p>
-      No user selected. Select a user on the left, or{" "}
-      <Link to="new-user" className="text-blue-500 underline">
-        add a new user.
-      </Link>
-    </p>
-  );
+    <div>
+
+    </div>
+  )
 }

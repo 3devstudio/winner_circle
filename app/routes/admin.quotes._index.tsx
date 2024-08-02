@@ -1,9 +1,18 @@
-// import { Link } from "@remix-run/react";
+import type { MetaFunction } from "@remix-run/node";
 
-export default function QuoteIndexPage() {
+import { requireUser } from "../session.server";
+
+export const meta: MetaFunction = () => [{ title: "Quotes | Admin Portal" }];
+
+export async function loader({ request }: { request: Request }) {
+  await requireUser(request);
+  return {};
+}
+
+export default function AdminQuotes() {
   return (
-    <p>
-      No quote selected. Select a quote on the left
-    </p>
-  );
+    <div>
+
+    </div>
+  )
 }

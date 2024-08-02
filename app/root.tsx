@@ -8,10 +8,12 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
   useLocation,
 } from "@remix-run/react";
 
 import AppLayout from "~/layouts/AppLayout";
+import AdminLayout from "~/layouts/AdminLayout";
 import { getUser } from "~/session.server";
 import stylesheet from "~/tailwind.css";
 
@@ -21,15 +23,35 @@ export const links: LinksFunction = () => [
 ];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  return json({ user: await getUser(request) });
+  const user = await getUser(request);
+  return json({ user });
 };
 
 export default function App() {
+  const { user } = useLoaderData<{ user: ReturnType<typeof getUser> }>();
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
   const areAdminPages = location.pathname.startsWith("/admin");
 
-  return isLoginPage || areAdminPages ? (
+  const Layout = () => {
+    if (isLoginPage) {
+      return <Outlet />;
+    }
+    if (areAdminPages) {
+      return (
+        <AdminLayout>
+          <Outlet />
+        </AdminLayout>
+      );
+    }
+    return (
+      <AppLayout>
+        <Outlet />
+      </AppLayout>
+    );
+  };
+
+  return (
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
@@ -39,13 +61,11 @@ export default function App() {
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
       </head>
       <body>
-        <Outlet />
+        <Layout />
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
       </body>
     </html>
-  ) : (
-    <AppLayout />
   );
 }

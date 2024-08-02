@@ -1,9 +1,18 @@
-// import { Link } from "@remix-run/react";
+import type { MetaFunction } from "@remix-run/node";
 
-export default function ReviewIndexPage() {
+import { requireUser } from "../session.server";
+
+export const meta: MetaFunction = () => [{ title: "Reviews | Admin Portal" }];
+
+export async function loader({ request }: { request: Request }) {
+  await requireUser(request);
+  return {};
+}
+
+export default function AdminReviews() {
   return (
-    <p>
-      No review selected. Select a review on the left
-    </p>
-  );
+    <div>
+
+    </div>
+  )
 }

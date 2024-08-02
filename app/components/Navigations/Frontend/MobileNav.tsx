@@ -1,6 +1,6 @@
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { Link, useLocation } from "@remix-run/react";
-import Button from "../Buttons/Button";
+import Button from "../../Buttons/Button";
 
 export default function MobileNav({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
   const location = useLocation();

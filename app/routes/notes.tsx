@@ -1,18 +1,18 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { Form, Link, Outlet, useLoaderData } from "@remix-run/react";
-
-// import { getNoteListItems } from "~/models/note.server";
 import { requireUserId } from "~/session.server";
 import { useUser } from "~/utils";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  await requireUserId(request);
+  const userId = await requireUserId(request);
   // const noteListItems = await getNoteListItems({ userId });
-  // return json({ noteListItems });
+  return json({ noteListItems: [] });
 };
 
 export default function NotesPage() {
   const user = useUser();
+  const data = useLoaderData<{ noteListItems: Array<{ id: string; title: string }> }>();
 
   return (
     <div className="flex h-full min-h-screen flex-col">
@@ -32,7 +32,7 @@ export default function NotesPage() {
       </header>
 
       <main className="flex h-full bg-white">
-        {/* <div className="h-full w-80 border-r bg-gray-50">
+        <div className="h-full w-80 border-r bg-gray-50">
           <Link to="new" className="block p-4 text-xl text-blue-500">
             + New Note
           </Link>
@@ -45,19 +45,19 @@ export default function NotesPage() {
             <ol>
               {data.noteListItems.map((note) => (
                 <li key={note.id}>
-                  <NavLink
+                  {/* <NavLink
                     className={({ isActive }) =>
                       `block border-b p-4 text-xl ${isActive ? "bg-white" : ""}`
                     }
                     to={note.id}
                   >
                     📝 {note.title}
-                  </NavLink>
+                  </NavLink> */}
                 </li>
               ))}
             </ol>
           )}
-        </div> */}
+        </div>
 
         <div className="flex-1 p-6">
           <Outlet />
