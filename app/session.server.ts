@@ -27,18 +27,21 @@ export async function getSession(request: Request) {
 export async function getUserId(request: Request): Promise<User["id"] | undefined> {
   const session = await getSession(request);
   const userId = session.get(USER_SESSION_KEY);
+  
   return userId;
 }
 
 export async function getUser(request: Request) {
   const userId = await getUserId(request);
-  if (userId === undefined) return null;
+  if (userId === undefined) {
+    return null;
+  }
 
   const user = await getUserById(userId);
   if (user) {
-    console.log("Fetched user:", user); // Debug output
     return {
       id: user.id,
+      email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
     };
