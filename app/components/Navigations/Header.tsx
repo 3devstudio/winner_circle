@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
 import { PhoneIcon, MapPinIcon } from "@heroicons/react/24/solid";
 import NavLinks from "~/components/Navigations/Partials/NavLinks";
-import PropTypes from "prop-types";
 import useSlideUp from "~/hooks/useSlideUp";
 
 interface HeaderProps {
   className?: string;
 }
 
-export default function Header({ className }: HeaderProps) {
+export default function Header({ className = "" }: HeaderProps) {
   const [logoRef, logoVisible] = useSlideUp();
-
   const [scrollCount, setScrollCount] = useState(0);
   const [lastScrollY, setLastScrollY] = useState(0);
 
@@ -94,11 +92,3 @@ export default function Header({ className }: HeaderProps) {
     </header>
   );
 }
-
-Header.propTypes = {
-  className: PropTypes.string,
-};
-
-Header.defaultProps = {
-  className: "",
-};
