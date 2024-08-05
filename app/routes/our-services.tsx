@@ -1,8 +1,8 @@
 import type { MetaFunction } from "@remix-run/node";
 import React from "react";
 import BackgroundImage from "~/components/Blocks/BackgroundImage";
-import QuickQuoteBanner from "~/components/Pages/Home/QuickQuoteBanner";
-import Services from "~/components/Pages/Home/Services";
+import QuickQuoteBanner from "~/components/Pages/Frontend/Home/QuickQuoteBanner";
+import Services from "~/components/Pages/Frontend/Home/Services";
 import useSlideUp from "~/hooks/useSlideUp";
 
 export const meta: MetaFunction = () => [{ title: "Our Services" }];

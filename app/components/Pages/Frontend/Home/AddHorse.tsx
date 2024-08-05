@@ -4,9 +4,9 @@ import {
   PlusCircleIcon,
 } from "@heroicons/react/24/outline";
 import React, { useState, useEffect } from "react";
-import Button from "../../Buttons/Button";
-import Input from "../../Inputs/Input";
-import Modal from "../../Modals/Modal";
+import Button from "../../../Buttons/Button";
+import Input from "../../../Inputs/Input";
+import Modal from "../../../Modals/Modal";
 
 interface Horse {
   name: string;

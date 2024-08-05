@@ -5,8 +5,8 @@ import useSlideUp from "~/hooks/useSlideUp";
 import Button from "../Buttons/Button";
 import Input from "../Inputs/Input";
 import Textarea from "../Inputs/Textarea";
-import AddHorse from "../Pages/Home/AddHorse";
-import Breadcrumb from "../Pages/Home/Breadcrumb";
+import AddHorse from "../Pages/Frontend/Home/AddHorse";
+import Breadcrumb from "../Pages/Frontend/Home/Breadcrumb";
 
 interface Horse {
   name: string;

@@ -1,3 +1,4 @@
+// root.tsx
 import { cssBundleHref } from "@remix-run/css-bundle";
 import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
@@ -8,7 +9,6 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData,
   useLocation,
 } from "@remix-run/react";
 
@@ -16,6 +16,7 @@ import AppLayout from "~/layouts/AppLayout";
 import AdminLayout from "~/layouts/AdminLayout";
 import { getUser } from "~/session.server";
 import stylesheet from "~/tailwind.css";
+import { TitleActionsProvider } from "~/context/TitleActionsContext";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -28,7 +29,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export default function App() {
-  const { user } = useLoaderData<{ user: ReturnType<typeof getUser> }>();
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
   const areAdminPages = location.pathname.startsWith("/admin");
@@ -61,7 +61,9 @@ export default function App() {
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
       </head>
       <body>
-        <Layout />
+        <TitleActionsProvider>
+          <Layout />
+        </TitleActionsProvider>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

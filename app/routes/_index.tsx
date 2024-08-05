@@ -3,10 +3,10 @@ import type { MetaFunction } from "@remix-run/node";
 // Components
 import QuickQuoteForm from "~/components/Forms/QuickQuoteForm";
 // import OurEquipment from "../components/Pages/Home/OurEquipment";
-import RegularRoutes from "../components/Pages/Home/RegularRoutes";
-import QuickQuoteBanner from "../components/Pages/Home/QuickQuoteBanner";
-import Principles from "../components/Pages/Home/Principles";
-import Services from "../components/Pages/Home/Services";
+import RegularRoutes from "../components/Pages/Frontend/Home/RegularRoutes";
+import QuickQuoteBanner from "../components/Pages/Frontend/Home/QuickQuoteBanner";
+import Principles from "../components/Pages/Frontend/Home/Principles";
+import Services from "../components/Pages/Frontend/Home/Services";
 import SectionTitle from "../components/Text/SectionTitle";
 import useSlideUp from "../hooks/useSlideUp";
 

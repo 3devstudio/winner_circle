@@ -1,6 +1,6 @@
 import useSlideUp from "~/hooks/useSlideUp";
 
-import InfoCard from "../../Blocks/InfoCard";
+import InfoCard from "../../../Blocks/InfoCard";
 
 const Services = () => {
   const [card1Ref, card1Visible] = useSlideUp<HTMLDivElement>();

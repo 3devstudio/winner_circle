@@ -4,7 +4,7 @@ import BackgroundImage from "~/components/Blocks/BackgroundImage";
 import Button from "~/components/Buttons/Button";
 import Input from "~/components/Inputs/Input";
 import Textarea from "~/components/Inputs/Textarea";
-import AddHorse from "~/components/Pages/Home/AddHorse";
+import AddHorse from "~/components/Pages/Frontend/Home/AddHorse";
 import useSlideUp from "~/hooks/useSlideUp";
 
 export const meta: MetaFunction = () => [{ title: "Get a Quote" }];

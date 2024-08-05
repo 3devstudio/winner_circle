@@ -7,12 +7,9 @@ import {
   StarIcon,
   PhotoIcon,
   UserGroupIcon,
-  CogIcon,
   UserCircleIcon,
   Squares2X2Icon,
-  ArrowLeftEndOnRectangleIcon
 } from "@heroicons/react/24/outline";
-import Button from "../../Buttons/Button";
 
 interface SidebarNavProps {}
 
@@ -24,7 +21,7 @@ const SidebarNav: React.FC<SidebarNavProps> = ({}) => {
     return `flex items-center py-1 px-3 rounded-lg transition cursor-pointer ${
       isActive
         ? "bg-primary/25 text-orange-500"
-        : "text-stone-600 hover:text-stone-700 hover:bg-stone-200/50"
+        : "text-stone-300 hover:text-stone-100 hover:bg-black/25"
     }`;
   };
 
@@ -43,16 +40,28 @@ const SidebarNav: React.FC<SidebarNavProps> = ({}) => {
     { path: "/admin/users", label: "Users", Icon: UserGroupIcon },
   ];
 
-  const bottomLinks = [
-    { path: "/admin/settings", label: "Settings", Icon: CogIcon },
-    { path: "/admin/profile", label: "Your Profile", Icon: UserCircleIcon },
-  ];
+  // const bottomLinks = [
+  //   //Used for settings, etc.
+  // ];
 
   return (
-    <div className="h-screen flex flex-col gap-8 w-64 bg-stone-100 p-4 border-r border-stone-200 z-30">
+    <div className="h-screen flex flex-col gap-8 w-64 bg-secondary p-4 border-r border-stone-200 z-30">
+      {/* Logo */}
       <div>
         <img src="/assets/logo.png" alt="logo" className="h-24 mx-auto" />
       </div>
+      {/* Authentication */}
+      {/* <div className="flex flex-col gap-4">
+        <Link to="/admin/profile" className={getLinkClassNames("/admin/profile")}>
+          <UserCircleIcon className={getIconClassNames("/admin/profile")} />
+          <span className="text-sm my-auto">Profile</span>
+        </Link>
+        <Link to="/admin/logout" className={getLinkClassNames("/admin/logout")}>
+          <UserCircleIcon className={getIconClassNames("/admin/logout")} />
+          <span className="text-sm my-auto">Logout</span>
+        </Link>
+      </div> */}
+      {/* Links */}
       <div className="flex flex-col h-full justify-between gap-4">
         <div className="flex flex-col gap-2">
           {topLinks.map(({ path, label, Icon }) => (
@@ -62,29 +71,14 @@ const SidebarNav: React.FC<SidebarNavProps> = ({}) => {
             </Link>
           ))}
         </div>
-        <div className="flex flex-col gap-2">
+        {/* <div className="flex flex-col gap-2">
           {bottomLinks.map(({ path, label, Icon }) => (
             <Link key={path} to={path} className={getLinkClassNames(path)}>
               <Icon className={getIconClassNames(path)} />
               <span className="text-sm my-auto">{label}</span>
             </Link>
           ))}
-        </div>
-      </div>
-      {/* Back to Site/Logout */}
-      <div className="w-full flex gap-4 justify-center">
-          <Button
-            tertiary
-            text="Back to Site"
-            link="/"
-          />
-          <Form action="/logout" method="post">
-            <Button
-              tertiary
-              text="Logout"
-              icon={ArrowLeftEndOnRectangleIcon}
-            />
-          </Form>
+        </div> */}
       </div>
     </div>
   );

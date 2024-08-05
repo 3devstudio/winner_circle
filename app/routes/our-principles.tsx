@@ -1,8 +1,8 @@
 import type { MetaFunction } from "@remix-run/node";
 import React from "react";
 import BackgroundImage from "~/components/Blocks/BackgroundImage";
-import Principles from "~/components/Pages/Home/Principles";
-import QuickQuoteBanner from "~/components/Pages/Home/QuickQuoteBanner";
+import Principles from "~/components/Pages/Frontend/Home/Principles";
+import QuickQuoteBanner from "~/components/Pages/Frontend/Home/QuickQuoteBanner";
 import useSlideUp from "~/hooks/useSlideUp";
 
 export const meta: MetaFunction = () => [{ title: "Our Principles" }];
