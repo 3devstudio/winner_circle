@@ -1,9 +1,11 @@
 import type { MetaFunction } from "@remix-run/node";
 import React from "react";
 import BackgroundImage from "~/components/Blocks/BackgroundImage";
-import Principles from "~/components/Pages/Home/Principles";
-import QuickQuoteBanner from "~/components/Pages/Home/QuickQuoteBanner";
+import Principles from "~/components/Pages/Frontend/Home/Principles";
+import QuickQuoteBanner from "~/components/Pages/Frontend/Home/QuickQuoteBanner";
 import useSlideUp from "~/hooks/useSlideUp";
+
+import AppLayout from "~/layouts/AppLayout";
 
 export const meta: MetaFunction = () => [{ title: "Our Principles" }];
 
@@ -13,7 +15,7 @@ const OurPrinciples: React.FC = () => {
   const [pRef, pVisible] = useSlideUp<HTMLDivElement>();
 
   return (
-    <div>
+    <AppLayout>
       <BackgroundImage image="/assets/truck_and_trailer.jpg" size="sm">
         <div className="text-white text-center">
           <h1
@@ -57,7 +59,7 @@ const OurPrinciples: React.FC = () => {
           <QuickQuoteBanner />
         </div>
       </div>
-    </div>
+    </AppLayout>
   );
 };
 

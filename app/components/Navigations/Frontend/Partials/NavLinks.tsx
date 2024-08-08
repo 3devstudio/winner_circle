@@ -1,14 +1,12 @@
 import { Bars3Icon, HomeIcon } from "@heroicons/react/20/solid";
-import { Link, useLocation } from "@remix-run/react";
+import { Link, useLocation, useLoaderData } from "@remix-run/react";
 import { useState } from "react";
 
 import Button from "../../../Buttons/Button";
 import Dropdown from "../../../Dropdowns/Dropdown";
-import LoginButton, { loader as loginButtonLoader } from "./LoginButton";
+import LoginButton from "./LoginButton";
 import MobileNav from "../../../Navigations/Frontend/MobileNav";
 import useSlideUp from "~/hooks/useSlideUp";
-
-export const loader = loginButtonLoader;
 
 export default function Navigation() {
   const [navLinksRef, navLinksVisible] = useSlideUp<HTMLDivElement>();
@@ -63,28 +61,6 @@ export default function Navigation() {
               </Link>
             </div>
           </Dropdown>
-
-          {/* <Link
-            to="/photo-gallery"
-            className={`my-auto ${
-              location.pathname === "/photo-gallery"
-                ? "border-b-2 border-primary text-white"
-                : "hover:border-b-2 hover:text-white"
-            }`}
-          >
-            Photo Gallery
-          </Link> */}
-
-          {/* <Link
-            to="/reviews"
-            className={`my-auto ${
-              location.pathname === "/reviews"
-                ? "border-b-2 border-primary text-white"
-                : "hover:border-b-2 hover:text-white"
-            }`}
-          >
-            Reviews
-          </Link> */}
 
           <Link
             to="/submit-waiver"

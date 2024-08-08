@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Button from "../../Buttons/Button";
-import SectionTitle from "../../Text/SectionTitle";
+import Button from "../../../Buttons/Button";
+import SectionTitle from "../../../Text/SectionTitle";
 import { MapIcon, ListBulletIcon } from "@heroicons/react/24/outline";
 import type { LatLngTuple } from "leaflet";
 

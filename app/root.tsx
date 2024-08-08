@@ -1,5 +1,6 @@
+// root.tsx
 import { cssBundleHref } from "@remix-run/css-bundle";
-import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
+import type { LinksFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
   Links,
@@ -9,47 +10,32 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
-  useLocation,
 } from "@remix-run/react";
-
-import AppLayout from "~/layouts/AppLayout";
-import AdminLayout from "~/layouts/AdminLayout";
-import { getUser } from "~/session.server";
 import stylesheet from "~/tailwind.css";
+import { getUser } from "~/session.server";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
 ];
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+type LoaderData = {
+  user: {
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+  } | null;
+};
+
+// Loader function to get user data
+export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUser(request);
-  return json({ user });
+  return json<LoaderData>({ user });
 };
 
 export default function App() {
-  const { user } = useLoaderData<{ user: ReturnType<typeof getUser> }>();
-  const location = useLocation();
-  const isLoginPage = location.pathname === "/login";
-  const areAdminPages = location.pathname.startsWith("/admin");
-
-  const Layout = () => {
-    if (isLoginPage) {
-      return <Outlet />;
-    }
-    if (areAdminPages) {
-      return (
-        <AdminLayout>
-          <Outlet />
-        </AdminLayout>
-      );
-    }
-    return (
-      <AppLayout>
-        <Outlet />
-      </AppLayout>
-    );
-  };
+  const { user } = useLoaderData<LoaderData>();
 
   return (
     <html lang="en">
@@ -61,7 +47,7 @@ export default function App() {
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
       </head>
       <body>
-        <Layout />
+        <Outlet context={{ user }} />
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

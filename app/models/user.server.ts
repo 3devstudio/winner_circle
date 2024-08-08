@@ -34,6 +34,11 @@ export async function deleteUserByEmail(email: User["email"]) {
   return prisma.user.delete({ where: { email } });
 }
 
+//Fetch all users
+export async function getAllUsers() {
+  return prisma.user.findMany();
+}
+
 export async function verifyLogin(
   email: User["email"],
   password: Password["hash"],

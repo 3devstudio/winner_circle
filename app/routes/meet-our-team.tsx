@@ -3,8 +3,10 @@ import React from "react";
 import ContactCard from "~/components/Blocks/ContactCard";
 import BackgroundImage from "~/components/Blocks/BackgroundImage";
 import ImageWithText from "~/components/Blocks/ImageWithText";
-import QuickQuoteBanner from "~/components/Pages/Home/QuickQuoteBanner";
+import QuickQuoteBanner from "~/components/Pages/Frontend/Home/QuickQuoteBanner";
 import useSlideUp from "~/hooks/useSlideUp";
+
+import AppLayout from "~/layouts/AppLayout";
 
 export const meta: MetaFunction = () => [{ title: "Meet Our Team" }];
 
@@ -15,7 +17,7 @@ const MeetOurTeam: React.FC = () => {
   const [card2Ref, card2Visible] = useSlideUp<HTMLDivElement>();
 
   return (
-    <div>
+    <AppLayout>
       <BackgroundImage image="/assets/horse_in_woods.jpg" size="sm">
         <div className="flex flex-col gap-2 md:gap-4 justify-center items-center w-full h-full">
           <h1
@@ -74,7 +76,7 @@ const MeetOurTeam: React.FC = () => {
         </div>
       </div>
       <QuickQuoteBanner />
-    </div>
+    </AppLayout>
   );
 };
 
