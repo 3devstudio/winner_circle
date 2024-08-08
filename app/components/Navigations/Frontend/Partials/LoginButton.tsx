@@ -1,18 +1,32 @@
-import type { LoaderFunction } from "@remix-run/node";
-import { Link, useLoaderData, Form } from "@remix-run/react";
+// LoginButton.tsx
+import { useLoaderData, Link, Form } from "@remix-run/react";
 import { UserCircleIcon, ArrowLeftOnRectangleIcon } from "@heroicons/react/20/solid";
+import { json, LoaderFunction } from "@remix-run/node";
+import { prisma } from "~/db.server";
+import { getSession } from "~/session.server";
 
 import Dropdown from "~/components/Dropdowns/Dropdown";
-import { getUser } from "~/session.server";
 
-// Fetch user data in loader
 export const loader: LoaderFunction = async ({ request }) => {
-  const user = await getUser(request);
-  return { user };
+  const session = await getSession(request);
+  const userId = session.get("userId");
+
+  if (!userId) {
+    return json({ user: null });
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { firstName: true, lastName: true },
+  });
+
+  return json({ user });
 };
 
 export default function LoginButton() {
-  const { user } = useLoaderData<{ user: { firstName: string; lastName: string } | null }>();
+  const loaderData = useLoaderData<typeof loader>();
+  const user = loaderData?.user ?? null;
+  console.log(user);
 
   const renderUserIcon = () => {
     if (user && user.firstName && user.lastName) {

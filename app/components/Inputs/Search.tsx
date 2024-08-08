@@ -5,11 +5,13 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 interface SearchProps<T> {
   data: T[];
   onFilter: (filteredData: T[]) => void;
+  className?: string;
 }
 
 const Search = <T extends { [key: string]: any }>({
   data,
   onFilter,
+  className,
 }: SearchProps<T>) => {
   const [query, setQuery] = useState("");
 
@@ -33,7 +35,7 @@ const Search = <T extends { [key: string]: any }>({
         placeholder="Search..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="pl-10 p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition w-full text-sm text-stone-700"
+        className={`pl-10 p-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition text-sm text-stone-700 ${className}`}
       />
     </div>
   );

@@ -1,5 +1,7 @@
 import type { MetaFunction } from "@remix-run/node";
 import { useState, useEffect } from "react";
+
+import AppLayout from "~/layouts/AppLayout";
 import BackgroundImage from "~/components/Blocks/BackgroundImage";
 import Button from "~/components/Buttons/Button";
 import Input from "~/components/Inputs/Input";
@@ -102,7 +104,7 @@ export default function Contact() {
   }, [formData, horses, checkIfAllFieldsAreFilled]);
 
   return (
-    <div className="w-full h-full">
+    <AppLayout>
       <BackgroundImage
         image="/assets/truck_and_trailer.jpg"
         size="sm"
@@ -242,6 +244,6 @@ export default function Contact() {
           </div>
         </div>
       </div>
-    </div>
+    </AppLayout>
   );
 }

@@ -5,6 +5,8 @@ import QuickQuoteBanner from "~/components/Pages/Frontend/Home/QuickQuoteBanner"
 import Services from "~/components/Pages/Frontend/Home/Services";
 import useSlideUp from "~/hooks/useSlideUp";
 
+import AppLayout from "~/layouts/AppLayout";
+
 export const meta: MetaFunction = () => [{ title: "Our Services" }];
 
 const OurServices: React.FC = () => {
@@ -13,7 +15,7 @@ const OurServices: React.FC = () => {
   const [pRef, pVisible] = useSlideUp<HTMLDivElement>();
 
   return (
-    <div>
+    <AppLayout>
       <BackgroundImage image="/assets/IMG_7389.jpg" size="sm">
         <div className="text-white text-center">
           <h1
@@ -58,7 +60,7 @@ const OurServices: React.FC = () => {
           <QuickQuoteBanner />
         </div>
       </div>
-    </div>
+    </AppLayout>
   );
 };
 

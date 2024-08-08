@@ -1,6 +1,6 @@
 import Slider from "react-slick";
 
-import FadeInImage from "../../Animations/FadeInImage";
+import FadeInImage from "../../../Animations/FadeInImage";
 
 const OurEquipment = () => {
   const sliderSettings = {
