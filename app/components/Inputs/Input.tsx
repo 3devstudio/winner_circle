@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface InputProps {
   placeholder: string;
@@ -8,9 +8,25 @@ interface InputProps {
   required?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value?: string;
+  error?: string;
 }
 
-const Input: React.FC<InputProps> = ({ placeholder, label, type, required = false, onChange, value }) => {
+const Input: React.FC<InputProps> = ({ placeholder, label, type, required = false, onChange, value, error }) => {
+  const [showError, setShowError] = useState(false);
+
+  useEffect(() => {
+    if (error) {
+      setShowError(true);
+      const timer = setTimeout(() => {
+        setShowError(false);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    } else {
+      setShowError(false);
+    }
+  }, [error]);
+
   return (
     <div className="flex flex-col">
       {label ? (
@@ -26,6 +42,13 @@ const Input: React.FC<InputProps> = ({ placeholder, label, type, required = fals
         value={value}
         className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition w-full text-sm text-stone-700"
       />
+      {error && (
+        <p
+          className={`mt-1 text-xs text-red-500 transition-opacity duration-300 ease-in-out`}
+        >
+          {error}
+        </p>
+      )}
     </div>
   );
 };
@@ -37,6 +60,7 @@ Input.propTypes = {
   required: PropTypes.bool,
   onChange: PropTypes.func,
   value: PropTypes.string,
+  error: PropTypes.string,
 };
 
 export default Input;

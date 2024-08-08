@@ -1,6 +1,6 @@
 // src/layouts/AdminLayout.tsx
 import { Outlet, useLocation, useNavigate } from "@remix-run/react";
-import SidebarNav from "../components/Navigations/Backend/SidebarNav";
+import BackendNav from "../components/Navigations/Backend/BackendNav";
 import { ReactNode } from "react";
 import { ArrowLeftCircleIcon } from "@heroicons/react/24/outline";
 
@@ -38,8 +38,8 @@ export default function AdminLayout({ backArrow, titleActions, children }: Admin
 
   return (
     <div className="flex flex-col md:flex-row background-pattern z-10">
-      <SidebarNav />
-      <main className="flex-1 min-h-screen z-20">
+      <BackendNav className=""/>
+      <main className="overflow-x-auto w-full min-h-screen z-20">
         <div className="flex flex-col">
           <div className="flex justify-between gap-4 md:gap-8 h-20 bg-white border-b border-stone-200 px-4 md:px-8 py-2">
             <div className="flex gap-2 md:gap-4">

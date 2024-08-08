@@ -20,7 +20,7 @@ const BasicTable = <T,>({ columns, data }: BasicTableProps<T>) => {
               <th
                 key={column.header}
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider whitespace-nowrap"
+                className="min-w-[10rem] px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider whitespace-nowrap"
               >
                 {column.header}
               </th>

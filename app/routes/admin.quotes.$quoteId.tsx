@@ -14,7 +14,7 @@ import { deleteQuote, getQuote } from "~/models/quote.server";
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   invariant(params.quoteId, "quoteId not found");
 
-  const quote = await getQuote({ id: params.quoteId });
+  const quote = await getQuote(params.quoteId); // Pass only the quoteId
   if (!quote) {
     throw new Response("Not Found", { status: 404 });
   }
@@ -30,7 +30,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 export const action = async ({ params }: ActionFunctionArgs) => {
   invariant(params.quoteId, "quoteId not found");
 
-  await deleteQuote({ id: params.quoteId });
+  await deleteQuote(params.quoteId); // Pass only the quoteId
 
   return redirect("admin/quotes");
 };

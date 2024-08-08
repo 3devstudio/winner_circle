@@ -26,7 +26,6 @@ const AddUserForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(user);
   };
 
   return (
