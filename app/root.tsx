@@ -1,6 +1,7 @@
 // root.tsx
 import { cssBundleHref } from "@remix-run/css-bundle";
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -8,15 +9,34 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "@remix-run/react";
 import stylesheet from "~/tailwind.css";
+import { getUser } from "~/session.server";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
 ];
 
+type LoaderData = {
+  user: {
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+  } | null;
+};
+
+// Loader function to get user data
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await getUser(request);
+  return json<LoaderData>({ user });
+};
+
 export default function App() {
+  const { user } = useLoaderData<LoaderData>();
+
   return (
     <html lang="en">
       <head>
@@ -27,7 +47,7 @@ export default function App() {
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
       </head>
       <body>
-        <Outlet />
+        <Outlet context={{ user }} />
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
