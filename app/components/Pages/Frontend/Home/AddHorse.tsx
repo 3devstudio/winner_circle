@@ -18,10 +18,14 @@ interface Horse {
 
 interface AddHorseProps {
   onAddHorse: (horses: Horse[]) => void;
-  horses: Horse[]; // Added this prop
+  horses: Horse[];
+  errors: { [key: string]: string };
 }
 
-const AddHorse: React.FC<AddHorseProps> = ({ onAddHorse, horses: initialHorses }) => {
+const AddHorse: React.FC<AddHorseProps> = ({
+  onAddHorse,
+  horses: initialHorses,
+}) => {
   const [horses, setHorses] = useState<Horse[]>(initialHorses);
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -34,6 +38,7 @@ const AddHorse: React.FC<AddHorseProps> = ({ onAddHorse, horses: initialHorses }
     age: "",
     height: "",
   });
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const initialHorseData = {
     name: "",
@@ -51,21 +56,41 @@ const AddHorse: React.FC<AddHorseProps> = ({ onAddHorse, horses: initialHorses }
     setHorseData({ ...horseData, [field]: value });
   };
 
+  const validateHorseData = () => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!horseData.breed.trim()) newErrors.breed = "Horse breed is required";
+    if (!horseData.gender.trim()) newErrors.gender = "Horse gender is required";
+    if (!horseData.age.trim()) newErrors.age = "Horse age is required";
+    if (!horseData.height.trim()) newErrors.height = "Horse height is required";
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleAddHorse = () => {
-    if (editIndex !== null) {
-      const updatedHorses = horses.map((horse, index) =>
-        index === editIndex ? horseData : horse
-      );
-      setHorses(updatedHorses);
-      onAddHorse(updatedHorses);
-      setEditIndex(null);
-    } else {
-      const updatedHorses = [...horses, horseData];
-      setHorses(updatedHorses);
-      onAddHorse(updatedHorses);
+    if (validateHorseData()) {
+      // Set default name if it's empty
+      if (!horseData.name.trim()) {
+        horseData.name = `Horse ${horses.length + 1}`;
+      }
+
+      if (editIndex !== null) {
+        const updatedHorses = horses.map((horse, index) =>
+          index === editIndex ? horseData : horse,
+        );
+        setHorses(updatedHorses);
+        onAddHorse(updatedHorses);
+        setEditIndex(null);
+      } else {
+        const updatedHorses = [...horses, horseData];
+        setHorses(updatedHorses);
+        onAddHorse(updatedHorses);
+      }
+      setHorseData(initialHorseData);
+      setShowModal(false);
     }
-    setHorseData(initialHorseData);
-    setShowModal(false);
   };
 
   const handleEditHorse = (index: number) => {
@@ -93,6 +118,7 @@ const AddHorse: React.FC<AddHorseProps> = ({ onAddHorse, horses: initialHorses }
   const handleAddAnotherHorse = () => {
     setHorseData(initialHorseData);
     setEditIndex(null);
+    setErrors({});
     setShowModal(true);
   };
 
@@ -135,6 +161,7 @@ const AddHorse: React.FC<AddHorseProps> = ({ onAddHorse, horses: initialHorses }
             placeholder="What is the horse's name?"
             value={horseData.name}
             onChange={(e) => handleInputChange("name", e.target.value)}
+            error={errors.name}
           />
           <Input
             label="Breed"
@@ -142,6 +169,7 @@ const AddHorse: React.FC<AddHorseProps> = ({ onAddHorse, horses: initialHorses }
             required={true}
             value={horseData.breed}
             onChange={(e) => handleInputChange("breed", e.target.value)}
+            error={errors.breed}
           />
           <Input
             label="Gender"
@@ -149,13 +177,16 @@ const AddHorse: React.FC<AddHorseProps> = ({ onAddHorse, horses: initialHorses }
             required={true}
             value={horseData.gender}
             onChange={(e) => handleInputChange("gender", e.target.value)}
+            error={errors.gender}
           />
           <Input
             label="Age"
+            type="number"
             placeholder="Enter age"
             required={true}
             value={horseData.age}
             onChange={(e) => handleInputChange("age", e.target.value)}
+            error={errors.age}
           />
           <Input
             label="Height"
@@ -163,6 +194,7 @@ const AddHorse: React.FC<AddHorseProps> = ({ onAddHorse, horses: initialHorses }
             required={true}
             value={horseData.height}
             onChange={(e) => handleInputChange("height", e.target.value)}
+            error={errors.height}
           />
           <Button
             primary
@@ -178,14 +210,14 @@ const AddHorse: React.FC<AddHorseProps> = ({ onAddHorse, horses: initialHorses }
         <p>Are you sure you want to delete this horse?</p>
         <div className="flex justify-end gap-2 mt-4">
           <Button
+            secondary
             text="Cancel"
             onClick={() => setShowDeleteModal(false)}
-            className="bg-gray-500 text-white rounded"
           />
           <Button
+            danger
             text="Delete"
             onClick={confirmDeleteHorse}
-            className="bg-red-500 text-white rounded"
           />
         </div>
       </Modal>
@@ -193,7 +225,7 @@ const AddHorse: React.FC<AddHorseProps> = ({ onAddHorse, horses: initialHorses }
       {horses.length > 0 && (
         <div>
           <h2 className="text-xl mb-4">Added Horses</h2>
-          <ul className="flex flex-col gap-2 py-2 divide-y divide-stone-200">
+          <ul className="flex flex-col gap-2 py-2 divide-y divide-stone-200 max-h-[20rem] overflow-auto">
             {horses.map((horse, index) => (
               <div key={index} className="flex gap-4">
                 <img
@@ -202,11 +234,15 @@ const AddHorse: React.FC<AddHorseProps> = ({ onAddHorse, horses: initialHorses }
                   alt="Horse"
                 />
                 <li className="flex justify-between items-center w-full">
-                  <div>
+                  <div className="flex flex-col">
                     <p className="font-semibold text-stone-800 text-base">
                       {horse.name}
                     </p>
-                    <p className="text-stone-500 text-sm">{horse.breed}</p>
+                    <div className="flex gap-1 text-stone-500 text-sm">
+                      <p>{horse.breed}</p>
+                      <span>|</span>
+                      <p className="font-light">{horse.gender}</p>
+                    </div>
                   </div>
                   <div className="flex gap-4 mr-2">
                     <PencilIcon

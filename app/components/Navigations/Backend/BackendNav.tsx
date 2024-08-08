@@ -11,9 +11,11 @@ import {
   Squares2X2Icon,
 } from "@heroicons/react/24/outline";
 
-interface SidebarNavProps {}
+interface SidebarNavProps {
+  className?: string;
+}
 
-const SidebarNav: React.FC<SidebarNavProps> = ({}) => {
+const SidebarNav: React.FC<SidebarNavProps> = ({ className }) => {
   const location = useLocation();
 
   const getLinkClassNames = (path: string) => {
@@ -45,7 +47,8 @@ const SidebarNav: React.FC<SidebarNavProps> = ({}) => {
   // ];
 
   return (
-    <div className="h-screen flex flex-col gap-8 w-64 bg-secondary p-4 border-r border-stone-200 z-30">
+    // desktop
+    <div className={`hidden md:flex flex-col h-screen gap-8 min-w-64 bg-secondary p-4 border-r border-stone-200 z-30 ${ className }`}>
       {/* Logo */}
       <div>
         <img src="/assets/logo.png" alt="logo" className="h-24 mx-auto" />
@@ -81,6 +84,7 @@ const SidebarNav: React.FC<SidebarNavProps> = ({}) => {
         </div> */}
       </div>
     </div>
+    // mobile
   );
 };
 

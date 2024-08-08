@@ -19,6 +19,12 @@ interface Horse {
   height: string;
 }
 
+interface AddHorseProps {
+  onAddHorse: (addedHorses: Horse[]) => void;
+  horses: Horse[];
+  errors: { [key: string]: string }; // Add this interface for AddHorseProps
+}
+
 export default function Contact() {
   const [formData, setFormData] = useState({
     date: "",
@@ -35,6 +41,7 @@ export default function Contact() {
   const [formRef, formVisible] = useSlideUp<HTMLDivElement>();
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
   const [horses, setHorses] = useState<Horse[]>([]);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prevData) => ({ ...prevData, [field]: value }));
@@ -161,7 +168,7 @@ export default function Contact() {
                     />
                   </div>
                 </div>
-                <AddHorse onAddHorse={handleAddHorse} horses={horses} />
+                <AddHorse onAddHorse={handleAddHorse} horses={horses} errors={errors} />
               </div>
             </div>
             {/* Section 2: Horse Transport Details */}

@@ -7,11 +7,12 @@ interface TextareaProps {
   required?: boolean;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  error?: string;
 }
 
-const Textarea: React.FC<TextareaProps> = ({ placeholder, label, required = false, value, onChange }) => {
+const Textarea: React.FC<TextareaProps> = ({ placeholder, label, required = false, value, onChange, error }) => {
   return (
-    <div className="flex flex-col mb-4">
+    <div className="flex flex-col">
       {label ? (
         <label className="mb-2 text-sm text-gray-700">
           {label} {required ? <span className="text-red-500">*</span> : null}
@@ -24,6 +25,7 @@ const Textarea: React.FC<TextareaProps> = ({ placeholder, label, required = fals
         value={value}
         onChange={onChange}
       ></textarea>
+      {error ? <p className="mt-1 text-xs text-red-500">{error}</p> : null}
     </div>
   );
 };
