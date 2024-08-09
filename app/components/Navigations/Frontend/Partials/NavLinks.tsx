@@ -1,5 +1,7 @@
+// NavLinks.tsx
+
 import { Bars3Icon, HomeIcon } from "@heroicons/react/20/solid";
-import { Link, useLocation, useLoaderData } from "@remix-run/react";
+import { Link, useLocation } from "@remix-run/react";
 import { useState } from "react";
 
 import Button from "../../../Buttons/Button";
@@ -15,6 +17,14 @@ export default function Navigation() {
 
   const openMobileNav = () => setIsMobileNavOpen(true);
   const closeMobileNav = () => setIsMobileNavOpen(false);
+
+  const mobileLinks = [
+    { path: "/", label: "Home" },
+    { path: "/our-services", label: "Our Services" },
+    { path: "/our-principles", label: "Our Principles" },
+    { path: "/meet-our-team", label: "Meet Our Team" },
+    { path: "/submit-waiver", label: "Waiver" },
+  ];
 
   return (
     <nav className="flex gap-4 justify-end">
@@ -93,7 +103,12 @@ export default function Navigation() {
         />
         <LoginButton />
       </div>
-      <MobileNav isOpen={isMobileNavOpen} onClose={closeMobileNav} />
+      <MobileNav
+        isOpen={isMobileNavOpen}
+        onClose={closeMobileNav}
+        links={mobileLinks}
+        showQuickQuote
+      />
     </nav>
   );
 }

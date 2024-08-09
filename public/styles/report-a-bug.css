@@ -1,0 +1,17 @@
+/* styles/report-a-bug.css */
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+#typeform-container {
+  flex: 1;
+  position: relative;
+}
+
+.tf-v1-widget iframe {
+  border-radius: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}

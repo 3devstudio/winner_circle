@@ -1,5 +1,5 @@
 @import url("https://unpkg.com/leaflet@1.7.1/dist/leaflet.css");
-@import "./styles/breadcrumb.css";
+@import "public/styles/breadcrumb.css";
 
 @tailwind base;
 @tailwind components;
