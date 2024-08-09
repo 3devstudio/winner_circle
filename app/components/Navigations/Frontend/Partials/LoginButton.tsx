@@ -1,10 +1,15 @@
 // LoginButton.tsx
 import { Link, Form, useOutletContext } from "@remix-run/react";
-import { UserCircleIcon, ArrowLeftOnRectangleIcon } from "@heroicons/react/20/solid";
+import {
+  UserCircleIcon,
+  ArrowLeftOnRectangleIcon,
+} from "@heroicons/react/20/solid";
 import Dropdown from "~/components/Dropdowns/Dropdown";
 
 export default function LoginButton() {
-  const { user } = useOutletContext<{ user: { firstName: string; lastName: string } | null }>();
+  const { user } = useOutletContext<{
+    user: { firstName: string; lastName: string } | null;
+  }>();
 
   const renderUserIcon = () => {
     if (user && user.firstName && user.lastName) {

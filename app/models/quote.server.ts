@@ -77,5 +77,6 @@ export async function getQuote(quoteId: string) {
 export async function getAllQuotes() {
   return prisma.quote.findMany({
     include: { horses: true },
+    orderBy: { createdAt: "desc" },
   });
 }

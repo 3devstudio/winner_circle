@@ -1,13 +1,22 @@
+// MobileNav.tsx
+
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { Link, useLocation } from "@remix-run/react";
 import Button from "../../Buttons/Button";
 
-export default function MobileNav({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
+interface MobileNavProps {
+  isOpen: boolean;
+  onClose: () => void;
+  links: Array<{ path: string, label: string }>;
+  showQuickQuote?: boolean;
+}
+
+export default function MobileNav({ isOpen, onClose, links, showQuickQuote = false }: MobileNavProps) {
   const location = useLocation();
 
   return (
     <div
-      className={`fixed inset-0 bg-secondary flex flex-col justify-center items-center transition-transform ${
+      className={`fixed inset-0 bg-secondary flex flex-col justify-center items-center transition-transform z-[99] ${
         isOpen ? "translate-x-0" : "translate-x-full"
       }`}
     >
@@ -26,80 +35,23 @@ export default function MobileNav({ isOpen, onClose }: { isOpen: boolean, onClos
       </div>
 
       <ul className="flex flex-col items-start w-full justify-start px-8 gap-6 text-stone-300 text-2xl md:text-4xl font-light uppercase">
-        <Link
-          to="/"
-          className={`${
-            location.pathname === "/"
-              ? "border-l-2 border-primary text-primary"
-              : "hover:border-l-2 hover:text-white"
-          }`}
-        >
-          <p className="pl-4">Home</p>
-        </Link>
-        <Link
-          to="/meet-the-team"
-          className={`${
-            location.pathname === "/meet-the-team"
-              ? "border-l-2 border-primary text-primary"
-              : "hover:border-l-2 hover:text-white"
-          }`}
-        >
-          <p className="pl-4">Meet the Team</p>
-        </Link>
-        <Link
-          to="/our-services"
-          className={`${
-            location.pathname === "/our-services"
-              ? "border-l-2 border-primary text-primary"
-              : "hover:border-l-2 hover:text-white"
-          }`}
-        >
-          <p className="pl-4">Our Services</p>
-        </Link>
-        <Link
-          to="/our-principles"
-          className={`${
-            location.pathname === "/our-principles"
-              ? "border-l-2 border-primary text-primary"
-              : "hover:border-l-2 hover:text-white"
-          }`}
-        >
-          <p className="pl-4">Our Principles</p>
-        </Link>
-        {/* <Link
-          to="/photo-gallery"
-          className={`${
-            location.pathname === "/photo-gallery"
-              ? "border-l-2 border-primary text-primary"
-              : "hover:border-l-2 hover:text-white"
-          }`}
-        >
-          <p className="pl-4">Photo Gallery</p>
-        </Link> */}
-        {/* <Link
-          to="/reviews"
-          className={`${
-            location.pathname === "/reviews"
-              ? "border-l-2 border-primary text-primary"
-              : "hover:border-l-2 hover:text-white"
-          }`}
-        >
-          <p className="pl-4">Our Reviews</p>
-        </Link> */}
-        <Link
-          to="/submit-waiver"
-          className={`${
-            location.pathname === "/submit-waiver"
-              ? "border-l-2 border-primary text-primary"
-              : "hover:border-l-2 hover:text-white"
-          }`}
-        >
-          <p className="pl-4">Waiver</p>
-        </Link>
+        {links.map(({ path, label }) => (
+          <Link
+            key={path}
+            to={path}
+            className={`${
+              location.pathname === path
+                ? "border-l-2 border-primary text-primary"
+                : "hover:border-l-2 hover:text-white"
+            }`}
+          >
+            <p className="pl-4">{label}</p>
+          </Link>
+        ))}
       </ul>
 
       <div className="absolute bottom-0 inset-x-0 p-4 flex flex-col gap-4 text-xl px-8">
-        <Button primary link="/quick-quote">Quick Quote</Button>
+        {showQuickQuote && <Button primary link="/quick-quote">Quick Quote</Button>}
         <Button secondary link="/login">Login</Button>
       </div>
     </div>
