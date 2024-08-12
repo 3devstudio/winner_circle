@@ -1,6 +1,8 @@
 // /Users/connorkelly/Documents/winner_circle/src/quote.server.ts
 import { prisma } from "~/db.server";
-import { Prisma } from "@prisma/client"; // Correct the import
+import { Prisma, Quote } from "@prisma/client"; // Correct the import
+
+export type { Quote } from "@prisma/client";
 
 interface HorseCreateInput {
   name: string;
@@ -8,7 +10,7 @@ interface HorseCreateInput {
   gender: string;
   age: number;
   height: string;
-  trip: Prisma.TripCreateNestedOneWithoutHorsesInput; // Use Prisma namespace for the type
+  trip: Prisma.TripCreateNestedOneWithoutHorsesInput;
 }
 
 export interface QuoteCreateInputWithHorses {
@@ -62,6 +64,22 @@ export async function createQuote(data: QuoteCreateInputWithHorses) {
 export async function deleteQuote(quoteId: string) {
   return prisma.quote.delete({
     where: { id: quoteId },
+  });
+}
+
+//Soft Delete Quote by Id
+export async function softDeleteQuoteById(quoteId: Quote['id']) {
+  return prisma.quote.update({
+    where: { id: quoteId },
+    data: { deletedAt: new Date() },
+  });
+}
+
+//Restore Quote by Id
+export async function restoreQuoteById(quoteId: Quote['id']) {
+  return prisma.quote.update({
+    where: { id: quoteId },
+    data: { deletedAt: null },
   });
 }
 

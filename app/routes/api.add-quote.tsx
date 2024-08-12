@@ -16,8 +16,6 @@ export let action: ActionFunction = async ({ request }) => {
     horses,
   } = data;
 
-  console.log("DATA (api.quotes.tsx)", data);
-
   try {
     const newQuote: QuoteCreateInputWithHorses = {
       firstName,

@@ -9,9 +9,10 @@ interface InputProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value?: string;
   error?: string;
+  name?: string;
 }
 
-const Input: React.FC<InputProps> = ({ placeholder, label, type, required = false, onChange, value, error }) => {
+const Input: React.FC<InputProps> = ({ placeholder, label, type, required = false, onChange, value, error, name }) => {
   const [showError, setShowError] = useState(false);
 
   useEffect(() => {
@@ -40,7 +41,10 @@ const Input: React.FC<InputProps> = ({ placeholder, label, type, required = fals
         required={required}
         onChange={onChange}
         value={value}
-        className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition w-full text-sm text-stone-700"
+        name={name}
+        className={`p-2 border border-gray-300 rounded-md transition w-full text-sm text-stone-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
+          error ? 'ring-2 ring-rose-500 border-rose-500' : ''
+        }`}
       />
       {error && (
         <p
@@ -61,6 +65,7 @@ Input.propTypes = {
   onChange: PropTypes.func,
   value: PropTypes.string,
   error: PropTypes.string,
+  name: PropTypes.string,
 };
 
 export default Input;

@@ -23,23 +23,53 @@ export default function LoginButton() {
         >
           <Link
             to="/admin/dashboard"
-            className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+            className="block px-4 py-2 text-gray-500 hover:bg-gray-100 transition"
           >
             Dashboard
           </Link>
           <Link
-            to="/profile"
-            className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+            to="/admin/quotes"
+            className="block px-4 py-2 text-gray-500 hover:bg-gray-100 transition"
+          >
+            Quotes
+          </Link>
+          {/* <Link
+            to="/admin/trips"
+            className="block px-4 py-2 text-gray-500 hover:bg-gray-100 transition"
+          >
+            Trips
+          </Link> */}
+          {/* <Link
+            to="/admin/reviews"
+            className="block px-4 py-2 text-gray-500 hover:bg-gray-100 transition"
+          >
+            Reviews
+          </Link> */}
+          {/* <Link
+            to="/admin/photo-library"
+            className="block px-4 py-2 text-gray-500 hover:bg-gray-100 transition"
+          >
+            Photo Library
+          </Link> */}
+          <Link
+            to="/admin/users"
+            className="block px-4 py-2 text-gray-500 hover:bg-gray-100 transition"
+          >
+            Manage Users
+          </Link>
+          <Link
+            to="/admin/profile"
+            className="block px-4 py-2 text-gray-500 hover:bg-gray-100 transition"
           >
             Profile
           </Link>
           <Form
             action="/logout"
             method="post"
-            className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+            className="block px-4 py-2 text-gray-500 hover:bg-gray-100 transition"
           >
-            <button type="submit" className="flex items-center gap-2">
-              <ArrowLeftOnRectangleIcon className="h-5 w-5 text-gray-800" />
+            <button type="submit" className="flex items-center gap-2 w-full">
+              <ArrowLeftOnRectangleIcon className="h-5 w-5" />
               <span>Logout</span>
             </button>
           </Form>

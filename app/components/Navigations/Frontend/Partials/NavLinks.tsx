@@ -87,7 +87,11 @@ export default function Navigation() {
         {/* Quick Quote and Login */}
         <div className="hidden lg:flex gap-2 justify-end text-sm ml-8">
           <div className="my-auto">
-            <Button primary link="/quick-quote">
+            <Button
+              primary
+              link="/quick-quote"
+              className="text-lg"
+            >
               Quick Quote
             </Button>
           </div>
