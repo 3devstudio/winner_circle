@@ -1,4 +1,5 @@
 import React from "react";
+import { useFetcher } from "@remix-run/react";
 import BasicTable from "~/components/Blocks/Tables/BasicTable";
 
 interface Horse {
@@ -31,15 +32,41 @@ interface Quote {
   horses: Horse[];
 }
 
+interface TransformedQuote extends Omit<Quote, 'horses'> {
+  horses: string;
+}
+
 interface QuotesTableProps {
   quotes: Quote[];
 }
 
 const QuotesTable: React.FC<QuotesTableProps> = ({ quotes }) => {
-  const transformedQuotes = quotes.map(quote => ({
+  const transformedQuotes: TransformedQuote[] = quotes.map(quote => ({
     ...quote,
-    horses: quote.horses.map(horse => horse.name).join(', ')
+    horses: quote.horses.map(horse => horse.name).join(', '),
   }));
+
+  const fetcher = useFetcher();
+
+  const handleDeleteQuote = async (quote: TransformedQuote) => {
+    await fetcher.submit(
+      { quoteId: quote.id },
+      {
+        method: "post",
+        action: "/api/delete-quote",
+      },
+    );
+  }
+
+  const handleRestoreQuote = async (quote: TransformedQuote) => {
+    await fetcher.submit(
+      { quoteId: quote.id },
+      {
+        method: "post",
+        action: "/api/restore-quote",
+      },
+    );
+  };
 
   const columns = [
     { header: "First Name", rows: "firstName" },
@@ -59,7 +86,12 @@ const QuotesTable: React.FC<QuotesTableProps> = ({ quotes }) => {
 
   return (
     <div>
-      <BasicTable columns={columns} data={transformedQuotes} />
+      <BasicTable 
+        columns={columns}
+        data={transformedQuotes}
+        onDelete={handleDeleteQuote}
+        onRestore={handleRestoreQuote}
+      />
     </div>
   );
 };

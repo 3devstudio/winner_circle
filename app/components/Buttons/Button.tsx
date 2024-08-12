@@ -15,6 +15,8 @@ interface ButtonProps {
   className?: string;
   children?: React.ReactNode;
   type?: "button" | "submit" | "reset";
+  textSize?: string;  // New prop for custom text size
+  openInNewTab?: boolean;  // New prop for opening link in a new tab
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -30,8 +32,10 @@ const Button: React.FC<ButtonProps> = ({
   disabled = false,
   className,
   children,
+  textSize = "text-xs", // Default to 'text-xs'
+  openInNewTab = false,  // Default to false
 }) => {
-  const buttonClasses = `transition text-xs text-center w-full rounded-md whitespace-nowrap font-light
+  const buttonClasses = `transition ${textSize} text-center w-full rounded-md whitespace-nowrap font-light
     ${
       primary
         ? "px-4 py-2 min-w-[7rem] bg-primary hover:bg-primary/75 text-white"
@@ -67,7 +71,12 @@ const Button: React.FC<ButtonProps> = ({
 
   if (link) {
     return (
-      <Link to={link} className={buttonClasses}>
+      <Link
+        to={link}
+        className={buttonClasses}
+        target={openInNewTab ? "_blank" : "_self"}
+        rel={openInNewTab ? "noopener noreferrer" : undefined}
+      >
         {renderContent()}
       </Link>
     );

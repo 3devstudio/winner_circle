@@ -68,7 +68,8 @@ export default function AdminQuotes() {
           <Search data={quotes} onFilter={setFilteredQuotes} className="w-96" />
           <Button
             primary
-            link="/admin/quotes/add-quotes"
+            link="/quick-quote"
+            openInNewTab
             text="Add a quote"
             icon={PlusCircleIcon}
             className="w-36"

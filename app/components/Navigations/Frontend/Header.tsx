@@ -1,5 +1,5 @@
 import { PhoneIcon, MapPinIcon } from "@heroicons/react/24/solid";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import NavLinks from "~/components/Navigations/Frontend/Partials/NavLinks";
 import useSlideUp from "~/hooks/useSlideUp";
 

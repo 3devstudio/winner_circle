@@ -152,7 +152,7 @@ const QuickQuoteForm: React.FC = () => {
     setShouldValidate(true);
     if (validateStep1() && validateStep2()) {
       try {
-        const response = await fetch("/api/quotes", {
+        const response = await fetch("/api/add-quote", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

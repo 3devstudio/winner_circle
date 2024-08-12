@@ -1,8 +1,10 @@
 // src/layouts/AdminLayout.tsx
 import { Outlet, useLocation, useNavigate } from "@remix-run/react";
-import BackendNav from "../components/Navigations/Backend/BackendNav";
 import { ReactNode } from "react";
 import { ArrowLeftCircleIcon } from "@heroicons/react/24/outline";
+
+import BackendNav from "../components/Navigations/Backend/BackendNav";
+import useSlideUp from "~/hooks/useSlideUp";
 
 interface AdminLayoutProps {
   backArrow?: boolean;
@@ -36,13 +38,22 @@ export default function AdminLayout({ backArrow, titleActions, children }: Admin
     }
   };
 
+  const [titleRef, titleVisible] = useSlideUp<HTMLHeadingElement>();
+  const [titleActionsRef, titleActionsVisible] = useSlideUp<HTMLDivElement>();
+  const [contentRef, contentVisible] = useSlideUp<HTMLDivElement>();
+
   return (
     <div className="flex flex-col md:flex-row background-pattern z-10">
       <BackendNav className=""/>
       <main className="overflow-x-auto w-full min-h-screen z-20">
         <div className="flex flex-col h-full">
           <div className="flex justify-between gap-4 md:gap-8 h-20 bg-white border-b border-stone-200 px-4 md:px-8 py-2">
-            <div className="flex gap-2 md:gap-4">
+            <div
+              ref={titleRef}
+              className={`flex gap-2 md:gap-4 slide-up ${
+                titleVisible ? "show" : ""
+              }`}
+            >
               {backArrow && (
                 <div className="flex justify-center items-center">
                   <ArrowLeftCircleIcon
@@ -57,11 +68,21 @@ export default function AdminLayout({ backArrow, titleActions, children }: Admin
                 </h1>
               </div>
             </div>
-            <div className="flex justify-center items-center">
+            <div
+              ref={titleActionsRef}
+              className={`flex justify-center items-center slide-up ${
+                titleActionsVisible ? "show" : ""
+              }`}
+            >
               {titleActions}
             </div>
           </div>
-          <div className="flex h-full">
+          <div
+            ref={contentRef}
+            className={`flex h-full slide-up ${
+              contentVisible ? "show" : ""
+            }`}
+          >
             {children}
           </div>
           <Outlet />
