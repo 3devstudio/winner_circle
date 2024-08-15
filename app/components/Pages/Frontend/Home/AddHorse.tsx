@@ -19,7 +19,7 @@ interface Horse {
 interface AddHorseProps {
   onAddHorse: (horses: Horse[]) => void;
   horses: Horse[];
-  errors: { [key: string]: string };
+  errors: { [key: string]: string | undefined }
 }
 
 const AddHorse: React.FC<AddHorseProps> = ({
@@ -124,11 +124,11 @@ const AddHorse: React.FC<AddHorseProps> = ({
 
   return (
     <div className="p-4 bg-white border border-stone-200 rounded-lg">
-      {horses.length === 0 && !showModal && (
+      {horses.length === 0 && (
         <div className="text-center flex flex-col gap-2">
           <div className="flex flex-col gap-4">
             <img
-              src="/assets/running-horses.avif"
+              src="/assets/img/running-horses.avif"
               className="w-96 opacity-50 mx-auto"
               alt=""
             />
@@ -137,7 +137,7 @@ const AddHorse: React.FC<AddHorseProps> = ({
             </p>
           </div>
           <div className="flex justify-center">
-            <div className="w-1/2">
+            <div className="w-full md:w-1/3">
               <Button
                 primary
                 className="mt-2 text-sm"
@@ -147,6 +147,54 @@ const AddHorse: React.FC<AddHorseProps> = ({
                 Add a horse
               </Button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {horses.length > 0 && (
+        <div>
+          <h2 className="text-xl mb-4">Added Horses</h2>
+          <ul className="flex flex-col gap-2 py-2 divide-y divide-stone-200 max-h-[20rem] overflow-auto">
+            {horses.map((horse, index) => (
+              <div key={index} className="flex gap-4">
+                <img
+                  src="/assets/img/horse_head.jpg"
+                  className="h-16 w-16 rounded-full"
+                  alt="Horse"
+                />
+                <li className="flex justify-between items-center w-full">
+                  <div className="flex flex-col">
+                    <p className="font-semibold text-stone-800 text-base">
+                      {horse.name}
+                    </p>
+                    <div className="flex gap-1 text-stone-500 text-sm">
+                      <p>{horse.breed}</p>
+                      <span>|</span>
+                      <p className="font-light">{horse.gender}</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4 mr-2">
+                    <PencilIcon
+                      className="h-6 w-6 text-stone-600 hover:text-primary transition cursor-pointer"
+                      onClick={() => handleEditHorse(index)}
+                    />
+                    <TrashIcon
+                      className="h-6 w-6 text-stone-600 hover:text-rose-500 transition cursor-pointer"
+                      onClick={() => handleDeleteHorse(index)}
+                    />
+                  </div>
+                </li>
+              </div>
+            ))}
+          </ul>
+          <div className="w-full md:w-1/3 mx-auto">
+            <Button
+              primary
+              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+              onClick={handleAddAnotherHorse}
+            >
+              Add another horse
+            </Button>
           </div>
         </div>
       )}
@@ -215,58 +263,12 @@ const AddHorse: React.FC<AddHorseProps> = ({
             onClick={() => setShowDeleteModal(false)}
           />
           <Button
-            danger
+            primary
             text="Delete"
             onClick={confirmDeleteHorse}
           />
         </div>
       </Modal>
-
-      {horses.length > 0 && (
-        <div>
-          <h2 className="text-xl mb-4">Added Horses</h2>
-          <ul className="flex flex-col gap-2 py-2 divide-y divide-stone-200 max-h-[20rem] overflow-auto">
-            {horses.map((horse, index) => (
-              <div key={index} className="flex gap-4">
-                <img
-                  src="/assets/horse_head.jpg"
-                  className="h-16 w-16 rounded-full"
-                  alt="Horse"
-                />
-                <li className="flex justify-between items-center w-full">
-                  <div className="flex flex-col">
-                    <p className="font-semibold text-stone-800 text-base">
-                      {horse.name}
-                    </p>
-                    <div className="flex gap-1 text-stone-500 text-sm">
-                      <p>{horse.breed}</p>
-                      <span>|</span>
-                      <p className="font-light">{horse.gender}</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-4 mr-2">
-                    <PencilIcon
-                      className="h-6 w-6 text-stone-600 hover:text-primary transition cursor-pointer"
-                      onClick={() => handleEditHorse(index)}
-                    />
-                    <TrashIcon
-                      className="h-6 w-6 text-stone-600 hover:text-rose-500 transition cursor-pointer"
-                      onClick={() => handleDeleteHorse(index)}
-                    />
-                  </div>
-                </li>
-              </div>
-            ))}
-          </ul>
-          <Button
-            primary
-            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-            onClick={handleAddAnotherHorse}
-          >
-            Add another horse
-          </Button>
-        </div>
-      )}
     </div>
   );
 };

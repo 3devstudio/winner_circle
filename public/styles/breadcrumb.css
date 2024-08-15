@@ -1,11 +1,5 @@
-/* path: app/styles/breadcrumb.css */
-
-.breadcrumb-container {
-  display: flex;
-  margin-bottom: 1rem;
-  background-color: #e1e1e1;
+.transform-skewX-16deg {
   transform: skewX(-16deg);
-  overflow: hidden;
 }
 
 .breadcrumb-item {

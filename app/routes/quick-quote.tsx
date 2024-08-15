@@ -113,7 +113,7 @@ export default function Contact() {
   return (
     <AppLayout>
       <BackgroundImage
-        image="/assets/truck_and_trailer.jpg"
+        image="/assets/img/truck_and_trailer.jpg"
         size="sm"
       >
         <div className="text-white text-center">

@@ -18,7 +18,7 @@ export default function LoginButton() {
       return (
         <Dropdown
           triggerText={initials}
-          triggerClassName="flex items-center justify-center h-8 w-8 rounded-full bg-orange-50 text-primary transition ml-4 focus:ring focus:ring-primary"
+          triggerClassName="flex items-center justify-center h-8 w-8 rounded-full bg-orange-50 text-primary transition focus:ring focus:ring-primary"
           showChevron={false}
         >
           <Link
@@ -78,7 +78,7 @@ export default function LoginButton() {
     } else {
       return (
         <Link to="/login" className="my-auto">
-          <UserCircleIcon className="h-8 w-8 text-stone-300 hover:text-slate-100 transition ml-4" />
+          <UserCircleIcon className="h-8 w-8 text-stone-300 hover:text-slate-100 transition ml-2 md:ml-0" />
         </Link>
       );
     }

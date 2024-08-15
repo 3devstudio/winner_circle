@@ -16,7 +16,7 @@ const OurPrinciples: React.FC = () => {
 
   return (
     <AppLayout>
-      <BackgroundImage image="/assets/truck_and_trailer.jpg" size="sm">
+      <BackgroundImage image="/assets/img/truck_and_trailer.jpg" size="sm">
         <div className="text-white text-center">
           <h1
             ref={h1Ref}

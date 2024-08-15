@@ -16,7 +16,7 @@ const OurServices: React.FC = () => {
 
   return (
     <AppLayout>
-      <BackgroundImage image="/assets/IMG_7389.jpg" size="sm">
+      <BackgroundImage image="/assets/img/IMG_7389.jpg" size="sm">
         <div className="text-white text-center">
           <h1
             ref={titleRef}

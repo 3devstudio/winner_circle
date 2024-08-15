@@ -85,14 +85,15 @@ export default function Navigation() {
         </ul>
 
         {/* Quick Quote and Login */}
-        <div className="hidden lg:flex gap-2 justify-end text-sm ml-8">
+        <div className="hidden lg:flex gap-6 justify-end text-sm ml-8">
           <div className="my-auto">
-            <Button
-              primary
-              link="/quick-quote"
-              className="text-lg"
-            >
+            <Button secondary link="/quick-quote" className="text-lg">
               Quick Quote
+            </Button>
+          </div>
+          <div className="my-auto">
+            <Button primary link="/submit-waiver" className="text-lg">
+              Book Now
             </Button>
           </div>
           <LoginButton />
@@ -101,17 +102,29 @@ export default function Navigation() {
 
       {/* Mobile navigation */}
       <div className="lg:hidden flex justify-end text-stone-300 text-sm font-light uppercase">
-        <Bars3Icon
-          className="h-10 w-10 text-white hover:text-primary transition cursor-pointer"
-          onClick={openMobileNav}
-        />
+        <button onClick={openMobileNav} className="mr-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-7 w-7"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 6h16M4 12h16m-7 6h7"
+            />
+          </svg>
+        </button>
         <LoginButton />
       </div>
       <MobileNav
         isOpen={isMobileNavOpen}
         onClose={closeMobileNav}
         links={mobileLinks}
-        showQuickQuote
+        actionButtons
       />
     </nav>
   );

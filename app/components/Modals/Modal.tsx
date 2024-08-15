@@ -43,7 +43,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, children }) => {
 
   const modalContent = (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 ${
+      className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 p-4 md:p-8 ${
         show && isVisible ? "opacity-100 visible" : "opacity-0 invisible"
       }`}
     >

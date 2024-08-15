@@ -22,14 +22,14 @@ const OurEquipment = () => {
         <div className="">
           <FadeInImage
             className="w-full"
-            src="/assets/chet_and_logan.jpeg"
+            src="/assets/img/chet_and_logan.jpeg"
             alt="Chet and Logan"
           />
         </div>
         <div className="">
           <FadeInImage
             className="w-full"
-            src="/assets/red_truck.jpeg"
+            src="/assets/img/red_truck.jpeg"
             alt="Red truck with trailer"
           />
         </div>

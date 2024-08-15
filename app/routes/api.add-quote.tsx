@@ -1,8 +1,7 @@
 import { json, ActionFunction } from "@remix-run/node";
-import { createQuote, QuoteCreateInputWithHorses } from "~/models/quote.server"; // Import the interface
+import { createQuote, QuoteCreateInputWithHorses } from "~/models/quote.server";
 
 export let action: ActionFunction = async ({ request }) => {
-  console.log("API route hit");
   const data = await request.json();
   const {
     timeFramePickUp,
