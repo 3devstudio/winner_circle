@@ -14,7 +14,7 @@ const Textarea: React.FC<TextareaProps> = ({ placeholder, label, required = fals
   return (
     <div className="flex flex-col">
       {label ? (
-        <label className="mb-2 text-sm text-gray-700">
+        <label className="mb-1 text-sm text-gray-700 font-light">
           {label} {required ? <span className="text-red-500">*</span> : null}
         </label>
       ) : null}

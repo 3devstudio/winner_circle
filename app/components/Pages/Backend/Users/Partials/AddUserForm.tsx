@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Input from "~/components/Inputs/Input";
 import Button from "~/components/Buttons/Button";
+import ResponseMessage from "~/components/Blocks/Messaging/ResponseMessage";
 
 interface User {
   firstName: string;
@@ -23,6 +24,10 @@ const AddUserForm: React.FC = () => {
   });
 
   const [errors, setErrors] = useState<Errors>({});
+  const [message, setMessage] = useState<string | null>(null); // State for the message
+  const [messageType, setMessageType] = useState<
+    "success" | "error" | "info" | "warning"
+  >("success"); // State for the message type
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -38,6 +43,10 @@ const AddUserForm: React.FC = () => {
     }));
   };
 
+  const clearMessage = () => {
+    setMessage(null);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -51,25 +60,29 @@ const AddUserForm: React.FC = () => {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        // Clear form and errors after successful submission
         setUser({ firstName: "", lastName: "", email: "" });
         setErrors({});
+        setMessage("User added successfully!");
+        setMessageType("success");
       } else {
         const errorData = await response.json();
         if (errorData.error) {
-          // Handle specific error cases here
           if (errorData.error === "User already exists") {
             setErrors((prevErrors) => ({
               ...prevErrors,
               email: "A user with this email already exists.",
             }));
+            setMessage("A user with this email already exists.");
+            setMessageType("error");
           } else {
             console.error("Unexpected error:", errorData.error);
+            setMessage("Unexpected error occurred.");
+            setMessageType("error");
           }
         } else {
           console.error("Response was not ok");
+          setMessage("Failed to add user.");
+          setMessageType("error");
         }
       }
     } catch (error) {
@@ -78,6 +91,8 @@ const AddUserForm: React.FC = () => {
         ...prevErrors,
         general: "An unexpected error occurred. Please try again later.",
       }));
+      setMessage("An unexpected error occurred. Please try again later.");
+      setMessageType("error");
     }
   };
 
@@ -121,6 +136,11 @@ const AddUserForm: React.FC = () => {
       <div className="w-full flex justify-end">
         <Button primary type="submit" text="Add" className="max-w-[10rem]" />
       </div>
+      <ResponseMessage
+        message={message}
+        clearMessage={clearMessage}
+        type={messageType}
+      />
       {errors.general && (
         <div className="text-red-500 text-sm mt-2">{errors.general}</div>
       )}

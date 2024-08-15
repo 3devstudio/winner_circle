@@ -42,7 +42,7 @@ export default function Header({ className = "" }: HeaderProps) {
             rel="noopener noreferrer"
           >
             <img
-              src="/assets/facebook.png"
+              src="/assets/img/facebook.png"
               alt="Go to Facebook page"
               className="h-5 w-5"
             />
@@ -76,7 +76,7 @@ export default function Header({ className = "" }: HeaderProps) {
           <a href="/">
             <img
               ref={logoRef}
-              src="/assets/logo.png"
+              src="/assets/img/logo.png"
               alt="Winner Circle Trucking Logo"
               className={`pr-8 md:pr-12 lg:pr-16 ${
                 isScrolled ? "h-14 md:h-20" : "h-20 md:h-24 lg:h-32"

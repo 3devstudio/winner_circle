@@ -15,14 +15,14 @@ interface MobileNavProps {
   isOpen: boolean;
   onClose: () => void;
   links: Array<{ path: string; label: string }>;
-  showQuickQuote?: boolean;
+  actionButtons?: boolean;
 }
 
 export default function MobileNav({
   isOpen,
   onClose,
   links,
-  showQuickQuote = false,
+  actionButtons = false,
 }: MobileNavProps) {
   const location = useLocation();
 
@@ -63,13 +63,12 @@ export default function MobileNav({
       >
         <a href="/">
           <img
-            src="/assets/logo.png"
+            src="/assets/img/logo.png"
             alt="Winner Circle Trucking Logo"
             className="h-40 w-full"
           />
         </a>
       </div>
-
       <ul
         ref={linksRef}
         className={`flex flex-col items-start w-full justify-start px-8 gap-6 text-stone-300 text-2xl md:text-4xl font-light uppercase slide-up ${
@@ -90,21 +89,21 @@ export default function MobileNav({
           </Link>
         ))}
       </ul>
-
       <div
         ref={actionButtonsRef}
         className={`absolute bottom-0 inset-x-0 p-4 flex flex-col gap-4 px-8 slide-up ${
           actionButtonsVisible ? "show" : ""
         }`}
       >
-        {showQuickQuote && (
-          <Button
-            primary
-            link="/quick-quote"
-            textSize="text-lg"
-          >
-            Quick Quote
-          </Button>
+        {actionButtons && (
+          <div className="flex flex-col gap-2">
+            <Button secondary link="/quick-quote" textSize="text-lg">
+              Quick Quote
+            </Button>
+            <Button primary link="/submit-waiver" textSize="text-lg">
+              Book Now
+            </Button>
+          </div>
         )}
         {/* ONLY SHOW THESE IF ON ADMIN PORTAL */}
         {location.pathname.includes("/admin") && (

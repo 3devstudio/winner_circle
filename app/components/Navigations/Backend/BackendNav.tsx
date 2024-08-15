@@ -78,7 +78,7 @@ const BackendNav: React.FC<SidebarNavProps> = ({ className, ref }) => {
       >
         {/* Logo */}
         <div ref={logoRef} className={`slide-up ${logoVisible ? "show" : ""}`}>
-          <img src="/assets/logo.png" alt="logo" className="h-24 mx-auto" />
+          <img src="/assets/img/logo.png" alt="logo" className="h-24 mx-auto" />
         </div>
         {/* User Profile */}
         <Link
@@ -175,7 +175,7 @@ const BackendNav: React.FC<SidebarNavProps> = ({ className, ref }) => {
           ref={mobileLogoRef}
           className={`flex gap-2 slide-up ${mobileLogoVisible ? "show" : ""}`}
         >
-          <img src="/assets/logo.png" alt="logo" className="h-16 my-auto" />
+          <img src="/assets/img/logo.png" alt="logo" className="h-16 my-auto" />
           <p className="text-stone-300 text-sm my-auto text-xl font-semibold">
             Admin Panel
           </p>

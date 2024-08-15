@@ -15,8 +15,8 @@ interface ButtonProps {
   className?: string;
   children?: React.ReactNode;
   type?: "button" | "submit" | "reset";
-  textSize?: string;  // New prop for custom text size
-  openInNewTab?: boolean;  // New prop for opening link in a new tab
+  textSize?: string;
+  openInNewTab?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -32,8 +32,8 @@ const Button: React.FC<ButtonProps> = ({
   disabled = false,
   className,
   children,
-  textSize = "text-xs", // Default to 'text-xs'
-  openInNewTab = false,  // Default to false
+  textSize = "text-xs",
+  openInNewTab = false,
 }) => {
   const buttonClasses = `transition ${textSize} text-center w-full rounded-md whitespace-nowrap font-light
     ${

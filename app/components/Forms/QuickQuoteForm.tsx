@@ -6,7 +6,7 @@ import Input from "../Inputs/Input";
 import Textarea from "../Inputs/Textarea";
 import AddHorse from "../Pages/Frontend/Home/AddHorse";
 import Breadcrumb from "../Pages/Frontend/Home/Breadcrumb";
-import SuccessMessage from "../Blocks/Messaging/SuccessMessage";
+import ResponseMessage from "../Blocks/Messaging/ResponseMessage";
 
 interface Horse {
   name: string;
@@ -200,7 +200,7 @@ const QuickQuoteForm: React.FC = () => {
 
   return (
     <div
-      style={{ backgroundImage: "url('/assets/horses.jpeg')" }}
+      style={{ backgroundImage: "url('/assets/img/horses.jpeg')" }}
       className="relative w-full h-full bg-no-repeat bg-cover bg-center bg-fixed flex justify-center items-center"
     >
       <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
@@ -224,6 +224,7 @@ const QuickQuoteForm: React.FC = () => {
               <Breadcrumb
                 step={step}
                 setStep={handleStepChange}
+                steps={["Horse Transport Details", "Contact Information"]}
                 completedSteps={completedSteps}
               />
             </div>
@@ -232,7 +233,7 @@ const QuickQuoteForm: React.FC = () => {
               className={`slide-up ${formInView ? "show" : ""}`}
             >
               {successMessage && (
-                <SuccessMessage
+                <ResponseMessage
                   message={successMessage}
                   clearMessage={() => setSuccessMessage(null)}
                 />
@@ -300,6 +301,11 @@ const QuickQuoteForm: React.FC = () => {
                           horses={horses}
                           errors={errors}
                         />
+                        {shouldValidate && errors.horses && (
+                          <p className="text-red-500 text-sm mt-2">
+                            Please add a horse to continue.
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>
