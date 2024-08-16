@@ -1,6 +1,6 @@
+import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import PropTypes from "prop-types";
 
 interface ModalProps {
   show: boolean;
@@ -43,7 +43,7 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, children }) => {
 
   const modalContent = (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 ${
+      className={`fixed inset-0 z-50 flex items-center justify-center transition-opacity duration-300 p-4 md:p-8 ${
         show && isVisible ? "opacity-100 visible" : "opacity-0 invisible"
       }`}
     >
@@ -52,6 +52,9 @@ const Modal: React.FC<ModalProps> = ({ show, onClose, children }) => {
           show ? "opacity-50" : "opacity-0"
         }`}
         onClick={handleBackdropClick}
+        role="button"
+        tabIndex={0}
+        onKeyPress={(e) => e.key === 'Enter' && handleBackdropClick(e as any)}
       ></div>
       <div
         className={`bg-white rounded-lg shadow-lg w-full max-w-3xl mx-auto p-6 z-10 transform transition-transform duration-300 ${

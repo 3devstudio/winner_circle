@@ -5,7 +5,7 @@ export const meta: MetaFunction = () => [{ title: "Winner Circle" }];
 export default function About() {
   return (
     <div className="flex flex-col justify-center" style={{ minHeight: "calc(100vh - 100px)" }}>
-      <div className="mx-auto w-full min-h-full bg-cover bg-center" style={{ backgroundImage: "url('/assets/horses.jpeg')", minHeight: "calc(100vh - 100px)" }}>
+      <div className="mx-auto w-full min-h-full bg-cover bg-center" style={{ backgroundImage: "url('/assets/img/horses.jpeg')", minHeight: "calc(100vh - 100px)" }}>
         <h1 className="text-white text-4xl font-bold text-center pt-4">About Winner Circle</h1>
       </div>
       <div className="w-full h-[90vh] flex">
@@ -69,7 +69,7 @@ export default function About() {
           <h1 className="text-4xl">Meet the best team ever!</h1>
         </div>
         <div className="w-full h-[90%] flex justify-center">
-          <div className="h-full bg-cover bg-center flex justify-center items-center" style={{ backgroundImage: "url('/assets/couple.jpg')", width: "30vw" }}>
+          <div className="h-full bg-cover bg-center flex justify-center items-center" style={{ backgroundImage: "url('/assets/img/couple.jpg')", width: "30vw" }}>
             <div className="w-full h-full px-4 flex flex-col justify-center items-center text-white text-xl opacity-0 transition-all duration-300 ease-in-out hover:opacity-100 bg-black bg-opacity-0 hover:bg-opacity-50">
               <span className="mb-2">
                 Meet Chet & Nanette
@@ -80,7 +80,7 @@ export default function About() {
             </div>
           </div>
           <div className="h-full w-[10%]" />
-          <div className="h-full bg-cover bg-center flex justify-center items-center" style={{ backgroundImage: "url('/assets/logan.jpeg')", width: "30vw" }}>
+          <div className="h-full bg-cover bg-center flex justify-center items-center" style={{ backgroundImage: "url('/assets/img/logan.jpeg')", width: "30vw" }}>
             <div className="w-full h-full px-4 flex flex-col justify-center items-center text-white text-xl opacity-0 transition-all duration-300 ease-in-out hover:opacity-100 bg-black bg-opacity-0 hover:bg-opacity-50">
               <span className="mb-2">
                 Meet Logan

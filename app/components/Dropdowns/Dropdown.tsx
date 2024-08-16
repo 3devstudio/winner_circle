@@ -1,7 +1,5 @@
-// components/Dropdown.tsx
-
-import React, { useState, useRef, useEffect } from 'react';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
+import React, { useState, useRef, useEffect } from 'react';
 
 interface DropdownProps {
   triggerText: string;

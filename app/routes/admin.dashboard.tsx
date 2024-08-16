@@ -1,9 +1,9 @@
 import type { MetaFunction } from "@remix-run/node";
-import { Link } from "@remix-run/react";
-
 import { requireUser } from "../session.server";
 
-export const meta: MetaFunction = () => [{ title: "Winners Cirlce" }];
+import AdminLayout from "../layouts/AdminLayout";
+
+export const meta: MetaFunction = () => [{ title: "Dashboard | Admin Portal" }];
 
 export async function loader({ request }: { request: Request }) {
   await requireUser(request);
@@ -12,13 +12,10 @@ export async function loader({ request }: { request: Request }) {
 
 export default function AdminDashboard() {
   return (
-    <div className="mt-20">
-      <h1>Admin Dashboard</h1>
-      <Link to="/admin/quotes">Quotes</Link>
-      <Link to="/admin/trips">Trips</Link>
-      <Link to="/admin/reviews">Reviews</Link>
-      <Link to="/admin/photo-library">Photo Library</Link>
-      <Link to="/admin/users">Users</Link>
-    </div>
+    <AdminLayout>
+      <div className="p-4 md:p-8 h-full w-full">
+
+      </div>
+    </AdminLayout>
   )
 }

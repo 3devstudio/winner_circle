@@ -5,20 +5,25 @@ import { prisma } from "~/db.server";
 
 export type { User } from "@prisma/client";
 
+//Get User by Id
 export async function getUserById(id: User["id"]) {
   return prisma.user.findUnique({ where: { id } });
 }
 
+//Get User by Email
 export async function getUserByEmail(email: User["email"]) {
   return prisma.user.findUnique({ where: { email } });
 }
 
-export async function createUser(email: User["email"], password: string) {
+//Create User
+export async function createUser(email: User["email"], password: string, firstName: string, lastName: string) {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   return prisma.user.create({
     data: {
       email,
+      firstName,
+      lastName,
       password: {
         create: {
           hash: hashedPassword,
@@ -28,10 +33,33 @@ export async function createUser(email: User["email"], password: string) {
   });
 }
 
+//Soft Delete User by Id
+export async function softDeleteUserById(userId: User['id']) {
+  return prisma.user.update({
+    where: { id: userId },
+    data: { deletedAt: new Date() },
+  });
+}
+
+//Delete User by Email
 export async function deleteUserByEmail(email: User["email"]) {
   return prisma.user.delete({ where: { email } });
 }
 
+//Restore User by Id
+export async function restoreUserById(userId: User['id']) {
+  return prisma.user.update({
+    where: { id: userId },
+    data: { deletedAt: null },
+  });
+}
+
+//Fetch all users
+export async function getAllUsers() {
+  return prisma.user.findMany();
+}
+
+//Verify Login
 export async function verifyLogin(
   email: User["email"],
   password: Password["hash"],
@@ -60,4 +88,13 @@ export async function verifyLogin(
   const { password: _password, ...userWithoutPassword } = userWithPassword;
 
   return userWithoutPassword;
+}
+
+//Update User Password
+export async function updateUserPassword(userId: string, newPassword: string) {
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  await prisma.password.update({
+    where: { userId },
+    data: { hash: hashedPassword },
+  });
 }

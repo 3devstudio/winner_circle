@@ -1,9 +1,9 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, MutableRefObject } from 'react';
 
-const useSlideUp = (threshold = 0.1) => {
+const useSlideUp = <T extends HTMLElement>(threshold = 0.1) => {
   const [isIntersecting, setIsIntersecting] = useState(false);
   
-  const ref = useRef(null);
+  const ref = useRef<T | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -18,13 +18,15 @@ const useSlideUp = (threshold = 0.1) => {
       }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
+    const currentRef = ref.current;
+
+    if (currentRef) {
+      observer.observe(currentRef);
     }
 
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, [threshold]);

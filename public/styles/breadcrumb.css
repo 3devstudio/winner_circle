@@ -1,0 +1,37 @@
+.transform-skewX-16deg {
+  transform: skewX(-16deg);
+}
+
+.breadcrumb-item {
+  position: relative;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  color: #555;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+  padding: 0.5rem 1rem;
+}
+
+.breadcrumb-title {
+  display: flex;
+  transform: skewX(16deg); /* Reverse the skew for the inner content */
+}
+
+.breadcrumb-item.active {
+  background-color: #292827;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.breadcrumb-item:hover:not(.active) {
+  background-color: rgba(205, 205, 205, 0.429);
+}
+
+.breadcrumb-item.active:hover {
+  background-color: #1c1916;
+}
+
+.breadcrumb-item:last-child {
+  margin-right: 0;
+}

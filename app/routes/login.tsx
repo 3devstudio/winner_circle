@@ -6,8 +6,8 @@ import type {
 import { json, redirect } from "@remix-run/node";
 import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
 import { useEffect, useRef } from "react";
-import Button from "~/components/Buttons/Button";
 
+import Button from "~/components/Buttons/Button";
 import { verifyLogin } from "~/models/user.server";
 import { createUserSession, getUserId } from "~/session.server";
 import { safeRedirect, validateEmail } from "~/utils";
@@ -67,7 +67,7 @@ export const meta: MetaFunction = () => [{ title: "Login" }];
 
 export default function LoginPage() {
   const [searchParams] = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") || "/notes";
+  const redirectTo = searchParams.get("redirectTo") || "/admin/dashboard";
   const actionData = useActionData<typeof action>();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -83,11 +83,11 @@ export default function LoginPage() {
   return (
     <div className="md:flex h-screen w-full bg-secondary">
       <div className="hidden md:flex w-full h-full justify-center items-center bg-secondary p-8">
-        <img src="/assets/logo.png" alt="Logo" className="h-52 xl:h-72" />
+        <img src="/assets/img/logo.png" alt="Logo" className="h-52 xl:h-72" />
       </div>
       <div className="w-full h-full flex justify-center items-center p-8 relative md:bg-tertiary">
         <div className="absolute md:hidden top-8 inset-x-0 flex justify-center items-center">
-          <img src="/assets/logo.png" alt="Logo" className="h-44" />
+          <img src="/assets/img/logo.png" alt="Logo" className="h-44" />
         </div>
         <div className="flex flex-col max-w-2xl p-8 rounded-lg bg-white w-full">
           <h1 className="w-full text-xl md:text-2xl font-bold text-stone-700 mb-8">

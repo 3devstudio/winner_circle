@@ -1,22 +1,24 @@
-import React from "react";
 import type { MetaFunction } from "@remix-run/node";
-import ImageWithText from "~/components/Blocks/ImageWithText";
+import React from "react";
 import ContactCard from "~/components/Blocks/ContactCard";
-import QuickQuoteBanner from "~/components/Pages/Home/QuickQuoteBanner";
-import useSlideUp from "~/hooks/useSlideUp";
 import BackgroundImage from "~/components/Blocks/BackgroundImage";
+import ImageWithText from "~/components/Blocks/ImageWithText";
+import QuickQuoteBanner from "~/components/Pages/Frontend/Home/QuickQuoteBanner";
+import useSlideUp from "~/hooks/useSlideUp";
+
+import AppLayout from "~/layouts/AppLayout";
 
 export const meta: MetaFunction = () => [{ title: "Meet Our Team" }];
 
 const MeetOurTeam: React.FC = () => {
-  const [titleRef, titleVisible] = useSlideUp();
-  const [imgRef, imgVisible] = useSlideUp();
-  const [card1Ref, card1Visible] = useSlideUp();
-  const [card2Ref, card2Visible] = useSlideUp();
+  const [titleRef, titleVisible] = useSlideUp<HTMLDivElement>();
+  const [imgRef, imgVisible] = useSlideUp<HTMLDivElement>();
+  const [card1Ref, card1Visible] = useSlideUp<HTMLDivElement>();
+  const [card2Ref, card2Visible] = useSlideUp<HTMLDivElement>();
 
   return (
-    <div>
-      <BackgroundImage image="/assets/horse_in_woods.jpg" size="sm">
+    <AppLayout>
+      <BackgroundImage image="/assets/img/horse_in_woods.jpg" size="sm">
         <div className="flex flex-col gap-2 md:gap-4 justify-center items-center w-full h-full">
           <h1
             ref={titleRef}
@@ -35,7 +37,7 @@ const MeetOurTeam: React.FC = () => {
         }`}
       >
         <ImageWithText
-          imageUrl="/assets/chet_and_nanette.jpeg"
+          imageUrl="/assets/img/chet_and_nanette.jpeg"
           altText="Chet Child"
           text="Chet and Nanette Child"
           description="Our team consists of Chet and Nanette Child. We maintain two rigs
@@ -51,7 +53,7 @@ const MeetOurTeam: React.FC = () => {
           className={`h-[40rem] overflow-hidden lg:h-[50rem] w-full slide-up ${card1Visible ? "show" : ""}`}
         >
           <ContactCard
-            imageUrl="/assets/IMG_7418.jpg"
+            imageUrl="/assets/img/IMG_7418.jpg"
             name="Chet Child"
             phone="(801) 668-9989"
             nameWidthClass="w-32 sm:w-40 md:w-52"
@@ -64,7 +66,7 @@ const MeetOurTeam: React.FC = () => {
           className={`h-[40rem] overflow-hidden lg:h-[50rem] w-full slide-up ${card2Visible ? "show" : ""}`}
         >
           <ContactCard
-            imageUrl="/assets/IMG_5253.jpg"
+            imageUrl="/assets/img/IMG_5253.jpg"
             name="Nanette Child"
             phone="(435) 552-0959"
             nameWidthClass="w-44 sm:w-52 md:w-64"
@@ -74,7 +76,7 @@ const MeetOurTeam: React.FC = () => {
         </div>
       </div>
       <QuickQuoteBanner />
-    </div>
+    </AppLayout>
   );
 };
 

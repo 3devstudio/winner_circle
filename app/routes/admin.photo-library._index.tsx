@@ -1,12 +1,21 @@
-import { Link } from "@remix-run/react";
+import type { MetaFunction } from "@remix-run/node";
+import { requireUser } from "../session.server";
 
-export default function PhotoLibraryIndexPage() {
+import AdminLayout from "../layouts/AdminLayout";
+
+export const meta: MetaFunction = () => [{ title: "Photo Library | Admin Portal" }];
+
+export async function loader({ request }: { request: Request }) {
+  await requireUser(request);
+  return {};
+}
+
+export default function AdminPhotoLibrary() {
   return (
-    <p>
-      No photo selected. Select a photo on the left, or{" "}
-      <Link to="new-photo" className="text-blue-500 underline">
-        add a new photo.
-      </Link>
-    </p>
-  );
+    <AdminLayout>
+      <div className="p-4 md:p-8 h-full w-full">
+
+      </div>
+    </AdminLayout>
+  )
 }

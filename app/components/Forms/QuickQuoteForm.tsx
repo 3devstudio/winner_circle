@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+
+import useSlideUp from "~/hooks/useSlideUp";
+import Button from "../Buttons/Button";
 import Input from "../Inputs/Input";
 import Textarea from "../Inputs/Textarea";
-import Button from "../Buttons/Button";
-import Breadcrumb from "../Pages/Home/Breadcrumb";
-import AddHorse from "../Pages/Home/AddHorse";
-import useSlideUp from "~/hooks/useSlideUp";
+import AddHorse from "../Pages/Frontend/Home/AddHorse";
+import Breadcrumb from "../Pages/Frontend/Home/Breadcrumb";
+import ResponseMessage from "../Blocks/Messaging/ResponseMessage";
 
 interface Horse {
   name: string;
@@ -14,130 +16,205 @@ interface Horse {
   height: string;
 }
 
-const QuickQuoteForm = () => {
+const QuickQuoteForm: React.FC = () => {
   const [formData, setFormData] = useState({
-    date: "",
-    location: "",
-    destination: "",
-    numberOfHorses: "0",
+    timeFramePickUp: "",
+    pickUpLocation: "",
+    dropOffLocation: "",
+    horses: [] as Horse[],
     firstName: "",
     lastName: "",
-    phone: "",
+    phoneNumber: "",
     comments: "",
-    termsChecked: false,
+    healthCert: false,
   });
 
-  const [h1Ref, h1InView] = useSlideUp();
-  const [breadcrumRef, breadcrumbInView] = useSlideUp();
-  const [formRef, formInView] = useSlideUp();
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const [isNextEnabled, setIsNextEnabled] = useState(false);
-  const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
+  const [h1Ref, h1InView] = useSlideUp<HTMLDivElement>();
+  const [breadcrumRef, breadcrumbInView] = useSlideUp<HTMLDivElement>();
+  const [formRef, formInView] = useSlideUp<HTMLDivElement>();
+
   const [step, setStep] = useState(1);
-  const [completedSteps, setCompletedSteps] = useState<boolean[]>([false, false]);
+  const [completedSteps, setCompletedSteps] = useState<boolean[]>([
+    false,
+    false,
+  ]);
   const [horses, setHorses] = useState<Horse[]>([]);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [shouldValidate, setShouldValidate] = useState(false);
+
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => {
+        setSuccessMessage(null);
+      }, 8000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prevData) => ({ ...prevData, [field]: value }));
   };
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prevData) => ({ ...prevData, termsChecked: e.target.checked }));
-  };
-
-  const areTransportFieldsFilled = (data: typeof formData) => {
-    return (
-      data.date.trim() !== "" &&
-      data.location.trim() !== "" &&
-      data.destination.trim() !== "" &&
-      data.numberOfHorses !== "0"
-    );
-  };
-
-  const areContactFieldsFilled = (data: typeof formData) => {
-    return (
-      data.firstName.trim() !== "" &&
-      data.lastName.trim() !== "" &&
-      data.phone.trim() !== "" &&
-      data.comments.trim() !== "" &&
-      data.termsChecked
-    );
+    setFormData((prevData) => ({
+      ...prevData,
+      healthCert: e.target.checked,
+    }));
   };
 
   const handleAddHorse = (addedHorses: Horse[]) => {
     setHorses(addedHorses);
     setFormData((prevData) => ({
       ...prevData,
-      numberOfHorses: addedHorses.length.toString(),
+      horses: addedHorses,
     }));
   };
 
-  const areHorsesFilled = (horses: Horse[]) => {
-    return horses.every(
-      (horse) =>
-        horse.name.trim() !== "" &&
-        horse.breed.trim() !== "" &&
-        horse.gender.trim() !== "" &&
-        horse.age.trim() !== "" &&
-        horse.height.trim() !== "",
-    );
+  const validateStep1 = () => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!formData.timeFramePickUp.trim())
+      newErrors.timeFramePickUp = "Date is required";
+    if (!formData.pickUpLocation.trim())
+      newErrors.pickUpLocation = "Location is required";
+    if (!formData.dropOffLocation.trim())
+      newErrors.dropOffLocation = "Destination is required";
+    if (formData.horses.length === 0) newErrors.horses = "You must add horses";
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
   };
 
-  const checkIfAllFieldsAreFilled = (data: typeof formData, horses: Horse[]) => {
-    const contactFieldsFilled = areContactFieldsFilled(data);
-    const transportFieldsFilled = areTransportFieldsFilled(data);
-    const horsesFilled = areHorsesFilled(horses);
+  const validateStep2 = () => {
+    const newErrors: { [key: string]: string } = {};
 
-    const step1Completed = transportFieldsFilled && horsesFilled;
-    const step2Completed = contactFieldsFilled;
+    if (!formData.firstName.trim())
+      newErrors.firstName = "First name is required";
+    if (!formData.lastName.trim()) newErrors.lastName = "Last name is required";
+    if (!formData.phoneNumber.trim())
+      newErrors.phoneNumber = "Phone number is required";
+    if (!formData.healthCert)
+      newErrors.healthCert = "You must agree to the terms";
 
-    setCompletedSteps([step1Completed, step2Completed]);
+    setErrors(newErrors);
 
-    if (step === 1) {
-      setIsNextEnabled(step1Completed);
-    }
-
-    setIsSubmitEnabled(step1Completed && step2Completed);
-  };
-
-  useEffect(() => {
-    checkIfAllFieldsAreFilled(formData, horses);
-  }, [formData, horses]);
-
-  const handleStepChange = (newStep: number) => {
-    setStep(newStep);
-    checkIfAllFieldsAreFilled(formData, horses);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleNextClick = () => {
-    if (isNextEnabled) {
+    setShouldValidate(true);
+    if (step === 1 && validateStep1()) {
+      setCompletedSteps((prevSteps) => {
+        const newSteps = [...prevSteps];
+        newSteps[0] = true;
+        return newSteps;
+      });
       setStep(step + 1);
+      setShouldValidate(false);
+    } else if (step === 2 && validateStep2()) {
+      setCompletedSteps((prevSteps) => {
+        const newSteps = [...prevSteps];
+        newSteps[1] = true;
+        return newSteps;
+      });
+      setStep(step + 1);
+      setShouldValidate(false);
     }
   };
 
   const handleBackClick = () => {
     if (step > 1) {
       setStep(step - 1);
+      setShouldValidate(false);
+    }
+  };
+
+  const handleStepChange = (newStep: number) => {
+    if (newStep < step) {
+      setStep(newStep);
+      setShouldValidate(false);
+    } else {
+      setShouldValidate(true);
+      if (
+        (newStep === 2 && validateStep1()) ||
+        (newStep === 3 && validateStep2())
+      ) {
+        setStep(newStep);
+        setShouldValidate(false);
+      }
+    }
+  };
+
+  const handleSubmit = async () => {
+    setShouldValidate(true);
+    if (validateStep1() && validateStep2()) {
+      try {
+        const response = await fetch("/api/add-quote", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...formData,
+            horses: formData.horses.map((horse) => ({
+              name: horse.name,
+              breed: horse.breed,
+              gender: horse.gender,
+              age: parseInt(horse.age), // Ensure age is a number
+              height: horse.height,
+              tripId: "", // Ensure tripId is included if necessary
+            })),
+          }),
+        });
+        if (response.ok) {
+          setSuccessMessage(
+            "Thanks for requesting a quote! Someone will be in contact with you very shortly.",
+          );
+          // Reset form
+          setFormData({
+            timeFramePickUp: "",
+            pickUpLocation: "",
+            dropOffLocation: "",
+            horses: [],
+            firstName: "",
+            lastName: "",
+            phoneNumber: "",
+            comments: "",
+            healthCert: false,
+          });
+          setHorses([]);
+          setStep(1);
+          setCompletedSteps([false, false]);
+          setShouldValidate(false);
+        } else {
+          alert("Failed to submit the form.");
+        }
+      } catch (error) {
+        alert("An error occurred while submitting the form.");
+      }
     }
   };
 
   return (
     <div
-      style={{ backgroundImage: "url('/assets/horses.jpeg')" }}
+      style={{ backgroundImage: "url('/assets/img/horses.jpeg')" }}
       className="relative w-full h-full bg-no-repeat bg-cover bg-center bg-fixed flex justify-center items-center"
     >
       <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
       <div className="flex flex-col lg:flex-row w-full h-full z-20">
-        {/* Left Side (Free Quote Header) */}
         <div className="w-full lg:w-1/2 min-h-[20rem] lg:min-h-[40rem] flex justify-center items-center">
           <h1
             ref={h1Ref}
-            className={`h-fit md:w-5/6 text-3xl md:text-4xl lg:text-4xl xl:text-6xl text-stone-100 font-semibold px-8 pb-8 pt-16 md:mt-0 slide-up ${h1InView ? "show" : ""}`}
+            className={`h-fit md:w-5/6 text-3xl md:text-4xl lg:text-4xl xl:text-6xl text-stone-100 font-semibold px-8 pb-8 pt-16 md:mt-0 slide-up ${
+              h1InView ? "show" : ""
+            }`}
           >
             Reliable Equine Transport, Every Mile of the Way.
           </h1>
         </div>
-        {/* Right Side (Form) */}
         <div className="h-full w-full lg:w-1/2">
           <div className="bg-tertiary/75 h-full w-full min-h-[20rem] md:min-h-[40rem] flex flex-col gap-2 px-4 py-6">
             <div
@@ -147,6 +224,7 @@ const QuickQuoteForm = () => {
               <Breadcrumb
                 step={step}
                 setStep={handleStepChange}
+                steps={["Horse Transport Details", "Contact Information"]}
                 completedSteps={completedSteps}
               />
             </div>
@@ -154,9 +232,14 @@ const QuickQuoteForm = () => {
               ref={formRef}
               className={`slide-up ${formInView ? "show" : ""}`}
             >
-              {step === 1 && (
+              {successMessage && (
+                <ResponseMessage
+                  message={successMessage}
+                  clearMessage={() => setSuccessMessage(null)}
+                />
+              )}
+              {step === 1 ? (
                 <>
-                  {/* Section 2: Horse Transport Details */}
                   <div className="mb-4">
                     <h2 className="text-2xl text-stone-800 font-semibold mb-4">
                       Get a Free Quote Today!
@@ -169,10 +252,14 @@ const QuickQuoteForm = () => {
                             type="date"
                             placeholder="Select a date"
                             required={true}
-                            value={formData.date}
+                            value={formData.timeFramePickUp}
                             onChange={(e) =>
-                              handleInputChange("date", e.target.value)
+                              handleInputChange(
+                                "timeFramePickUp",
+                                e.target.value,
+                              )
                             }
+                            error={shouldValidate ? errors.timeFramePickUp : ""}
                           />
                         </div>
                       </div>
@@ -182,10 +269,14 @@ const QuickQuoteForm = () => {
                             label="Moving From"
                             placeholder="State & Zip Code"
                             required={true}
-                            value={formData.location}
+                            value={formData.pickUpLocation}
                             onChange={(e) =>
-                              handleInputChange("location", e.target.value)
+                              handleInputChange(
+                                "pickUpLocation",
+                                e.target.value,
+                              )
                             }
+                            error={shouldValidate ? errors.pickUpLocation : ""}
                           />
                         </div>
                         <div className="w-full">
@@ -193,15 +284,28 @@ const QuickQuoteForm = () => {
                             label="Moving To"
                             placeholder="State & Zip Code"
                             required={true}
-                            value={formData.destination}
+                            value={formData.dropOffLocation}
                             onChange={(e) =>
-                              handleInputChange("destination", e.target.value)
+                              handleInputChange(
+                                "dropOffLocation",
+                                e.target.value,
+                              )
                             }
+                            error={shouldValidate ? errors.dropOffLocation : ""}
                           />
                         </div>
                       </div>
                       <div className="w-full">
-                        <AddHorse onAddHorse={handleAddHorse} horses={horses} />
+                        <AddHorse
+                          onAddHorse={handleAddHorse}
+                          horses={horses}
+                          errors={errors}
+                        />
+                        {shouldValidate && errors.horses && (
+                          <p className="text-red-500 text-sm mt-2">
+                            Please add a horse to continue.
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -209,19 +313,15 @@ const QuickQuoteForm = () => {
                     <div className="w-40">
                       <Button
                         text="Next"
-                        disabled={!isNextEnabled}
                         onClick={handleNextClick}
-                        className={`mt-4 py-2 ${
-                          isNextEnabled ? "bg-primary" : "bg-gray-400"
-                        }`}
+                        className="mt-4 py-2 bg-primary"
                       />
                     </div>
                   </div>
                 </>
-              )}
-              {step === 2 && (
+              ) : null}
+              {step === 2 ? (
                 <>
-                  {/* Section 1: Contact Information */}
                   <div className="mb-4">
                     <h2 className="text-2xl text-stone-800 font-semibold mb-4">
                       Contact Information
@@ -237,6 +337,7 @@ const QuickQuoteForm = () => {
                             onChange={(e) =>
                               handleInputChange("firstName", e.target.value)
                             }
+                            error={shouldValidate ? errors.firstName : ""}
                           />
                         </div>
                         <div className="w-full">
@@ -248,18 +349,21 @@ const QuickQuoteForm = () => {
                             onChange={(e) =>
                               handleInputChange("lastName", e.target.value)
                             }
+                            error={shouldValidate ? errors.lastName : ""}
                           />
                         </div>
                       </div>
                       <div className="w-full md:w-1/2">
                         <Input
                           label="Phone"
+                          type="tel"
                           placeholder="Phone Number"
                           required={true}
-                          value={formData.phone}
+                          value={formData.phoneNumber}
                           onChange={(e) =>
-                            handleInputChange("phone", e.target.value)
+                            handleInputChange("phoneNumber", e.target.value)
                           }
+                          error={shouldValidate ? errors.phoneNumber : ""}
                         />
                       </div>
                       <div className="w-full">
@@ -270,6 +374,7 @@ const QuickQuoteForm = () => {
                           onChange={(e) =>
                             handleInputChange("comments", e.target.value)
                           }
+                          error={shouldValidate ? errors.comments : ""}
                         />
                       </div>
                       <div className="flex items-center gap-2">
@@ -278,14 +383,23 @@ const QuickQuoteForm = () => {
                           id="terms"
                           name="terms"
                           required
-                          checked={formData.termsChecked}
+                          checked={formData.healthCert}
                           onChange={handleCheckboxChange}
                           className="form-checkbox h-4 w-4 text-primary rounded-sm border-stone-300 focus:ring-2 focus:ring-primary"
                         />
-                        <label htmlFor="terms" className="text-stone-600 text-sm">
-                          I acknowledge a current Coggins and Health Certificate will be completed before pickup.
+                        <label
+                          htmlFor="terms"
+                          className="text-stone-600 text-sm"
+                        >
+                          I acknowledge a current Coggins and Health Certificate
+                          will be completed before pickup.
                         </label>
                       </div>
+                      {shouldValidate && errors.healthCert && (
+                        <p className="text-red-500 text-sm">
+                          {errors.healthCert}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="flex gap-4">
@@ -297,15 +411,12 @@ const QuickQuoteForm = () => {
                     <Button
                       primary
                       text="Submit"
-                      disabled={!isSubmitEnabled}
-                      onClick={() => alert("Form submitted")}
-                      className={`mt-4 py-2 ${
-                        isSubmitEnabled ? "bg-primary" : "bg-primary/50"
-                      }`}
+                      onClick={handleSubmit}
+                      className={`mt-4 py-2 bg-primary`}
                     />
                   </div>
                 </>
-              )}
+              ) : null}
             </div>
           </div>
         </div>
