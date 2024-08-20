@@ -41,6 +41,10 @@ export default function WaiverForm() {
     "success" | "error" | "info" | "warning" | undefined
   >(undefined);
 
+  const resetCompletedSteps = () => {
+    setCompletedSteps([]);
+  };
+
   const [isSameContactAsPickup, setIsSameContactAsPickup] =
     useState<boolean>(false);
   const [isSameAsPickup, setIsSameAsPickup] = useState<boolean>(false);
@@ -54,7 +58,6 @@ export default function WaiverForm() {
     setFormValues((prev) => {
       const updatedValues = { ...prev, [name]: value };
 
-      // Update drop-off fields only if "Same as pick up" or "Same as pick up contact" is selected
       if (
         isSameAsPickup &&
         name.startsWith("pick-up-") &&
@@ -263,14 +266,14 @@ export default function WaiverForm() {
         setResponseMessage("Thanks! Your waiver submitted successfully. We will be in contact with you shortly.");
         setResponseType("success");
 
-        // Reset form after successful submission
         setFormValues({ "isUserContact": "yes" });
         setHorses([]);
         setIsUserContact(true);
         setIsSameAsPickup(false);
         setIsSameContactAsPickup(false);
         setErrors({});
-        setStep(1); // Go back to step 1
+        setStep(1);
+        resetCompletedSteps();
       }
     }
   }, [fetcher.data]);
@@ -344,6 +347,7 @@ export default function WaiverForm() {
           "Confirmation",
         ]}
         completedSteps={completedSteps}
+        resetCompletedSteps={resetCompletedSteps}
       />
       <ResponseMessage
         message={responseMessage}

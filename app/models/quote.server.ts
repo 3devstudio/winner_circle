@@ -1,6 +1,5 @@
-// /Users/connorkelly/Documents/winner_circle/src/quote.server.ts
 import { prisma } from "~/db.server";
-import { Prisma, Quote } from "@prisma/client"; // Correct the import
+import { Prisma, Quote } from "@prisma/client";
 
 export type { Quote } from "@prisma/client";
 

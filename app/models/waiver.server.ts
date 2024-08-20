@@ -1,5 +1,12 @@
 import { prisma } from "~/db.server";
-import type { Waiver } from "@prisma/client";
+import type {
+  Waiver as PrismaWaiver,
+  Horse as PrismaHorse,
+} from "@prisma/client";
+
+export interface WaiverWithHorses extends PrismaWaiver {
+  horses: PrismaHorse[];
+}
 
 export interface WaiverCreateInput {
   firstName: string;
@@ -57,7 +64,7 @@ export async function createWaiver(data: WaiverCreateInput) {
 }
 
 // Function to get a single Waiver by ID
-export async function getWaiverById(id: string): Promise<Waiver | null> {
+export async function getWaiverById(id: string): Promise<PrismaWaiver | null> {
   return prisma.waiver.findUnique({
     where: { id },
     include: {
@@ -68,17 +75,22 @@ export async function getWaiverById(id: string): Promise<Waiver | null> {
 }
 
 // Function to get all Waivers
-export async function getAllWaivers(): Promise<Waiver[]> {
+export async function getAllWaivers(): Promise<WaiverWithHorses[]> {
   return prisma.waiver.findMany({
     include: {
       pickUpContact: true,
       dropOffContact: true,
+      horses: true,
     },
+    orderBy: { createdAt: "desc" },
   });
 }
 
 // Function to update a Waiver by ID
-export async function updateWaiver(id: string, data: Partial<Waiver>): Promise<Waiver> {
+export async function updateWaiver(
+  id: string,
+  data: Partial<PrismaWaiver>,
+): Promise<PrismaWaiver> {
   return prisma.waiver.update({
     where: { id },
     data,
@@ -86,7 +98,7 @@ export async function updateWaiver(id: string, data: Partial<Waiver>): Promise<W
 }
 
 // Function to delete a Waiver by ID
-export async function deleteWaiver(id: string): Promise<Waiver> {
+export async function deleteWaiver(id: string): Promise<PrismaWaiver> {
   return prisma.waiver.delete({
     where: { id },
   });
