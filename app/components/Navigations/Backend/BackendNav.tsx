@@ -10,6 +10,7 @@ import {
   ArrowLeftOnRectangleIcon,
   Squares2X2Icon,
   BugAntIcon,
+  DocumentTextIcon
 } from "@heroicons/react/24/outline";
 import MobileNav from "~/components/Navigations/Frontend/MobileNav";
 import useSlideUp from "~/hooks/useSlideUp";
@@ -51,6 +52,7 @@ const BackendNav: React.FC<SidebarNavProps> = ({ className, ref }) => {
 
   const topLinks = [
     { path: "/admin/dashboard", label: "Dashboard", Icon: Squares2X2Icon },
+    { path: "/admin/waivers", label: "Waivers", Icon: DocumentTextIcon },
     { path: "/admin/quotes", label: "Quotes", Icon: PencilSquareIcon },
     // { path: "/admin/trips", label: "Trips", Icon: CalendarIcon },
     // { path: "/admin/reviews", label: "Reviews", Icon: StarIcon },

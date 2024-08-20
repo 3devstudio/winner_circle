@@ -7,10 +7,14 @@ interface InputProps {
   type?: string;
   required?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  onClick?: (e: React.MouseEvent<HTMLInputElement>) => void;
+  onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
   value?: string;
   error?: string;
   name?: string;
   disabled?: boolean;
+  checked?: boolean;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -19,10 +23,14 @@ const Input: React.FC<InputProps> = ({
   type,
   required = false,
   onChange,
+  onBlur,
+  onClick,
+  onFocus,
   value,
   error,
   name,
   disabled,
+  checked,
 }) => {
   const [formattedValue, setFormattedValue] = useState(value || "");
 
@@ -30,9 +38,8 @@ const Input: React.FC<InputProps> = ({
     setFormattedValue(value || "");
   }, [value]);
 
-  // Function to format the phone number
   const formatPhoneNumber = (phone: string) => {
-    const cleaned = ("" + phone).replace(/\D/g, ""); // Remove all non-digit characters
+    const cleaned = ("" + phone).replace(/\D/g, "");
     const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
     if (match) {
       return `(${match[1]}) ${match[2]}-${match[3]}`;
@@ -40,25 +47,24 @@ const Input: React.FC<InputProps> = ({
     return phone;
   };
 
-  // Function to format the money value
   const formatMoney = (money: string) => {
-    // Remove all non-numeric and non-period characters
     const cleaned = money.replace(/[^\d.]/g, "");
-    // Add commas for thousands
     const [integerPart, decimalPart] = cleaned.split(".");
     const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return decimalPart ? `${formattedInteger}.${decimalPart}` : formattedInteger;
+    return decimalPart
+      ? `${formattedInteger}.${decimalPart}`
+      : formattedInteger;
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let inputValue = e.target.value;
 
     if (type === "tel") {
-      inputValue = formatPhoneNumber(inputValue); // Format the phone number
+      inputValue = formatPhoneNumber(inputValue);
     }
 
     if (type === "money") {
-      inputValue = formatMoney(inputValue); // Format the money
+      inputValue = formatMoney(inputValue);
     }
 
     setFormattedValue(inputValue);
@@ -84,12 +90,24 @@ const Input: React.FC<InputProps> = ({
           type={type}
           required={required}
           onChange={handleChange}
+          onBlur={onBlur}
+          onClick={onClick}
+          onFocus={onFocus}
           value={formattedValue}
           name={name}
-          className={`py-2 pr-2 ${type === 'money' ? 'pl-5' : 'pl-2'} border border-gray-300 rounded-md transition w-full text-sm text-stone-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
-            error ? "ring-2 ring-rose-500 border-rose-500" : ""
-          } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+          className={`transition text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent
+            ${
+              type !== "checkbox"
+                ? "py-2 pr-2 border border-gray-300 rounded-md w-full text-stone-700"
+                : "h-5 w-5 border-gray-300 rounded-md text-primary"
+            }
+            ${type === "money" ? "pl-5" : "pl-2"}
+            ${error ? "ring-2 ring-rose-500 border-rose-500" : ""}
+            ${disabled ? "opacity-50 cursor-not-allowed" : ""}
+            ${type === "checkbox" && checked ? "bg-primary" : ""}
+          `}
           disabled={disabled}
+          checked={checked}
         />
       </div>
       {error && (
@@ -109,10 +127,14 @@ Input.propTypes = {
   type: PropTypes.string,
   required: PropTypes.bool,
   onChange: PropTypes.func,
+  onBlur: PropTypes.func,
+  onClick: PropTypes.func,
+  onFocus: PropTypes.func,
   value: PropTypes.string,
   error: PropTypes.string,
   name: PropTypes.string,
   disabled: PropTypes.bool,
+  checked: PropTypes.bool,
 };
 
 export default Input;
