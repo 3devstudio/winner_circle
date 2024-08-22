@@ -69,6 +69,18 @@ const BasicTable = <T extends { id: string; deletedAt?: string | null }>({
   };
 
   const renderCellValue = (column: Column, value: any) => {
+    if (column.accessor === "deletedAt") {
+      return value ? (
+        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-rose-100 text-rose-600">
+          Inactive
+        </span>
+      ) : (
+        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-600">
+          Active
+        </span>
+      );
+    }
+
     if (column.dataType === "checkbox") {
       return value ? (
         <CheckCircleIcon className="h-5 w-5 text-primary" />
@@ -161,7 +173,7 @@ const BasicTable = <T extends { id: string; deletedAt?: string | null }>({
         return (
           <Input
             type="checkbox"
-            checked={value} // Use `checked` instead of `value`
+            checked={value}
             onChange={(e) => handleInputChange(e, accessor, e.target.checked)}
             onBlur={handleInputBlur}
             onFocus={() => handleInputFocus(editingRowId!)}
@@ -370,7 +382,7 @@ const BasicTable = <T extends { id: string; deletedAt?: string | null }>({
                         >
                           <CheckIcon
                             className={`h-5 w-5 ${
-                              isDirty ? "text-green-500" : "text-stone-400"
+                              isDirty ? "text-emerald-500" : "text-stone-400"
                             }`}
                           />
                           <span
@@ -447,7 +459,7 @@ const BasicTable = <T extends { id: string; deletedAt?: string | null }>({
                           handleRestoreClick(item.id);
                         }}
                       >
-                        <ArrowPathIcon className="h-5 w-5 text-green-500" />
+                        <ArrowPathIcon className="h-5 w-5 text-emerald-500" />
                         <span className="text-stone-600 text-xs my-auto">
                           Restore
                         </span>
@@ -475,7 +487,7 @@ const BasicTable = <T extends { id: string; deletedAt?: string | null }>({
                             handleDeleteClick(item, item.id);
                           }}
                         >
-                          <TrashIcon className="h-5 w-5 text-red-500" />
+                          <TrashIcon className="h-5 w-5 text-rose-500" />
                           <span className="text-stone-600 text-xs my-auto">
                             Delete
                           </span>

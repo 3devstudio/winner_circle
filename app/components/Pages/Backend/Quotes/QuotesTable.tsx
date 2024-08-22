@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useFetcher, useOutletContext } from "@remix-run/react";
+import { useFetcher } from "@remix-run/react";
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 import BasicTable from "~/components/Blocks/Tables/BasicTable";
 
 interface Horse {
@@ -53,9 +56,10 @@ interface QuotesTableProps {
   quotes: Quote[];
 }
 
-interface FetcherData {
+interface FetcherResponse {
+  success: boolean;
+  message?: string;
   error?: string;
-  updatedQuote?: TransformedQuote;
 }
 
 const QuotesTable: React.FC<QuotesTableProps> = ({ quotes }) => {
@@ -66,22 +70,59 @@ const QuotesTable: React.FC<QuotesTableProps> = ({ quotes }) => {
     })),
   );
 
-  const fetcher = useFetcher<FetcherData>();
-  const { showBanner } = useOutletContext<{ showBanner: (message: string, type: "success" | "error") => void }>();
+  const fetcher = useFetcher<FetcherResponse>();
+
+  const showToast = (message: string, type: "success" | "error") => {
+    if (type === "success") {
+      toast.success(message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } else {
+      toast.error(message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (fetcher.data) {
+      if (fetcher.data.success) {
+        showToast(fetcher.data.message || "Operation successful", "success");
+      } else {
+        showToast(fetcher.data.error || "An error occurred", "error");
+      }
+    }
+  }, [fetcher.data]);
 
   const handleEditQuote = (id: string, accessor: string, value: any) => {
     const updatedData = data.map((quote) =>
-      quote.id === id ? { ...quote, [accessor]: value } : quote
+      quote.id === id ? { ...quote, [accessor]: value } : quote,
     );
     setData(updatedData);
   };
 
   const handleUpdateQuote = (id: string, updatedQuote: TransformedQuote) => {
+    console.log("updatedQuote", updatedQuote);
     fetcher.submit(
-      { ...updatedQuote },
+      {
+        ...updatedQuote,
+        quoteId: id,
+      },
       {
         method: "post",
-        action: `/api/update-quote/${id}`,
+        action: "/admin/quotes/update",
       },
     );
   };
@@ -91,7 +132,7 @@ const QuotesTable: React.FC<QuotesTableProps> = ({ quotes }) => {
       { quoteId: quote.id },
       {
         method: "post",
-        action: "/api/delete-quote",
+        action: "/admin/quotes/delete",
       },
     );
   };
@@ -101,21 +142,10 @@ const QuotesTable: React.FC<QuotesTableProps> = ({ quotes }) => {
       { quoteId: quote.id },
       {
         method: "post",
-        action: "/api/restore-quote",
+        action: "/admin/quotes/restore",
       },
     );
   };
-
-  useEffect(() => {
-    if (fetcher.state === "idle" && fetcher.data) {
-      console.log('FETCHER DATA', fetcher.data);
-      if (fetcher.data.error) {
-        showBanner(fetcher.data.error, "error");
-      } else {
-        showBanner("Action completed successfully.", "success");
-      }
-    }
-  }, [fetcher.state, fetcher.data, showBanner]);
 
   const columns: Column[] = [
     { header: "First Name", accessor: "firstName", dataType: "text" },
@@ -149,10 +179,10 @@ const QuotesTable: React.FC<QuotesTableProps> = ({ quotes }) => {
       <BasicTable
         columns={columns}
         data={data}
-        onDelete={handleDeleteQuote}
-        onRestore={handleRestoreQuote}
         onEdit={handleEditQuote}
         onUpdate={handleUpdateQuote}
+        onDelete={handleDeleteQuote}
+        onRestore={handleRestoreQuote}
       />
     </div>
   );
