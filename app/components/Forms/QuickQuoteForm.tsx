@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useFetcher } from "@remix-run/react";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 import useSlideUp from "~/hooks/useSlideUp";
 import Button from "../Buttons/Button";
@@ -12,11 +15,23 @@ interface Horse {
   name: string;
   breed: string;
   gender: string;
-  age: string;
+  age: number;
   height: string;
 }
 
-const QuickQuoteForm: React.FC = () => {
+interface QuickQuoteFormProps {
+  title: string;
+}
+
+interface FetcherData {
+  success: boolean;
+  message?: string;
+  error?: string;
+}
+
+const QuickQuoteForm: React.FC<QuickQuoteFormProps> = ({ title }) => {
+  const fetcher = useFetcher<FetcherData>();
+
   const [formData, setFormData] = useState({
     timeFramePickUp: "",
     pickUpLocation: "",
@@ -45,14 +60,32 @@ const QuickQuoteForm: React.FC = () => {
   const [shouldValidate, setShouldValidate] = useState(false);
 
   useEffect(() => {
-    if (successMessage) {
-      const timer = setTimeout(() => {
-        setSuccessMessage(null);
-      }, 8000);
-      return () => clearTimeout(timer);
+    if (fetcher.state === "idle" && fetcher.data) {
+      if (fetcher.data.success) {
+        toast.success("Thanks for requesting a quote! Someone will be in contact with you very shortly.");
+        // Reset form
+        setFormData({
+          timeFramePickUp: "",
+          pickUpLocation: "",
+          dropOffLocation: "",
+          horses: [],
+          firstName: "",
+          lastName: "",
+          phoneNumber: "",
+          comments: "",
+          healthCert: false,
+        });
+        setHorses([]);
+        setStep(1);
+        setCompletedSteps([false, false]);
+        setShouldValidate(false);
+      } else {
+        toast.error(fetcher.data.error || "Failed to submit the form.");
+      }
     }
-  }, [successMessage]);
+  }, [fetcher.state, fetcher.data]);
 
+  //Handle form input changes
   const handleInputChange = (field: string, value: string) => {
     setFormData((prevData) => ({ ...prevData, [field]: value }));
   };
@@ -72,6 +105,7 @@ const QuickQuoteForm: React.FC = () => {
     }));
   };
 
+  //Validation
   const validateStep1 = () => {
     const newErrors: { [key: string]: string } = {};
 
@@ -148,53 +182,19 @@ const QuickQuoteForm: React.FC = () => {
     }
   };
 
+  //Submit form
   const handleSubmit = async () => {
     setShouldValidate(true);
-    if (validateStep1() && validateStep2()) {
-      try {
-        const response = await fetch("/api/add-quote", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            ...formData,
-            horses: formData.horses.map((horse) => ({
-              name: horse.name,
-              breed: horse.breed,
-              gender: horse.gender,
-              age: parseInt(horse.age), // Ensure age is a number
-              height: horse.height,
-              tripId: "", // Ensure tripId is included if necessary
-            })),
-          }),
-        });
-        if (response.ok) {
-          setSuccessMessage(
-            "Thanks for requesting a quote! Someone will be in contact with you very shortly.",
-          );
-          // Reset form
-          setFormData({
-            timeFramePickUp: "",
-            pickUpLocation: "",
-            dropOffLocation: "",
-            horses: [],
-            firstName: "",
-            lastName: "",
-            phoneNumber: "",
-            comments: "",
-            healthCert: false,
-          });
-          setHorses([]);
-          setStep(1);
-          setCompletedSteps([false, false]);
-          setShouldValidate(false);
-        } else {
-          alert("Failed to submit the form.");
-        }
-      } catch (error) {
-        alert("An error occurred while submitting the form.");
-      }
+    if (validateStep2()) {
+      const submitData = {
+        ...formData,
+        horses: JSON.stringify(formData.horses),
+      };
+      
+      fetcher.submit(submitData, {
+        method: "post",
+        action: "/quote/create",
+      });
     }
   };
 
@@ -212,7 +212,7 @@ const QuickQuoteForm: React.FC = () => {
               h1InView ? "show" : ""
             }`}
           >
-            Reliable Equine Transport, Every Mile of the Way.
+            {title}
           </h1>
         </div>
         <div className="h-full w-full lg:w-1/2">
@@ -241,9 +241,6 @@ const QuickQuoteForm: React.FC = () => {
               {step === 1 ? (
                 <>
                   <div className="mb-4">
-                    <h2 className="text-2xl text-stone-800 font-semibold mb-4">
-                      Get a Free Quote Today!
-                    </h2>
                     <div className="flex flex-col gap-4">
                       <div className="w-full flex">
                         <div className="w-1/2">
@@ -421,6 +418,10 @@ const QuickQuoteForm: React.FC = () => {
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={10000}
+      />
     </div>
   );
 };

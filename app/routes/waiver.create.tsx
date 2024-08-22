@@ -3,7 +3,7 @@ import { createWaiver, WaiverCreateInput } from "~/models/waiver.server";
 
 export let action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
-  console.log("FORM DATA:", formData);
+  
   const firstName = formData.get("first-name")?.toString() || "";
   const lastName = formData.get("last-name")?.toString() || "";
   const phone = formData.get("phone")?.toString() || "";
@@ -21,7 +21,7 @@ export let action: ActionFunction = async ({ request }) => {
   const agreedBidAmount = formData.get("bid-amount")?.toString() || "";
   const cogginsHealthCert = formData.get("coggins-health-cert") === "true";
   const terms = formData.get("terms") === "true";
-  const comments = formData.get("comments")?.toString();
+  const comments = formData.get("comments")?.toString() || "";
   const horses = JSON.parse(formData.get("horses")?.toString() || "[]");
 
   try {

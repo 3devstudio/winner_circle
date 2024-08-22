@@ -27,7 +27,7 @@ export default function Index() {
   return (
     <AppLayout>
       <div className="flex flex-col gap-12 md:gap-20 justify-center">
-        <QuickQuoteForm />
+        <QuickQuoteForm title="Reliable Equine Transport, Every Mile of the Way."/>
         <div className="flex flex-col gap-8">
           <div ref={principlesTitleRef} className={`p-4 slide-up ${principlesTitleVisible ? 'show' : ''}`}>
             <SectionTitle

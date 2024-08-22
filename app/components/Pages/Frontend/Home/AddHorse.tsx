@@ -12,7 +12,7 @@ interface Horse {
   name: string;
   breed: string;
   gender: string;
-  age: string;
+  age: number; // Changed to number
   height: string;
 }
 
@@ -35,7 +35,7 @@ const AddHorse: React.FC<AddHorseProps> = ({
     name: "",
     breed: "",
     gender: "",
-    age: "",
+    age: 0, // Initialized to 0
     height: "",
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -44,7 +44,7 @@ const AddHorse: React.FC<AddHorseProps> = ({
     name: "",
     breed: "",
     gender: "",
-    age: "",
+    age: 0, // Initialized to 0
     height: "",
   };
 
@@ -53,7 +53,10 @@ const AddHorse: React.FC<AddHorseProps> = ({
   }, [initialHorses]);
 
   const handleInputChange = (field: string, value: string) => {
-    setHorseData({ ...horseData, [field]: value });
+    setHorseData({
+      ...horseData,
+      [field]: field === "age" ? parseInt(value, 10) || 0 : value,
+    });
   };
 
   const validateHorseData = () => {
@@ -61,7 +64,7 @@ const AddHorse: React.FC<AddHorseProps> = ({
 
     if (!horseData.breed.trim()) newErrors.breed = "Horse breed is required";
     if (!horseData.gender.trim()) newErrors.gender = "Horse gender is required";
-    if (!horseData.age.trim()) newErrors.age = "Horse age is required";
+    if (horseData.age <= 0) newErrors.age = "Horse age is required and must be greater than 0";
     if (!horseData.height.trim()) newErrors.height = "Horse height is required";
 
     setErrors(newErrors);
@@ -71,7 +74,6 @@ const AddHorse: React.FC<AddHorseProps> = ({
 
   const handleAddHorse = () => {
     if (validateHorseData()) {
-      // Set default name if it's empty
       if (!horseData.name.trim()) {
         horseData.name = `Horse ${horses.length + 1}`;
       }
@@ -232,7 +234,7 @@ const AddHorse: React.FC<AddHorseProps> = ({
             type="number"
             placeholder="Enter age"
             required={true}
-            value={horseData.age}
+            value={String(horseData.age)} // Ensure the value is a string for the input field
             onChange={(e) => handleInputChange("age", e.target.value)}
             error={errors.age}
           />

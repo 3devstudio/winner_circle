@@ -17,7 +17,7 @@ interface Horse {
   name: string;
   breed: string;
   gender: string;
-  age: string;
+  age: number;
   height: string;
 }
 
@@ -34,7 +34,7 @@ export default function WaiverForm() {
   const [completedSteps, setCompletedSteps] = useState<boolean[]>([]);
   const [errors, setErrors] = useState<Record<string, string | undefined>>({});
   const [formValues, setFormValues] = useState<Record<string, string>>({
-    "isUserContact": "yes",
+    isUserContact: "yes",
   });
   const [responseMessage, setResponseMessage] = useState<string | null>(null);
   const [responseType, setResponseType] = useState<
@@ -51,7 +51,7 @@ export default function WaiverForm() {
 
   const handleContactChange = (value: string) => {
     setIsUserContact(value === "yes");
-    setFormValues((prev) => ({ ...prev, "isUserContact": value }));
+    setFormValues((prev) => ({ ...prev, isUserContact: value }));
   };
 
   const handleInputChange = (name: string, value: string) => {
@@ -254,7 +254,10 @@ export default function WaiverForm() {
 
     formData.append("horses", JSON.stringify(horses));
 
-    fetcher.submit(formData, { method: "post", action: "/api/add-waiver" });
+    fetcher.submit(formData, {
+      method: "post",
+      action: "/waiver/create"
+    });
   };
 
   useEffect(() => {
@@ -263,10 +266,12 @@ export default function WaiverForm() {
         setResponseMessage("Failed to submit the waiver. Please try again.");
         setResponseType("error");
       } else {
-        setResponseMessage("Thanks! Your waiver submitted successfully. We will be in contact with you shortly.");
+        setResponseMessage(
+          "Thanks! Your waiver submitted successfully. We will be in contact with you shortly.",
+        );
         setResponseType("success");
 
-        setFormValues({ "isUserContact": "yes" });
+        setFormValues({ isUserContact: "yes" });
         setHorses([]);
         setIsUserContact(true);
         setIsSameAsPickup(false);
