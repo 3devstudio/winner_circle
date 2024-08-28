@@ -3,7 +3,7 @@ import BackgroundImage from "~/components/Blocks/BackgroundImage";
 import AppLayout from "~/layouts/AppLayout";
 import WaiverForm from "~/components/Forms/WaiverForm";
 
-export const meta: MetaFunction = () => [{ title: "Winner Circle" }];
+export const meta: MetaFunction = () => [{ title: "Sumbit Waiver" }];
 
 export default function Waiver() {
   return (

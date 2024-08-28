@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   PencilIcon,
   TrashIcon,
@@ -8,11 +8,17 @@ import {
   CheckCircleIcon,
   MinusIcon,
 } from "@heroicons/react/24/outline";
+
 import Input from "~/components/Inputs/Input";
 import Select from "~/components/Inputs/Select";
 import Textarea from "~/components/Inputs/Textarea";
+import Button from "~/components/Buttons/Button";
 import { Tooltip } from "@mui/material";
+import Sidebar from "~/components/Blocks/Sidebar";
+import AddHorse from "~/components/Pages/Frontend/Home/AddHorse";
+import { toast } from 'react-toastify';
 
+// Define the interface for a column in the table.
 interface Column {
   header: string;
   accessor: string;
@@ -25,9 +31,19 @@ interface Column {
     | "longText"
     | "date"
     | "number"
-    | "email";
+    | "email"
+    | "modal";
 }
 
+interface Horse {
+  name: string;
+  breed: string;
+  gender: string;
+  age: number;
+  height: string;
+}
+
+// Define the properties for the BasicTable component.
 interface BasicTableProps<T> {
   columns: Column[];
   data: T[];
@@ -37,7 +53,14 @@ interface BasicTableProps<T> {
   onRestore: (item: T) => void;
 }
 
-const BasicTable = <T extends { id: string; deletedAt?: string | null }>({
+interface TableRow {
+  id: string;
+  deletedAt?: string | null;
+  originalHorses?: Horse[];
+}
+
+// The BasicTable component.
+const BasicTable = <T extends TableRow>({
   columns,
   data,
   onEdit,
@@ -45,29 +68,21 @@ const BasicTable = <T extends { id: string; deletedAt?: string | null }>({
   onDelete,
   onRestore,
 }: BasicTableProps<T>) => {
+  // State for handling various actions.
   const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
   const [confirmingRowDeletionId, setConfirmingRowDeletionId] = useState<string | null>(null);
   const [confirmingRowRestorationId, setConfirmingRowRestorationId] = useState<string | null>(null);
   const [itemToDelete, setItemToDelete] = useState<T | null>(null);
   const [editingRowId, setEditingRowId] = useState<string | null>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
-  const [isSwitchingFocus, setIsSwitchingFocus] = useState(false);
   const [rowActionState, setRowActionState] = useState<{ [key: string]: "edit" | "delete" | "restore" | null }>({});
 
-  // Rendering
-  const handleRowClick = (id: string) => {
-    if (editingRowId !== null && editingRowId !== id) {
-      if (!isDirty) {
-        setEditingRowId(null);
-        setRowActionState((prev) => ({ ...prev, [editingRowId]: null }));
-      }
-    }
+  // States to hold the current editing item data and initial data for comparison
+  const [editingItem, setEditingItem] = useState<T | null>(null);
+  const [initialEditingItem, setInitialEditingItem] = useState<T | null>(null);
 
-    setSelectedRowId(selectedRowId === id ? null : id);
-    setConfirmingRowDeletionId(null);
-    setConfirmingRowRestorationId(null);
-  };
-
+  // Function to render the cell value.
   const renderCellValue = (column: Column, value: any) => {
     if (column.accessor === "deletedAt") {
       return value ? (
@@ -91,29 +106,89 @@ const BasicTable = <T extends { id: string; deletedAt?: string | null }>({
     return value;
   };
 
-  // Edit Row
+  // Handle row click to set selected row ID
+  const handleRowClick = (id: string) => {
+    setSelectedRowId(selectedRowId === id ? null : id);
+  };
+
+  // Handle the Edit button click.
   const handleEditClick = (id: string) => {
-    setEditingRowId(id);
-    setIsDirty(false);
-    setRowActionState((prev) => ({ ...prev, [id]: "edit" }));
-  };
-
-  const handleCancelEdit = () => {
-    setEditingRowId(null);
-    setIsDirty(false);
-  };
-
-  const handleSaveEdit = () => {
-    if (editingRowId !== null) {
-      const updatedItem = data.find((item) => item.id === editingRowId);
-      if (updatedItem) {
-        onUpdate(editingRowId, updatedItem);
-      }
-      setEditingRowId(null);
+    const item = data.find((item) => item.id === id);
+    if (item) {
+      setEditingItem({ ...item } as T); // Type assertion for editing
+      setInitialEditingItem({ ...item } as T); // Type assertion for comparison
+      setEditingRowId(id);
+      setIsSidebarOpen(true);
       setIsDirty(false);
+      setRowActionState((prev) => ({ ...prev, [id]: "edit" }));
     }
   };
 
+  // Handle the Save button click in the sidebar.
+  const handleSaveEdit = async () => {
+    if (editingRowId !== null && editingItem !== null) {
+      try {
+        await onUpdate(editingRowId, editingItem); // Assuming onUpdate returns a promise
+        setEditingRowId(null);
+        setIsSidebarOpen(false); // Close the sidebar
+        setIsDirty(false);
+      } catch (error) {
+        // Handle error
+        console.error("Failed to save changes", error);
+      }
+    }
+  };
+
+  // Function to update the local editing item state and check if data is dirty
+  const handleEditChange = (accessor: string, value: any) => {
+    if (editingItem) {
+      const updatedItem = {
+        ...editingItem,
+        [accessor]: value,
+      };
+      setEditingItem(updatedItem);
+      setIsDirty(!isEqual(updatedItem, initialEditingItem!));
+    }
+  };
+
+  // Utility function to check if two objects are equal
+  const isEqual = (obj1: T, obj2: T) => {
+    return JSON.stringify(obj1) === JSON.stringify(obj2);
+  };
+
+  // Function to handle changes from the AddHorse component
+  const handleHorseChange = (updatedHorses: Horse[]) => {
+    handleEditChange('originalHorses', updatedHorses); // Update the horses in the local editing item state
+  };
+
+  // Function to confirm deletion
+  const confirmDelete = (item: T) => {
+    setConfirmingRowDeletionId(item.id);
+    setItemToDelete(item);
+  };
+
+  // Function to execute delete action
+  const handleDelete = (item: T) => {
+    onDelete(item);
+    setConfirmingRowDeletionId(null);
+    setItemToDelete(null);
+    toast.success("Row deleted successfully.");
+  };
+
+  // Function to confirm restoration
+  const confirmRestore = (item: T) => {
+    setConfirmingRowRestorationId(item.id);
+  };
+
+  // Function to execute restore action
+  const handleRestore = (item: T) => {
+    onRestore(item);
+    setConfirmingRowRestorationId(null);
+    setSelectedRowId(null);
+    toast.success("Row restored successfully.");
+};
+
+  // Function to render inputs based on the column data type.
   const renderInput = (
     dataType: Column["dataType"],
     value: any,
@@ -122,7 +197,7 @@ const BasicTable = <T extends { id: string; deletedAt?: string | null }>({
     const handleInputClick = (e: React.MouseEvent) => {
       e.stopPropagation();
     };
-
+  
     const formatDateForInput = (dateString: string) => {
       const date = new Date(dateString);
       const year = date.getFullYear();
@@ -130,18 +205,52 @@ const BasicTable = <T extends { id: string; deletedAt?: string | null }>({
       const day = String(date.getDate()).padStart(2, "0");
       return `${year}-${month}-${day}`;
     };
+  
+    if (accessor === 'horses') {
+      const horsesArray = Array.isArray(value) ? value : (editingItem?.originalHorses || []);
+      return (
+        <AddHorse
+          horses={horsesArray}
+          onAddHorse={handleHorseChange}
+          errors={{}}
+        />
+      );
+    }
 
     switch (dataType) {
       case "text":
+        return (
+          <Input
+            type="text"
+            value={value}
+            onChange={(e) => handleEditChange(accessor, e.target.value)}
+            onClick={handleInputClick}
+          />
+        );
+      case "email":
+        return (
+          <Input
+            type="email"
+            value={value}
+            onChange={(e) => handleEditChange(accessor, e.target.value)}
+            onClick={handleInputClick}
+          />
+        );
       case "tel":
+        return (
+          <Input
+            type="tel"
+            value={value}
+            onChange={(e) => handleEditChange(accessor, e.target.value)}
+            onClick={handleInputClick}
+          />
+        );
       case "date":
         return (
           <Input
-            type={dataType}
-            value={dataType === "date" ? formatDateForInput(value) : value}
-            onChange={(e) => handleInputChange(e, accessor, e.target.value)}
-            onBlur={handleInputBlur}
-            onFocus={() => handleInputFocus(editingRowId!)}
+            type="date"
+            value={formatDateForInput(value)}
+            onChange={(e) => handleEditChange(accessor, e.target.value)}
             onClick={handleInputClick}
           />
         );
@@ -149,13 +258,11 @@ const BasicTable = <T extends { id: string; deletedAt?: string | null }>({
         return (
           <Select
             value={value}
-            onSelect={(value) => handleInputChange(undefined, accessor, value)}
+            onSelect={(value) => handleEditChange(accessor, value)}
             options={[
               { label: "Option 1", value: "1" },
               { label: "Option 2", value: "2" },
             ]}
-            onBlur={handleInputBlur}
-            onFocus={() => handleInputFocus(editingRowId!)}
             onClick={handleInputClick}
           />
         );
@@ -163,9 +270,7 @@ const BasicTable = <T extends { id: string; deletedAt?: string | null }>({
         return (
           <Textarea
             value={value}
-            onChange={(e) => handleInputChange(e, accessor, e.target.value)}
-            onBlur={handleInputBlur}
-            onFocus={() => handleInputFocus(editingRowId!)}
+            onChange={(e) => handleEditChange(accessor, e.target.value)}
             onClick={handleInputClick}
           />
         );
@@ -174,9 +279,7 @@ const BasicTable = <T extends { id: string; deletedAt?: string | null }>({
           <Input
             type="checkbox"
             checked={value}
-            onChange={(e) => handleInputChange(e, accessor, e.target.checked)}
-            onBlur={handleInputBlur}
-            onFocus={() => handleInputFocus(editingRowId!)}
+            onChange={(e) => handleEditChange(accessor, e.target.checked)}
             onClick={handleInputClick}
           />
         );
@@ -185,9 +288,7 @@ const BasicTable = <T extends { id: string; deletedAt?: string | null }>({
           <Input
             type="number"
             value={value}
-            onChange={(e) => handleInputChange(e, accessor, e.target.value)}
-            onBlur={handleInputBlur}
-            onFocus={() => handleInputFocus(editingRowId!)}
+            onChange={(e) => handleEditChange(accessor, e.target.value)}
             onClick={handleInputClick}
           />
         );
@@ -200,88 +301,47 @@ const BasicTable = <T extends { id: string; deletedAt?: string | null }>({
     }
   };
 
-  const handleInputChange = (
-    e:
-      | React.ChangeEvent<
-          HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-        >
-      | undefined,
-    accessor: string,
-    newValue: any,
-  ) => {
-    if (editingRowId !== null) {
-      setIsDirty(true);
-      onEdit(editingRowId, accessor, newValue);
-    }
-  };
+  // Render inputs for editing.
+  const renderEditForm = (item: T) => (
+    <div className="p-4">
+      {columns.map((column) => (
+        <div key={column.accessor} className="mb-4 overflow-auto max-h-full">
+          <div className="p-1">
+            <label className="block text-sm font-medium text-gray-700">
+              {column.header}
+            </label>
+            {renderInput(
+              column.dataType,
+              (item as any)[column.accessor],
+              column.accessor,
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 
-  const handleInputBlur = (e: React.FocusEvent) => {
-    if (isSwitchingFocus) {
-      setIsSwitchingFocus(false);
-      return;
-    }
-
-    if (!isDirty) {
-      setEditingRowId(null);
-    }
-
-    setEditingRowId(null);
-    setIsDirty(false);
-  };
-
-  const handleInputFocus = (id: string) => {
-    setIsSwitchingFocus(true);
-    setEditingRowId(id);
-  };
-
-  // Delete Row
-  const handleDeleteClick = (item: T, id: string) => {
-    setItemToDelete(item);
-    setConfirmingRowDeletionId(id);
-    setConfirmingRowRestorationId(null);
-  };
-
-  const confirmDelete = () => {
-    if (itemToDelete) {
-      onDelete(itemToDelete);
-      setConfirmingRowDeletionId(null);
-      setItemToDelete(null);
-      setRowActionState((prev) => ({ ...prev, [selectedRowId!]: null }));
-    }
-  };
-
-  const cancelDelete = () => {
-    setConfirmingRowDeletionId(null);
-    setItemToDelete(null);
-  };
-
-  // Restore Row
-  const handleRestoreClick = (id: string) => {
-    setConfirmingRowRestorationId(id);
-    setConfirmingRowDeletionId(null);
-  };
-
-  const confirmRestore = () => {
-    if (confirmingRowRestorationId !== null) {
-      const itemToRestore = data.find((item) => item.id === confirmingRowRestorationId);
-      if (itemToRestore) {
-        onRestore(itemToRestore);
-      }
-      setConfirmingRowRestorationId(null);
-      setRowActionState((prev) => ({
-        ...prev,
-        [confirmingRowRestorationId]: null,
-      }));
-    }
-  };
-
-  const cancelRestore = () => {
-    setConfirmingRowRestorationId(null);
-  };
+  // Render footer buttons for the sidebar
+  const renderSidebarFooter = () => (
+    <>
+      <Button onClick={() => setIsSidebarOpen(false)} className="py-2">
+        Cancel
+      </Button>
+      <Button
+        primary
+        onClick={handleSaveEdit}
+        disabled={!isDirty}
+        className="py-2"
+      >
+        Save
+      </Button>
+    </>
+  );
 
   return (
     <div className="overflow-x-auto relative">
       <table className="min-w-full divide-y divide-stone-200 border border-stone-200">
+        {/* Render table headers */}
         <thead className="bg-stone-50">
           <tr>
             {columns.map((column) => (
@@ -295,6 +355,7 @@ const BasicTable = <T extends { id: string; deletedAt?: string | null }>({
             ))}
           </tr>
         </thead>
+        {/* Render table body */}
         <tbody className="bg-white divide-y divide-stone-200">
           {data.length === 0 ? (
             <tr>
@@ -322,6 +383,7 @@ const BasicTable = <T extends { id: string; deletedAt?: string | null }>({
                 }`}
                 onClick={() => handleRowClick(item.id)}
               >
+                {/* Render table cells */}
                 {columns.map((column) => (
                   <td
                     key={column.accessor}
@@ -331,139 +393,64 @@ const BasicTable = <T extends { id: string; deletedAt?: string | null }>({
                         : "text-stone-600"
                     }`}
                   >
-                    {editingRowId === item.id
-                      ? renderInput(
-                          column.dataType,
-                          (item as any)[column.accessor],
-                          column.accessor,
-                        )
-                      : renderCellValue(column, (item as any)[column.accessor])}
+                    {renderCellValue(column, (item as any)[column.accessor])}
                   </td>
                 ))}
+                {/* Render action buttons */}
                 {selectedRowId === item.id && (
-                  <td
-                    className={`fixed left-1/2 transform -translate-x-1/2 border-x border-t border-stone-200 rounded-t flex ${
-                      editingRowId === item.id
-                        ? "mt-[-38px] bg-blue-50"
-                        : confirmingRowDeletionId === item.id
-                        ? "mt-[-45px] bg-rose-50"
-                        : confirmingRowRestorationId === item.id
-                        ? "mt-[-45px] bg-emerald-50"
-                        : "mt-[-38px] bg-stone-100"
-                    }`}
-                  >
-                    {editingRowId === item.id ? (
+                  <td className="fixed left-1/2 transform -translate-x-1/2 border-x border-t border-stone-200 rounded-t flex mt-[-38px] bg-stone-100">
+                    {confirmingRowDeletionId === item.id ? (
                       <>
+                        <span className="text-stone-600 text-xs my-auto px-2">
+                          Are you sure you want to delete?
+                        </span>
                         <button
-                          className="p-2 flex justify-center gap-1 hover:bg-stone-100 transition w-24"
+                          className="p-2 flex justify-center gap-1 hover:bg-stone-100 transition w-10"
                           aria-label="Cancel"
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleCancelEdit();
+                            setConfirmingRowDeletionId(null);
                           }}
                         >
-                          <XMarkIcon className="h-5 w-5 text-stone-500" />
-                          <span className="text-stone-600 text-xs my-auto">
-                            Cancel
-                          </span>
+                          <XMarkIcon className="h-5 w-5 text-gray-500" />
                         </button>
                         <button
-                          className={`p-2 flex justify-center gap-1 hover:bg-stone-100 transition w-24 ${
-                            isDirty
-                              ? "cursor-pointer"
-                              : "cursor-not-allowed opacity-50"
-                          }`}
-                          aria-label="Save"
+                          className="p-2 flex justify-center gap-1 hover:bg-stone-100 transition w-10"
+                          aria-label="Confirm"
                           onClick={(e) => {
                             e.stopPropagation();
-                            if (isDirty) handleSaveEdit();
+                            handleDelete(item);
                           }}
-                          disabled={!isDirty}
                         >
-                          <CheckIcon
-                            className={`h-5 w-5 ${
-                              isDirty ? "text-emerald-500" : "text-stone-400"
-                            }`}
-                          />
-                          <span
-                            className={`text-xs my-auto ${
-                              isDirty ? "text-stone-600" : "text-stone-400"
-                            }`}
-                          >
-                            Save
-                          </span>
+                          <CheckIcon className="h-5 w-5 text-green-500" />
                         </button>
                       </>
                     ) : confirmingRowRestorationId === item.id ? (
-                      <div className="p-2 flex justify-center gap-10">
-                        <span className="text-xs text-emerald-600 font-semibold my-auto">
-                          Confirm restore?
+                      <>
+                        <span className="text-stone-600 text-xs my-auto px-2">
+                          Are you sure you want to restore?
                         </span>
-                        <div className="flex gap-2">
-                          <button
-                            className="p-1 text-stone-600 hover:bg-stone-100 rounded-md transition"
-                            aria-label="Cancel"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              cancelRestore();
-                            }}
-                          >
-                            <XMarkIcon className="h-5 w-5" />
-                          </button>
-                          <button
-                            className="p-1 text-stone-600 hover:text-emerald-600 hover:bg-emerald-100 rounded-md transition"
-                            aria-label="Confirm"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              confirmRestore();
-                            }}
-                          >
-                            <CheckIcon className="h-5 w-5" />
-                          </button>
-                        </div>
-                      </div>
-                    ) : confirmingRowDeletionId === item.id ? (
-                      <div className="p-2 flex justify-center gap-10">
-                        <span className="text-xs text-rose-600 font-semibold my-auto">
-                          Confirm delete?
-                        </span>
-                        <div className="flex gap-2">
-                          <button
-                            className="p-1 text-stone-600 hover:bg-stone-100 rounded-md transition"
-                            aria-label="Cancel"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              cancelDelete();
-                            }}
-                          >
-                            <XMarkIcon className="h-5 w-5" />
-                          </button>
-                          <button
-                            className="p-1 text-stone-600 hover:text-rose-600 hover:bg-rose-100 rounded-md transition"
-                            aria-label="Confirm"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              confirmDelete();
-                            }}
-                          >
-                            <TrashIcon className="h-5 w-5" />
-                          </button>
-                        </div>
-                      </div>
-                    ) : item.deletedAt ? (
-                      <button
-                        className="p-2 flex justify-center gap-1 hover:bg-stone-100 transition w-24"
-                        aria-label="Restore"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleRestoreClick(item.id);
-                        }}
-                      >
-                        <ArrowPathIcon className="h-5 w-5 text-emerald-500" />
-                        <span className="text-stone-600 text-xs my-auto">
-                          Restore
-                        </span>
-                      </button>
+                        <button
+                          className="p-2 flex justify-center gap-1 hover:bg-stone-100 transition w-10"
+                          aria-label="Cancel"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setConfirmingRowRestorationId(null);
+                          }}
+                        >
+                          <XMarkIcon className="h-5 w-5 text-gray-500" />
+                        </button>
+                        <button
+                          className="p-2 flex justify-center gap-1 hover:bg-stone-100 transition w-10"
+                          aria-label="Confirm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleRestore(item);
+                          }}
+                        >
+                          <CheckIcon className="h-5 w-5 text-green-500" />
+                        </button>
+                      </>
                     ) : (
                       <>
                         <button
@@ -475,23 +462,37 @@ const BasicTable = <T extends { id: string; deletedAt?: string | null }>({
                           }}
                         >
                           <PencilIcon className="h-5 w-5 text-blue-500" />
-                          <span className="text-stone-600 text-xs my-auto">
-                            Edit
-                          </span>
+                          <span className="text-stone-600 text-xs my-auto">Edit</span>
                         </button>
-                        <button
-                          className="p-2 flex justify-center gap-1 hover:bg-stone-100 transition w-24"
-                          aria-label="Delete"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteClick(item, item.id);
-                          }}
-                        >
-                          <TrashIcon className="h-5 w-5 text-rose-500" />
-                          <span className="text-stone-600 text-xs my-auto">
-                            Delete
-                          </span>
-                        </button>
+                        {item.deletedAt ? (
+                          <button
+                            className="p-2 flex justify-center gap-1 hover:bg-emerald-100 transition w-24"
+                            aria-label="Restore"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              confirmRestore(item);
+                            }}
+                          >
+                            <ArrowPathIcon className="h-5 w-5 text-emerald-500" />
+                            <span className="text-stone-600 text-xs my-auto">
+                              Restore
+                            </span>
+                          </button>
+                        ) : (
+                          <button
+                            className="p-2 flex justify-center gap-1 hover:bg-rose-100 transition w-24"
+                            aria-label="Delete"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              confirmDelete(item);
+                            }}
+                          >
+                            <TrashIcon className="h-5 w-5 text-rose-500" />
+                            <span className="text-stone-600 text-xs my-auto">
+                              Delete
+                            </span>
+                          </button>
+                        )}
                       </>
                     )}
                   </td>
@@ -501,6 +502,16 @@ const BasicTable = <T extends { id: string; deletedAt?: string | null }>({
           )}
         </tbody>
       </table>
+      {/* Sidebar component for editing */}
+      {editingRowId && (
+        <Sidebar
+          title="Edit Row"
+          content={renderEditForm(editingItem!)} // Pass the local editing item
+          footer={renderSidebarFooter()} // Pass the footer content
+          isOpen={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
+        />
+      )}
     </div>
   );
 };

@@ -1,21 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useFetcher } from "@remix-run/react";
 import { toast, ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 import BasicTable from "~/components/Blocks/Tables/BasicTable";
 
 interface Horse {
-  id: string;
   name: string;
   breed: string;
   gender: string;
-  age: string;
+  age: number;
   height: string;
-  createdAt: string;
-  updatedAt: string;
-  quoteId: string;
-  tripId: string;
 }
 
 interface Quote {
@@ -45,11 +40,13 @@ interface Column {
     | "radio"
     | "checkbox"
     | "longText"
-    | "date";
+    | "date"
+    | "modal";
 }
 
 interface TransformedQuote extends Omit<Quote, "horses"> {
-  horses: string;
+  horses: string; // For display
+  originalHorses: Horse[]; // For editing
 }
 
 interface QuotesTableProps {
@@ -60,71 +57,102 @@ interface FetcherResponse {
   success: boolean;
   message?: string;
   error?: string;
+  updatedQuote?: Quote; // Include updated quote in response
 }
 
 const QuotesTable: React.FC<QuotesTableProps> = ({ quotes }) => {
   const [data, setData] = useState<TransformedQuote[]>(
     quotes.map((quote) => ({
       ...quote,
-      horses: quote.horses.map((horse) => horse.name).join(", "),
-    })),
+      horses: quote.horses.map((horse) => horse.name).join(", "), // String for display
+      originalHorses: quote.horses, // Store original array
+    }))
   );
 
   const fetcher = useFetcher<FetcherResponse>();
+  const [toastShown, setToastShown] = useState(false); // Track if a toast has been shown
 
   const showToast = (message: string, type: "success" | "error") => {
-    if (type === "success") {
-      toast.success(message, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    } else {
-      toast.error(message, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    }
+    toast[type](message, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
   useEffect(() => {
-    if (fetcher.data) {
+    // Only show a toast if there's new fetch data and a toast hasn't been shown
+    if (fetcher.data && !toastShown) {
       if (fetcher.data.success) {
-        showToast(fetcher.data.message || "Operation successful", "success");
-      } else {
-        showToast(fetcher.data.error || "An error occurred", "error");
+        if (fetcher.data.updatedQuote) {
+          const updatedData = data.map((quote) =>
+            quote.id === fetcher.data!.updatedQuote!.id
+              ? {
+                  ...quote, // Retain existing quote data
+                  ...fetcher.data!.updatedQuote!, // Merge updated data
+                  horses: Array.isArray(fetcher.data!.updatedQuote!.horses)
+                    ? fetcher.data!.updatedQuote!.horses
+                        .map((horse) => horse.name)
+                        .join(", ")
+                    : quote.horses, // Use existing horses if not updated
+                  originalHorses: fetcher.data!.updatedQuote!.horses || quote.originalHorses, // Use existing or updated horses array
+                }
+              : quote
+          );
+          setData(updatedData);
+        }
+      } else if (fetcher.data.error) {
+        showToast(fetcher.data.error, "error");
       }
+      setToastShown(true); // Prevent further toasts until a new fetch
     }
-  }, [fetcher.data]);
+  }, [fetcher.data, data, toastShown]);
+
+  // Reset toastShown when a new fetch starts
+  useEffect(() => {
+    if (fetcher.state === "submitting") {
+      setToastShown(false);
+    }
+  }, [fetcher.state]);
 
   const handleEditQuote = (id: string, accessor: string, value: any) => {
-    const updatedData = data.map((quote) =>
-      quote.id === id ? { ...quote, [accessor]: value } : quote,
-    );
+    const updatedData = data.map((quote) => {
+      if (quote.id === id) {
+        if (accessor === "horses") {
+          return {
+            ...quote,
+            horses: value.map((horse: Horse) => horse.name).join(", "),
+            originalHorses: value,
+          };
+        }
+        return { ...quote, [accessor]: value };
+      }
+      return quote;
+    });
     setData(updatedData);
   };
 
   const handleUpdateQuote = (id: string, updatedQuote: TransformedQuote) => {
-    console.log("updatedQuote", updatedQuote);
-    fetcher.submit(
-      {
-        ...updatedQuote,
-        quoteId: id,
-      },
-      {
-        method: "post",
-        action: "/admin/quotes/update",
-      },
-    );
+    const formData = new FormData();
+    formData.append("quoteId", id);
+    formData.append("firstName", updatedQuote.firstName);
+    formData.append("lastName", updatedQuote.lastName);
+    formData.append("phoneNumber", updatedQuote.phoneNumber);
+    formData.append("pickUpLocation", updatedQuote.pickUpLocation);
+    formData.append("dropOffLocation", updatedQuote.dropOffLocation);
+    formData.append("timeFramePickUp", updatedQuote.timeFramePickUp);
+    formData.append("healthCert", updatedQuote.healthCert.toString());
+    formData.append("comments", updatedQuote.comments);
+    formData.append("horses", JSON.stringify(updatedQuote.originalHorses));
+
+    fetcher.submit(formData, {
+      method: "post",
+      action: `/admin/quotes/update`,
+    });
   };
 
   const handleDeleteQuote = (quote: TransformedQuote) => {
@@ -133,7 +161,7 @@ const QuotesTable: React.FC<QuotesTableProps> = ({ quotes }) => {
       {
         method: "post",
         action: "/admin/quotes/delete",
-      },
+      }
     );
   };
 
@@ -143,7 +171,7 @@ const QuotesTable: React.FC<QuotesTableProps> = ({ quotes }) => {
       {
         method: "post",
         action: "/admin/quotes/restore",
-      },
+      }
     );
   };
 
@@ -168,10 +196,11 @@ const QuotesTable: React.FC<QuotesTableProps> = ({ quotes }) => {
     },
     { header: "Health Cert", accessor: "healthCert", dataType: "checkbox" },
     { header: "Comments", accessor: "comments", dataType: "longText" },
-    { header: "Created At", accessor: "createdAt", dataType: "date" },
-    { header: "Updated At", accessor: "updatedAt", dataType: "date" },
-    { header: "Opened At", accessor: "openedAt", dataType: "date" },
-    { header: "Horses", accessor: "horses" },
+    {
+      header: "Horses",
+      accessor: "horses",
+      dataType: "modal",
+    },
   ];
 
   return (
@@ -184,6 +213,7 @@ const QuotesTable: React.FC<QuotesTableProps> = ({ quotes }) => {
         onDelete={handleDeleteQuote}
         onRestore={handleRestoreQuote}
       />
+      <ToastContainer />
     </div>
   );
 };
