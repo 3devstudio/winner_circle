@@ -62,6 +62,7 @@ const QuickQuoteForm: React.FC<QuickQuoteFormProps> = ({ title }) => {
   useEffect(() => {
     if (fetcher.state === "idle" && fetcher.data) {
       if (fetcher.data.success) {
+        setSuccessMessage("Your submission was received successfully!");
         toast.success("Thanks for requesting a quote! Someone will be in contact with you very shortly.");
         // Reset form
         setFormData({

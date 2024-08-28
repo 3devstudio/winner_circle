@@ -1,5 +1,8 @@
+// admin.quotes.update.tsx
 import { json, ActionFunction } from "@remix-run/node";
-import { prisma } from "~/db.server";
+import type { Horse } from "@prisma/client";
+import { updateQuote } from "~/models/quote.server";
+import { updateHorses } from "~/models/horse.server";
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
@@ -22,59 +25,39 @@ export const action: ActionFunction = async ({ request }) => {
     return null;
   };
 
-  if (updatedData.timeFramePickUp) {
-    const parsedTimeFramePickUp = parseDate(updatedData.timeFramePickUp);
-    if (parsedTimeFramePickUp) {
-      updateData.timeFramePickUp = parsedTimeFramePickUp;
+  // Parse and map the required fields from form data
+  [
+    "timeFramePickUp",
+    "createdAt",
+    "updatedAt",
+    "openedAt",
+    "deletedAt",
+  ].forEach((field) => {
+    if (updatedData[field]) {
+      const parsedDate = parseDate(updatedData[field]);
+      if (parsedDate) updateData[field] = parsedDate;
     }
-  }
+  });
 
-  if (updatedData.createdAt) {
-    const parsedCreatedAt = parseDate(updatedData.createdAt);
-    if (parsedCreatedAt) {
-      updateData.createdAt = parsedCreatedAt;
-    }
-  }
-
-  if (updatedData.updatedAt) {
-    const parsedUpdatedAt = parseDate(updatedData.updatedAt);
-    if (parsedUpdatedAt) {
-      updateData.updatedAt = parsedUpdatedAt;
-    }
-  }
-
-  if (updatedData.openedAt) {
-    const parsedOpenedAt = parseDate(updatedData.openedAt);
-    if (parsedOpenedAt) {
-      updateData.openedAt = parsedOpenedAt;
-    }
-  }
-
-  if (updatedData.deletedAt) {
-    const parsedDeletedAt = parseDate(updatedData.deletedAt);
-    updateData.deletedAt = parsedDeletedAt !== null ? parsedDeletedAt : null;
-  }
-
-  if (updatedData.healthCert) {
-    updateData.healthCert = updatedData.healthCert === "true";
-  }
-
-  updateData.firstName = updatedData.firstName;
-  updateData.lastName = updatedData.lastName;
-  updateData.phoneNumber = updatedData.phoneNumber;
-  updateData.pickUpLocation = updatedData.pickUpLocation;
-  updateData.dropOffLocation = updatedData.dropOffLocation;
-  updateData.comments = updatedData.comments;
-  updateData.horses = updatedData.horses;
-  updateData.quoteId = updatedData.quoteId;
-
-  console.log("updateData", updateData);
+  updateData.healthCert = updatedData.healthCert === "true";
+  [
+    "firstName",
+    "lastName",
+    "phoneNumber",
+    "pickUpLocation",
+    "dropOffLocation",
+    "comments",
+  ].forEach((field) => {
+    updateData[field] = updatedData[field];
+  });
 
   try {
-    const updatedQuote = await prisma.quote.update({
-      where: { id: quoteId },
-      data: updateData,
-    });
+    // Update the quote
+    const updatedQuote = await updateQuote(quoteId, updateData);
+
+    // Update the horses
+    const horsesData = JSON.parse(updatedData.horses as string) as Horse[];
+    await updateHorses(quoteId, horsesData);
 
     return json({
       success: true,

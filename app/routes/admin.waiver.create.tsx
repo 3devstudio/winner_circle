@@ -1,31 +1,31 @@
 import { json, ActionFunction } from "@remix-run/node";
-import { createWaiver, WaiverCreateInput } from "~/models/waiver.server";
+import { createWaiver, WaiverWithHorses } from "~/models/waiver.server";
 
 export let action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
   
-  const firstName = formData.get("first-name")?.toString() || "";
-  const lastName = formData.get("last-name")?.toString() || "";
+  const firstName = formData.get("firstName")?.toString() || "";
+  const lastName = formData.get("lastName")?.toString() || "";
   const phone = formData.get("phone")?.toString() || "";
   const email = formData.get("email")?.toString() || "";
   const isUserContact = formData.get("applicantIsContact") === "yes";
-  const pickUpDate = formData.get("pick-up-date")?.toString() || "";
-  const pickUpAddress = formData.get("pick-up-address")?.toString() || "";
-  const pickUpCity = formData.get("pick-up-city")?.toString() || "";
-  const pickUpState = formData.get("pick-up-state")?.toString() || "";
-  const pickUpZip = formData.get("pick-up-zip")?.toString() || "";
-  const dropOffAddress = formData.get("drop-off-address")?.toString() || "";
-  const dropOffCity = formData.get("drop-off-city")?.toString() || "";
-  const dropOffState = formData.get("drop-off-state")?.toString() || "";
-  const dropOffZip = formData.get("drop-off-zip")?.toString() || "";
-  const agreedBidAmount = formData.get("bid-amount")?.toString() || "";
-  const cogginsHealthCert = formData.get("coggins-health-cert") === "true";
+  const pickUpDate = formData.get("pickUpDate")?.toString() || "";
+  const pickUpAddress = formData.get("pickUpAddress")?.toString() || "";
+  const pickUpCity = formData.get("pickUpCity")?.toString() || "";
+  const pickUpState = formData.get("pickUpState")?.toString() || "";
+  const pickUpZip = formData.get("pickUpZip")?.toString() || "";
+  const dropOffAddress = formData.get("dropOffAddress")?.toString() || "";
+  const dropOffCity = formData.get("dropOffCity")?.toString() || "";
+  const dropOffState = formData.get("dropOffState")?.toString() || "";
+  const dropOffZip = formData.get("dropOffZip")?.toString() || "";
+  const agreedBidAmount = formData.get("bidAmount")?.toString() || "";
+  const cogginsHealthCert = formData.get("cogginsHealthCert") === "true";
   const terms = formData.get("terms") === "true";
   const comments = formData.get("comments")?.toString() || "";
   const horses = JSON.parse(formData.get("horses")?.toString() || "[]");
 
   try {
-    const newWaiver: WaiverCreateInput = {
+    const newWaiver: WaiverWithHorses = {
       firstName,
       lastName,
       phone,
@@ -44,7 +44,7 @@ export let action: ActionFunction = async ({ request }) => {
       cogginsHealthCert,
       terms,
       comments,
-      horses,
+      horses: { create: horses },
     };
 
     const createdWaiver = await createWaiver(newWaiver);

@@ -12,7 +12,7 @@ interface Horse {
   name: string;
   breed: string;
   gender: string;
-  age: number; // Changed to number
+  age: number;
   height: string;
 }
 

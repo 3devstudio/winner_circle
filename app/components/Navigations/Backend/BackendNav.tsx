@@ -86,7 +86,7 @@ const BackendNav: React.FC<SidebarNavProps> = ({ className, ref }) => {
         <Link
           ref={userProfileRef}
           to="/admin/profile"
-          className={`flex gap-2 justify-center items-center h-14 border border-stone-700 slide-up
+          className={`flex gap-2 justify-start items-center h-14 border border-stone-700 slide-up
             ${getLinkClassNames("/admin/profile")}
             ${userProfileVisible ? "show" : ""}
           `}
