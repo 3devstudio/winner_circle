@@ -29,13 +29,10 @@ interface FetcherData {
 export default function WaiverForm() {
   const fetcher = useFetcher<FetcherData>();
   const [horses, setHorses] = useState<Horse[]>([]);
-  const [isUserContact, setIsUserContact] = useState<boolean>(true);
   const [step, setStep] = useState<number>(1);
   const [completedSteps, setCompletedSteps] = useState<boolean[]>([]);
   const [errors, setErrors] = useState<Record<string, string | undefined>>({});
-  const [formValues, setFormValues] = useState<Record<string, string>>({
-    isUserContact: "yes",
-  });
+  const [formValues, setFormValues] = useState<Record<string, string>>({});
   const [responseMessage, setResponseMessage] = useState<string | null>(null);
   const [responseType, setResponseType] = useState<
     "success" | "error" | "info" | "warning" | undefined
@@ -45,60 +42,12 @@ export default function WaiverForm() {
     setCompletedSteps([]);
   };
 
-  const [isSameContactAsPickup, setIsSameContactAsPickup] =
-    useState<boolean>(false);
-  const [isSameAsPickup, setIsSameAsPickup] = useState<boolean>(false);
-
-  const handleContactChange = (value: string) => {
-    setIsUserContact(value === "yes");
-    setFormValues((prev) => ({ ...prev, isUserContact: value }));
-  };
-
   const handleInputChange = (name: string, value: string) => {
     setFormValues((prev) => {
       const updatedValues = { ...prev, [name]: value };
 
-      if (
-        isSameAsPickup &&
-        name.startsWith("pickUp") &&
-        !name.includes("Contact")
-      ) {
-        const dropOffField = name.replace("pickUp", "dropOff");
-        updatedValues[dropOffField] = value;
-      }
-
-      if (
-        isSameContactAsPickup &&
-        name.startsWith("pickUp") &&
-        name.includes("Contact")
-      ) {
-        const dropOffContactField = name.replace("pickUp", "dropOff");
-        updatedValues[dropOffContactField] = value;
-      }
-
       return updatedValues;
     });
-  };
-
-  const handleSameAsPickUpChange = (isChecked: boolean) => {
-    setIsSameAsPickup(isChecked);
-    setFormValues((prev) => ({
-      ...prev,
-      sameAsPickUp: isChecked ? "true" : "false",
-      dropOffAddress: isChecked ? prev.pickUpAddress || "" : "",
-      dropOffCity: isChecked ? prev.pickUpCity || "" : "",
-      dropOffState: isChecked ? prev.pickUpState || "" : "",
-      dropOffZip: isChecked ? prev.pickUpZip || "" : "",
-    }));
-  };
-
-  const handleSameContactAsPickupChange = (isChecked: boolean) => {
-    setIsSameContactAsPickup(isChecked);
-    setFormValues((prev) => ({
-      ...prev,
-      dropOffName: isChecked ? prev.pickUpName || "" : "",
-      dropOffPhone: isChecked ? prev.pickUpPhone || "" : "",
-    }));
   };
 
   const handleAddHorse = (newHorses: Horse[]) => {
@@ -114,39 +63,13 @@ export default function WaiverForm() {
         newErrors.firstName = "First name is required.";
         isValid = false;
       }
-
       if (!formValues.lastName) {
         newErrors.lastName = "Last name is required.";
         isValid = false;
       }
-
       if (!formValues.phone) {
         newErrors.phone = "Phone number is required.";
         isValid = false;
-      }
-
-      if (!isUserContact) {
-        if (!formValues.pickUpName) {
-          newErrors.pickUpName = "Pick up contact name is required.";
-          isValid = false;
-        }
-
-        if (!formValues.pickUpPhone) {
-          newErrors.pickUpPhone = "Pick up contact phone number is required.";
-          isValid = false;
-        }
-
-        if (!isSameContactAsPickup) {
-          if (!formValues.dropOffName) {
-            newErrors.dropOffName = "Drop off contact name is required.";
-            isValid = false;
-          }
-
-          if (!formValues.dropOffPhone) {
-            newErrors.dropOffPhone = "Drop off contact phone number is required.";
-            isValid = false;
-          }
-        }
       }
     }
     if (step === 2) {
@@ -170,23 +93,38 @@ export default function WaiverForm() {
         newErrors.pickUpZip = "Pick up zip code is required.";
         isValid = false;
       }
-      if (!isSameAsPickup) {
-        if (!formValues.dropOffAddress) {
-          newErrors.dropOffAddress = "Drop off address is required.";
-          isValid = false;
-        }
-        if (!formValues.dropOffCity) {
-          newErrors.dropOffCity = "Drop off city is required.";
-          isValid = false;
-        }
-        if (!formValues.dropOffState) {
-          newErrors.dropOffState = "Drop off state is required.";
-          isValid = false;
-        }
-        if (!formValues.dropOffZip) {
-          newErrors.dropOffZip = "Drop off zip code is required.";
-          isValid = false;
-        }
+      if (!formValues.pickUpContactName) {
+        newErrors.pickUpContactName = "Pick up contact name is required.";
+        isValid = false;
+      }
+      if (!formValues.pickUpContactPhone) {
+        newErrors.pickUpContactPhone =
+          "Pick up contact phone number is required.";
+        isValid = false;
+      }
+      if (!formValues.dropOffAddress) {
+        newErrors.dropOffAddress = "Drop off address is required.";
+        isValid = false;
+      }
+      if (!formValues.dropOffCity) {
+        newErrors.dropOffCity = "Drop off city is required.";
+        isValid = false;
+      }
+      if (!formValues.dropOffState) {
+        newErrors.dropOffState = "Drop off state is required.";
+        isValid = false;
+      }
+      if (!formValues.dropOffZip) {
+        newErrors.dropOffZip = "Drop off zip code is required.";
+        isValid = false;
+      }
+      if (!formValues.dropOffContactName) {
+        newErrors.dropOffContactName = "Drop off contact name is required.";
+        isValid = false;
+      }
+      if (!formValues.dropOffContactPhone) {
+        newErrors.dropOffContactPhone = "Drop off contact phone number is required.";
+        isValid = false;
       }
     }
     if (step === 3) {
@@ -201,7 +139,8 @@ export default function WaiverForm() {
         isValid = false;
       }
       if (!formValues.cogginsHealthCert) {
-        newErrors.cogginsHealthCert = "Coggins and health certificate is required.";
+        newErrors.cogginsHealthCert =
+          "Coggins and health certificate is required.";
         isValid = false;
       }
       if (!formValues.terms) {
@@ -237,8 +176,6 @@ export default function WaiverForm() {
       return;
     }
 
-    console.log("FORM DATA (WaiverForm.tsx):", formValues, horses);
-
     const formData = new FormData();
 
     for (const key in formValues) {
@@ -260,15 +197,11 @@ export default function WaiverForm() {
         setResponseType("error");
       } else {
         setResponseMessage(
-          "Thanks! Your waiver submitted successfully. We will be in contact with you shortly."
+          "Thanks! Your waiver submitted successfully. We will be in contact with you shortly.",
         );
         setResponseType("success");
 
-        setFormValues({ isUserContact: "yes" });
         setHorses([]);
-        setIsUserContact(true);
-        setIsSameAsPickup(false);
-        setIsSameContactAsPickup(false);
         setErrors({});
         setStep(1);
         resetCompletedSteps();
@@ -357,7 +290,7 @@ export default function WaiverForm() {
       {step === 1 && (
         <div id="contact-information" className="flex flex-col gap-8">
           <h1 className="text-xl text-2xl text-stone-900 font-semibold border-b border-stone-200 pb-2">
-            Contact Information
+            Contact Information of Responsible Party
           </h1>
           <div className="flex flex-col gap-6">
             <div className="flex flex-col md:flex-row gap-4">
@@ -369,7 +302,9 @@ export default function WaiverForm() {
                   type="text"
                   required
                   error={errors.firstName}
-                  onChange={(e) => handleInputChange("firstName", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("firstName", e.target.value)
+                  }
                   value={formValues.firstName || ""}
                 />
               </div>
@@ -381,7 +316,9 @@ export default function WaiverForm() {
                   type="text"
                   required
                   error={errors.lastName}
-                  onChange={(e) => handleInputChange("lastName", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("lastName", e.target.value)
+                  }
                   value={formValues.lastName || ""}
                 />
               </div>
@@ -411,138 +348,6 @@ export default function WaiverForm() {
                 />
               </div>
             </div>
-            <fieldset>
-              <legend className="block text-sm leading-6 text-gray-800">
-                Will you be the contact when we pick up and drop off?
-              </legend>
-              <div className="mt-2 space-y-1">
-                <div className="flex items-center gap-x-3">
-                  <input
-                    type="radio"
-                    id="pickUpYes"
-                    name="isUserContact"
-                    value="yes"
-                    className="form-checkbox h-4 w-4 text-primary rounded-sm border-stone-300 focus:ring-2 focus:ring-primary cursor-pointer"
-                    onChange={(e) => handleContactChange(e.target.value)}
-                    checked={formValues.isUserContact === "yes"}
-                  />
-                  <label
-                    htmlFor="pickUpYes"
-                    className="block text-sm leading-6 text-gray-900 font-light"
-                  >
-                    Yes
-                  </label>
-                </div>
-                <div className="flex items-center gap-x-3">
-                  <input
-                    type="radio"
-                    id="pickUpNo"
-                    name="isUserContact"
-                    value="no"
-                    className="form-checkbox h-4 w-4 text-primary rounded-sm border-stone-300 focus:ring-2 focus:ring-primary cursor-pointer"
-                    onChange={(e) => handleContactChange(e.target.value)}
-                    checked={formValues.isUserContact === "no"}
-                  />
-                  <label
-                    htmlFor="pickUpNo"
-                    className="block text-sm leading-6 text-gray-900 font-light"
-                  >
-                    No
-                  </label>
-                </div>
-              </div>
-            </fieldset>
-            {!isUserContact && (
-              <>
-                <fieldset>
-                  <div className="flex flex-col gap-4">
-                    <legend className="block text-sm leading-6 text-gray-900 font-semibold">
-                      Contact at Pick Up
-                    </legend>
-                    <div className="flex flex-col md:flex-row gap-2">
-                      <div className="w-full md:w-1/2">
-                        <Input
-                          label="Name"
-                          placeholder="Contact's name"
-                          name="pickUpName"
-                          type="text"
-                          required
-                          error={errors.pickUpName}
-                          onChange={(e) => handleInputChange("pickUpName", e.target.value)}
-                          value={formValues.pickUpName || ""}
-                        />
-                      </div>
-                      <div className="w-full">
-                        <Input
-                          label="Phone Number"
-                          placeholder="Contact's phone number"
-                          name="pickUpPhone"
-                          type="tel"
-                          required
-                          error={errors.pickUpPhone}
-                          onChange={(e) => handleInputChange("pickUpPhone", e.target.value)}
-                          value={formValues.pickUpPhone || ""}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </fieldset>
-
-                <fieldset>
-                  <div className="flex flex-col gap-4">
-                    <div className="flex justify-between md:justify-start gap-2">
-                      <legend className="block text-sm leading-6 text-gray-900 font-semibold">
-                        Contact at Drop Off
-                      </legend>
-                      <div className="flex gap-1">
-                        <input
-                          type="checkbox"
-                          id="sameContactAsPickUp"
-                          name="sameContactAsPickUp"
-                          className="form-checkbox h-4 w-4 text-primary rounded-sm border-stone-300 focus:ring-2 focus:ring-primary cursor-pointer my-auto"
-                          onChange={(e) => handleSameContactAsPickupChange(e.target.checked)}
-                          checked={isSameContactAsPickup}
-                        />
-                        <label
-                          htmlFor="sameContactAsPickUp"
-                          className="block text-xs md:text-sm leading-6 text-gray-900 my-auto font-light"
-                        >
-                          Same as pick up contact
-                        </label>
-                      </div>
-                    </div>
-                    <div className="flex flex-col md:flex-row gap-4 mt=2">
-                      <div className="w-full md:w-1/2">
-                        <Input
-                          label="Name"
-                          placeholder="Contact's name"
-                          name="dropOffName"
-                          type="text"
-                          required
-                          error={errors.dropOffName}
-                          onChange={(e) => handleInputChange("dropOffName", e.target.value)}
-                          value={formValues.dropOffName || ""}
-                          disabled={isSameContactAsPickup}
-                        />
-                      </div>
-                      <div className="w-full">
-                        <Input
-                          label="Phone Number"
-                          placeholder="Contact's phone number"
-                          name="dropOffPhone"
-                          type="tel"
-                          required
-                          error={errors.dropOffPhone}
-                          onChange={(e) => handleInputChange("dropOffPhone", e.target.value)}
-                          value={formValues.dropOffPhone || ""}
-                          disabled={isSameContactAsPickup}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </fieldset>
-              </>
-            )}
           </div>
         </div>
       )}
@@ -564,8 +369,8 @@ export default function WaiverForm() {
             />
           </div>
           <fieldset>
-            <legend className="block text-sm leading-6 text-gray-900">
-              Where are we picking up?
+            <legend className="block text-sm leading-6 text-gray-900 font-semibold">
+              Pick Up Information
             </legend>
             <div className="flex flex-col gap-4 mt-2">
               <div className="w-full md:w-1/2">
@@ -576,7 +381,9 @@ export default function WaiverForm() {
                   type="text"
                   required
                   error={errors.pickUpAddress}
-                  onChange={(e) => handleInputChange("pickUpAddress", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("pickUpAddress", e.target.value)
+                  }
                   value={formValues.pickUpAddress || ""}
                 />
               </div>
@@ -589,7 +396,9 @@ export default function WaiverForm() {
                     type="text"
                     required
                     error={errors.pickUpCity}
-                    onChange={(e) => handleInputChange("pickUpCity", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("pickUpCity", e.target.value)
+                    }
                     value={formValues.pickUpCity || ""}
                   />
                 </div>
@@ -598,7 +407,9 @@ export default function WaiverForm() {
                     label="State"
                     options={stateOptions}
                     value={formValues.pickUpState || ""}
-                    onSelect={(option) => handleInputChange("pickUpState", option)}
+                    onSelect={(option) =>
+                      handleInputChange("pickUpState", option)
+                    }
                     placeholder="State"
                     required
                     error={errors.pickUpState}
@@ -612,34 +423,49 @@ export default function WaiverForm() {
                     type="text"
                     required
                     error={errors.pickUpZip}
-                    onChange={(e) => handleInputChange("pickUpZip", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("pickUpZip", e.target.value)
+                    }
                     value={formValues.pickUpZip || ""}
                   />
                 </div>
+              </div>
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="w-full">
+                  <Input
+                    label="Contact Name"
+                    name="pickUpContactName"
+                    type="text"
+                    required
+                    error={errors.pickUpContactName}
+                    onChange={(e) =>
+                      handleInputChange("pickUpContactName", e.target.value)
+                    }
+                    value={formValues.pickUpContactName || ""}
+                  />
+                </div>
+                <div className="w-full">
+                  <Input
+                    label="Contact Phone"
+                    name="pickUpContactPhone"
+                    type="text"
+                    required
+                    error={errors.pickUpContactPhone}
+                    onChange={(e) =>
+                      handleInputChange("pickUpContactPhone", e.target.value)
+                    }
+                    value={formValues.pickUpContactPhone || ""}
+                  />
+                </div>
+                <div className="w-full" />
               </div>
             </div>
           </fieldset>
           <fieldset>
             <div className="flex justify-between md:justify-start gap-2">
-              <legend className="block text-sm leading-6 text-gray-900">
-                Where are we dropping off?
+              <legend className="block text-sm leading-6 text-gray-900 font-semibold">
+                Drop Off Information
               </legend>
-              <div className="flex gap-1">
-                <input
-                  type="checkbox"
-                  id="sameAsPickUp"
-                  name="sameAsPickUp"
-                  className="form-checkbox h-4 w-4 text-primary rounded-sm border-stone-300 focus:ring-2 focus:ring-primary cursor-pointer my-auto"
-                  onChange={(e) => handleSameAsPickUpChange(e.target.checked)}
-                  checked={isSameAsPickup} // Bind checked to state
-                />
-                <label
-                  htmlFor="sameAsPickUp"
-                  className="block text-xs md:text-sm leading-6 text-gray-900 my-auto font-light"
-                >
-                  Same as pick up
-                </label>
-              </div>
             </div>
             <div className="flex flex-col gap-4 mt-2">
               <div className="w-full md:w-1/2">
@@ -651,8 +477,9 @@ export default function WaiverForm() {
                   required
                   error={errors.dropOffAddress}
                   value={formValues.dropOffAddress || ""}
-                  onChange={(e) => handleInputChange("dropOffAddress", e.target.value)}
-                  disabled={isSameAsPickup}
+                  onChange={(e) =>
+                    handleInputChange("dropOffAddress", e.target.value)
+                  }
                 />
               </div>
               <div className="flex flex-col md:flex-row gap-4">
@@ -665,8 +492,9 @@ export default function WaiverForm() {
                     required
                     error={errors.dropOffCity}
                     value={formValues.dropOffCity || ""}
-                    onChange={(e) => handleInputChange("dropOffCity", e.target.value)}
-                    disabled={isSameAsPickup}
+                    onChange={(e) =>
+                      handleInputChange("dropOffCity", e.target.value)
+                    }
                   />
                 </div>
                 <div className="w-full">
@@ -674,11 +502,12 @@ export default function WaiverForm() {
                     label="State"
                     options={stateOptions}
                     value={formValues.dropOffState || ""}
-                    onSelect={(option) => handleInputChange("dropOffState", option)}
+                    onSelect={(option) =>
+                      handleInputChange("dropOffState", option)
+                    }
                     placeholder="State"
                     required
                     error={errors.dropOffState}
-                    disabled={isSameAsPickup}
                   />
                 </div>
                 <div className="w-full">
@@ -690,10 +519,40 @@ export default function WaiverForm() {
                     required
                     error={errors.dropOffZip}
                     value={formValues.dropOffZip || ""}
-                    onChange={(e) => handleInputChange("dropOffZip", e.target.value)}
-                    disabled={isSameAsPickup}
+                    onChange={(e) =>
+                      handleInputChange("dropOffZip", e.target.value)
+                    }
                   />
                 </div>
+              </div>
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="w-full">
+                  <Input
+                    label="Contact Name"
+                    name="dropOffContactName"
+                    type="text"
+                    required
+                    error={errors.dropOffContactName}
+                    value={formValues.dropOffContactName || ""}
+                    onChange={(e) =>
+                      handleInputChange("dropOffContactName", e.target.value)
+                    }
+                  />
+                </div>
+                <div className="w-full">
+                  <Input
+                    label="Contact Phone"
+                    name="dropOffContactPhone"
+                    type="text"
+                    required
+                    error={errors.dropOffContactPhone}
+                    value={formValues.dropOffContactPhone || ""}
+                    onChange={(e) =>
+                      handleInputChange("dropOffContactPhone", e.target.value)
+                    }
+                  />
+                </div>
+                <div className="w-full" />
               </div>
             </div>
           </fieldset>
@@ -737,7 +596,7 @@ export default function WaiverForm() {
                 onChange={(e) =>
                   handleInputChange(
                     "cogginsHealthCert",
-                    e.target.checked ? "true" : "false"
+                    e.target.checked ? "true" : "false",
                   )
                 }
                 checked={formValues.cogginsHealthCert === "true"}
@@ -767,7 +626,7 @@ export default function WaiverForm() {
                 onChange={(e) =>
                   handleInputChange(
                     "terms",
-                    e.target.checked ? "true" : "false"
+                    e.target.checked ? "true" : "false",
                   )
                 }
                 checked={formValues.terms === "true"}
@@ -803,32 +662,34 @@ export default function WaiverForm() {
       <div>
         <div className="flex justify-end gap-2">
           {step > 1 && (
-            <div className="w-[15rem]">
+            <div className="w-40">
               <Button
                 secondary
                 type="button"
                 icon={ArrowLongLeftIcon}
                 onClick={() => handleStepChange(step - 1)}
+                className="w-full"
               >
                 Previous
               </Button>
             </div>
           )}
           {step < 4 && (
-            <div className="w-[15rem]">
+            <div className="w-40">
               <Button
                 secondary
                 type="button"
                 icon={ArrowLongRightIcon}
                 onClick={() => handleStepChange(step + 1)}
+                className="w-full"
               >
                 Next
               </Button>
             </div>
           )}
           {step === 4 && (
-            <div className="w-[15rem]">
-              <Button primary type="submit" className="h-full">
+            <div className="w-40">
+              <Button primary type="submit" className="w-full">
                 Submit
               </Button>
             </div>

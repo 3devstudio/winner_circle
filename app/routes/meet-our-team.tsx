@@ -4,17 +4,17 @@ import ContactCard from "~/components/Blocks/ContactCard";
 import BackgroundImage from "~/components/Blocks/BackgroundImage";
 import ImageWithText from "~/components/Blocks/ImageWithText";
 import QuickQuoteBanner from "~/components/Pages/Frontend/Home/QuickQuoteBanner";
-import useSlideUp from "~/hooks/useSlideUp";
+import useIntersectionObserver from "~/hooks/useIntersectionObserver";
 
 import AppLayout from "~/layouts/AppLayout";
 
 export const meta: MetaFunction = () => [{ title: "Meet Our Team" }];
 
 const MeetOurTeam: React.FC = () => {
-  const [titleRef, titleVisible] = useSlideUp<HTMLDivElement>();
-  const [imgRef, imgVisible] = useSlideUp<HTMLDivElement>();
-  const [card1Ref, card1Visible] = useSlideUp<HTMLDivElement>();
-  const [card2Ref, card2Visible] = useSlideUp<HTMLDivElement>();
+  const [titleRef, titleVisible] = useIntersectionObserver<HTMLDivElement>();
+  const [imgRef, imgVisible] = useIntersectionObserver<HTMLDivElement>();
+  const [card1Ref, card1Visible] = useIntersectionObserver<HTMLDivElement>();
+  const [card2Ref, card2Visible] = useIntersectionObserver<HTMLDivElement>();
 
   return (
     <AppLayout>
@@ -32,7 +32,7 @@ const MeetOurTeam: React.FC = () => {
       </BackgroundImage>
       <div
         ref={imgRef}
-        className={`p-4 md:px-12 py-24 flex flex-col lg:flex-row justify-center slide-up ${
+        className={`p-4 md:px-12 py-16 flex flex-col lg:flex-row justify-center slide-up w-full max-w-6xl mx-auto ${
           imgVisible ? "show" : ""
         }`}
       >
@@ -45,6 +45,7 @@ const MeetOurTeam: React.FC = () => {
             includes a 2023 Ford F-450 with a 7-horse head-to-head trailer,
             box stalls available depending on your needs. Additionally, we
             operate an F-350 with a 6-horse slant load trailer. We are based in Utah and travel throughout the United States."
+          size="xl"
         />
       </div>
       <div className="flex flex-col lg:flex-row gap-4 p-4 md:gap-8 md:p-8">

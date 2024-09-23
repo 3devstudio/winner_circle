@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ExclamationCircleIcon, XMarkIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
-import useSlideUp from "~/hooks/useSlideUp";
+import useIntersectionObserver from "~/hooks/useIntersectionObserver";
 
 interface ResponseBannerProps {
   message: string;
@@ -9,7 +9,7 @@ interface ResponseBannerProps {
 }
 
 const ResponseBanner: React.FC<ResponseBannerProps> = ({ message, type, onClose }) => {
-  const [bannerRef, bannerVisible] = useSlideUp<HTMLDivElement>();
+  const [bannerRef, bannerVisible] = useIntersectionObserver<HTMLDivElement>();
   const [isVisible, setIsVisible] = useState(bannerVisible);
 
   useEffect(() => {

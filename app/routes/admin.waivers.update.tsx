@@ -12,18 +12,19 @@ export const action: ActionFunction = async ({ request }) => {
   const lastName = formData.get("lastName") as string;
   const phone = formData.get("phone") as string;
   const email = formData.get("email") as string;
-  const isUserContact = formData.get("isUserContact") === "true";
-  const pickUpContact = formData.get("pickUpContact") as string;
-  const dropOffContact = formData.get("dropOffContact") as string;
   const pickUpDate = formData.get("pickUpDate") as string;
   const pickUpAddress = formData.get("pickUpAddress") as string;
   const pickUpCity = formData.get("pickUpCity") as string;
   const pickUpState = formData.get("pickUpState") as string;
   const pickUpZip = formData.get("pickUpZip") as string;
+  const pickUpContactName = formData.get("pickUpContactName") as string;
+  const pickUpContactPhone = formData.get("pickUpContactPhone") as string;
   const dropOffAddress = formData.get("dropOffAddress") as string;
   const dropOffCity = formData.get("dropOffCity") as string;
   const dropOffState = formData.get("dropOffState") as string;
   const dropOffZip = formData.get("dropOffZip") as string;
+  const dropOffContactName = formData.get("dropOffContactName") as string;
+  const dropOffContactPhone = formData.get("dropOffContactPhone") as string;
   const agreedBidAmount = formData.get("agreedBidAmount") as string;
   const cogginsHealthCert = formData.get("cogginsHealthCert") === "true";
   const terms = formData.get("terms") === "true";
@@ -42,23 +43,24 @@ export const action: ActionFunction = async ({ request }) => {
       lastName,
       phone,
       email,
-      isUserContact,
-      pickUpContact,
-      dropOffContact,
       pickUpDate: new Date(pickUpDate),
       pickUpAddress,
       pickUpCity,
       pickUpState,
       pickUpZip,
+      pickUpContactName,
+      pickUpContactPhone,
       dropOffAddress,
       dropOffCity,
       dropOffState,
       dropOffZip,
+      dropOffContactName,
+      dropOffContactPhone,
       agreedBidAmount,
       cogginsHealthCert,
       terms,
       comments,
-    }, horses); // Pass horses separately
+    }, horses);
 
     return json({ success: true, message: "Waiver updated successfully", updatedWaiver });
   } catch (error) {

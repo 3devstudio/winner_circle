@@ -1,4 +1,5 @@
 @import url("https://unpkg.com/leaflet@1.7.1/dist/leaflet.css");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import "public/styles/breadcrumb.css";
 
 @tailwind base;
@@ -21,6 +22,11 @@
   }
 }
 
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+
 .logo-container img {
   transition: all 0.3s ease;
 }
@@ -33,7 +39,25 @@
   .slide-up {
     @apply transform translate-y-10 opacity-0 transition-all duration-700;
   }
+  .slide-right {
+    @apply transform translate-x-10 opacity-0 transition-all duration-700;
+  }
+  .slide-left {
+    @apply transform -translate-x-10 opacity-0 transition-all duration-700;
+  }
+  .slide-down {
+    @apply transform translate-y-10 opacity-0 transition-all duration-700;
+  }
   .slide-up.show {
+    @apply translate-y-0 opacity-100;
+  }
+  .slide-right.show {
+    @apply translate-x-0 opacity-100;
+  }
+  .slide-left.show {
+    @apply -translate-x-0 opacity-100;
+  }
+  .slide-down.show {
     @apply translate-y-0 opacity-100;
   }
 }

@@ -3,7 +3,7 @@ import { Outlet, useLocation, useNavigate } from "@remix-run/react";
 import { ArrowLeftCircleIcon } from "@heroicons/react/24/outline";
 
 import BackendNav from "../components/Navigations/Backend/BackendNav";
-import useSlideUp from "~/hooks/useSlideUp";
+import useIntersectionObserver from "~/hooks/useIntersectionObserver";
 import ResponseBanner from "~/components/Blocks/Messaging/ResponseBanner";
 
 interface AdminLayoutProps {
@@ -53,15 +53,17 @@ export default function AdminLayout({
     }
   };
 
-  const [titleRef, titleVisible] = useSlideUp<HTMLHeadingElement>();
-  const [titleActionsRef, titleActionsVisible] = useSlideUp<HTMLDivElement>();
-  const [contentRef, contentVisible] = useSlideUp<HTMLDivElement>();
+  const [titleRef, titleVisible] = useIntersectionObserver<HTMLHeadingElement>();
+  const [titleActionsRef, titleActionsVisible] = useIntersectionObserver<HTMLDivElement>();
+  const [contentRef, contentVisible] = useIntersectionObserver<HTMLDivElement>();
 
   return (
     <div className="flex flex-col md:flex-row background-pattern z-10">
+      {/* Nav */}
       <BackendNav className="" />
       <main className="overflow-x-auto w-full min-h-screen z-20">
         <div className="flex flex-col h-full">
+          {/* Title */}
           <div className="flex justify-between gap-4 md:gap-8 h-20 bg-white border-b border-stone-200 px-4 md:px-8 py-2">
             <div
               ref={titleRef}
@@ -92,6 +94,7 @@ export default function AdminLayout({
               {titleActions}
             </div>
           </div>
+          {/* Server Response Banner */}
           {bannerMessage && bannerType && (
             <ResponseBanner
               message={bannerMessage}
@@ -99,6 +102,7 @@ export default function AdminLayout({
               onClose={clearBanner}
             />
           )}
+          {/* Content */}
           <div
             ref={contentRef}
             className={`flex h-full slide-up ${contentVisible ? "show" : ""}`}

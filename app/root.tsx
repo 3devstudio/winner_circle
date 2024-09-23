@@ -47,6 +47,7 @@ export default function App() {
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
       </head>
       <body>
+        <div id="portal-root"></div>
         <Outlet context={{ user }} />
         <ScrollRestoration />
         <Scripts />

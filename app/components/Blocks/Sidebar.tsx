@@ -1,10 +1,12 @@
-import React from "react";
+// Sidebar.tsx
+import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 interface SidebarProps {
   title: string;
   content: React.ReactNode;
-  footer: React.ReactNode; // New prop for footer
+  footer: React.ReactNode;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -16,9 +18,20 @@ const Sidebar: React.FC<SidebarProps> = ({
   isOpen,
   onClose,
 }) => {
-  return (
+  const [portalElement, setPortalElement] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const element = document.getElementById("portal-root");
+    if (element) {
+      setPortalElement(element);
+    }
+  }, []);
+
+  if (!portalElement) return null;
+
+  return createPortal(
     <div
-      className={`fixed top-0 right-0 h-full flex flex-col w-full md:w-[35rem] bg-white shadow-lg transform ${
+      className={`fixed top-0 right-0 h-full flex flex-col w-full md:w-[35rem] bg-white shadow-lg z-50 transform ${
         isOpen ? "translate-x-0" : "translate-x-full"
       } transition-transform duration-300 ease-in-out`}
     >
@@ -33,10 +46,11 @@ const Sidebar: React.FC<SidebarProps> = ({
       {/* Sidebar Content Area */}
       <div className="overflow-y-auto flex-1">{content}</div>
       {/* Sidebar Footer Area */}
-      <div className="flex-none p-4 border-t border-gray-200 flex justify-end gap-2 sticky bottom-0 bg-white">
+      <div className="flex-none p-4 border-t border-gray-200 sticky bottom-0 bg-white">
         {footer}
       </div>
-    </div>
+    </div>,
+    portalElement
   );
 };
 

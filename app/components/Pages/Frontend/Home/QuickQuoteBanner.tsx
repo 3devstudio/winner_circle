@@ -15,7 +15,7 @@ const Hero = () => {
           Whether it’s Race or Ranch, Old Friend or New Ride, at Winner Circle
           Horse Transport, we know that your horse represents the thrill of
           racing, the anticipation of competition and the comfort of
-          companionship. Get a free, no obligation quote today!
+          companionship. Get a quick quote today!
         </p>
         <div className="flex justify-center text-sm w-full">
           <div className="w-fit mt-4">

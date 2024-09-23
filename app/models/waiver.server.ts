@@ -17,18 +17,19 @@ export interface WaiverWithHorses {
   lastName: string;
   phone: string;
   email: string;
-  isUserContact: boolean;
-  pickUpContact?: string;
-  dropOffContact?: string;
   pickUpDate: Date;
   pickUpAddress: string;
   pickUpCity: string;
   pickUpState: string;
   pickUpZip: string;
+  pickUpContactName: string;
+  pickUpContactPhone: string;
   dropOffAddress: string;
   dropOffCity: string;
   dropOffState: string;
   dropOffZip: string;
+  dropOffContactName: string;
+  dropOffContactPhone: string;
   agreedBidAmount: string;
   cogginsHealthCert: boolean;
   terms: boolean;
@@ -47,18 +48,19 @@ export async function createWaiver(data: WaiverWithHorses) {
         lastName: data.lastName,
         phone: data.phone,
         email: data.email,
-        isUserContact: data.isUserContact,
-        pickUpContact: data.pickUpContact, 
-        dropOffContact: data.dropOffContact,
         pickUpDate: data.pickUpDate,
         pickUpAddress: data.pickUpAddress,
         pickUpCity: data.pickUpCity,
         pickUpState: data.pickUpState,
         pickUpZip: data.pickUpZip,
+        pickUpContactName: data.pickUpContactName,
+        pickUpContactPhone: data.pickUpContactPhone,
         dropOffAddress: data.dropOffAddress,
         dropOffCity: data.dropOffCity,
         dropOffState: data.dropOffState,
         dropOffZip: data.dropOffZip,
+        dropOffContactName: data.dropOffContactName,
+        dropOffContactPhone: data.dropOffContactPhone,
         agreedBidAmount: data.agreedBidAmount,
         cogginsHealthCert: data.cogginsHealthCert,
         terms: data.terms,

@@ -8,7 +8,7 @@ export const meta: MetaFunction = () => [{ title: "Get a Quote" }];
 export default function Contact() {
   return (
     <AppLayout>
-      <QuickQuoteForm title="Get a free, no obligation quote today!"/>
+      <QuickQuoteForm title="Get a quick quote today!"/>
     </AppLayout>
   );
 }

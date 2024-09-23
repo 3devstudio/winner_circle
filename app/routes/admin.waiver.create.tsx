@@ -8,16 +8,19 @@ export let action: ActionFunction = async ({ request }) => {
   const lastName = formData.get("lastName")?.toString() || "";
   const phone = formData.get("phone")?.toString() || "";
   const email = formData.get("email")?.toString() || "";
-  const isUserContact = formData.get("applicantIsContact") === "yes";
   const pickUpDate = formData.get("pickUpDate")?.toString() || "";
   const pickUpAddress = formData.get("pickUpAddress")?.toString() || "";
   const pickUpCity = formData.get("pickUpCity")?.toString() || "";
   const pickUpState = formData.get("pickUpState")?.toString() || "";
   const pickUpZip = formData.get("pickUpZip")?.toString() || "";
+  const pickUpContactName = formData.get("pickUpContactName")?.toString() || "";
+  const pickUpContactPhone = formData.get("pickUpContactPhone")?.toString() || "";
   const dropOffAddress = formData.get("dropOffAddress")?.toString() || "";
   const dropOffCity = formData.get("dropOffCity")?.toString() || "";
   const dropOffState = formData.get("dropOffState")?.toString() || "";
   const dropOffZip = formData.get("dropOffZip")?.toString() || "";
+  const dropOffContactName = formData.get("dropOffContactName")?.toString() || "";
+  const dropOffContactPhone = formData.get("dropOffContactPhone")?.toString() || "";
   const agreedBidAmount = formData.get("bidAmount")?.toString() || "";
   const cogginsHealthCert = formData.get("cogginsHealthCert") === "true";
   const terms = formData.get("terms") === "true";
@@ -30,16 +33,19 @@ export let action: ActionFunction = async ({ request }) => {
       lastName,
       phone,
       email,
-      isUserContact,
       pickUpDate: new Date(pickUpDate),
       pickUpAddress,
       pickUpCity,
       pickUpState,
       pickUpZip,
+      pickUpContactName,
+      pickUpContactPhone,
       dropOffAddress,
       dropOffCity,
       dropOffState,
       dropOffZip,
+      dropOffContactName,
+      dropOffContactPhone,
       agreedBidAmount,
       cogginsHealthCert,
       terms,

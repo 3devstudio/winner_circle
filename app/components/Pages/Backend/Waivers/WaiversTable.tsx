@@ -20,18 +20,19 @@ interface Waiver {
   lastName: string;
   phone: string;
   email: string;
-  isUserContact: boolean;
-  pickUpContact?: string;
-  dropOffContact?: string;
   pickUpDate: string;
   pickUpAddress: string;
   pickUpCity: string;
   pickUpState: string;
   pickUpZip: string;
+  pickUpContactName: string;
+  pickUpContactPhone: string;
   dropOffAddress: string;
   dropOffCity: string;
   dropOffState: string;
   dropOffZip: string;
+  dropOffContactName: string;
+  dropOffContactPhone: string;
   agreedBidAmount: string;
   cogginsHealthCert: boolean;
   terms: boolean;
@@ -141,7 +142,6 @@ const WaiversTable: React.FC<WaiversTableProps> = ({ waivers }) => {
           };
         }
         if (
-          accessor === "isUserContact" ||
           accessor === "cogginsHealthCert" ||
           accessor === "terms"
         ) {
@@ -162,18 +162,19 @@ const WaiversTable: React.FC<WaiversTableProps> = ({ waivers }) => {
     formData.append("lastName", updatedWaiver.lastName);
     formData.append("phone", updatedWaiver.phone);
     formData.append("email", updatedWaiver.email);
-    formData.append("isUserContact", updatedWaiver.isUserContact ? "true" : "false");
-    formData.append("pickUpContact", updatedWaiver.pickUpContact || "");
-    formData.append("dropOffContact", updatedWaiver.dropOffContact || "");
     formData.append("pickUpDate", updatedWaiver.pickUpDate);
     formData.append("pickUpAddress", updatedWaiver.pickUpAddress);
     formData.append("pickUpCity", updatedWaiver.pickUpCity);
     formData.append("pickUpState", updatedWaiver.pickUpState);
     formData.append("pickUpZip", updatedWaiver.pickUpZip);
+    formData.append("pickUpContactName", updatedWaiver.pickUpContactName);
+    formData.append("pickUpContactPhone", updatedWaiver.pickUpContactPhone);
     formData.append("dropOffAddress", updatedWaiver.dropOffAddress);
     formData.append("dropOffCity", updatedWaiver.dropOffCity);
     formData.append("dropOffState", updatedWaiver.dropOffState);
     formData.append("dropOffZip", updatedWaiver.dropOffZip);
+    formData.append("dropOffContactName", updatedWaiver.dropOffContactName);
+    formData.append("dropOffContactPhone", updatedWaiver.dropOffContactPhone);
     formData.append("agreedBidAmount", updatedWaiver.agreedBidAmount);
     formData.append("cogginsHealthCert", updatedWaiver.cogginsHealthCert ? "true" : "false");
     formData.append("terms", updatedWaiver.terms ? "true" : "false");
@@ -211,17 +212,21 @@ const WaiversTable: React.FC<WaiversTableProps> = ({ waivers }) => {
     { header: "Last Name", accessor: "lastName", dataType: "text" },
     { header: "Phone", accessor: "phone", dataType: "tel" },
     { header: "Email", accessor: "email", dataType: "email" },
-    { header: "Pick Up Contact", accessor: "pickUpContact", dataType: "text" },
-    {
-      header: "Drop Off Contact",
-      accessor: "dropOffContact",
-      dataType: "text",
-    },
     { header: "Pick Up Date", accessor: "pickUpDate", dataType: "date" },
     { header: "Pick Up Address", accessor: "pickUpAddress", dataType: "text" },
     { header: "Pick Up City", accessor: "pickUpCity", dataType: "text" },
     { header: "Pick Up State", accessor: "pickUpState", dataType: "select" },
     { header: "Pick Up Zip", accessor: "pickUpZip", dataType: "text" },
+    {
+      header: "Pick Up Contact Name",
+      accessor: "pickUpContactName",
+      dataType: "text",
+    },
+    {
+      header: "Pick Up Contact Phone",
+      accessor: "pickUpContactPhone",
+      dataType: "tel",
+    },
     {
       header: "Drop Off Address",
       accessor: "dropOffAddress",
@@ -230,6 +235,16 @@ const WaiversTable: React.FC<WaiversTableProps> = ({ waivers }) => {
     { header: "Drop Off City", accessor: "dropOffCity", dataType: "text" },
     { header: "Drop Off State", accessor: "dropOffState", dataType: "select" },
     { header: "Drop Off Zip", accessor: "dropOffZip", dataType: "text" },
+    {
+      header: "Drop Off Contact Name",
+      accessor: "dropOffContactName",
+      dataType: "text",
+    },
+    {
+      header: "Drop Off Contact Phone",
+      accessor: "dropOffContactPhone",
+      dataType: "tel",
+    },
     {
       header: "Agreed Bid Amount",
       accessor: "agreedBidAmount",

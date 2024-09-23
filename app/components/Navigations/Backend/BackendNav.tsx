@@ -13,7 +13,7 @@ import {
   DocumentTextIcon
 } from "@heroicons/react/24/outline";
 import MobileNav from "~/components/Navigations/Frontend/MobileNav";
-import useSlideUp from "~/hooks/useSlideUp";
+import useIntersectionObserver from "~/hooks/useIntersectionObserver";
 
 interface SidebarNavProps {
   className?: string;
@@ -63,14 +63,14 @@ const BackendNav: React.FC<SidebarNavProps> = ({ className, ref }) => {
   const mobileLinks = topLinks.map(({ path, label }) => ({ path, label }));
 
   //Desktop Slide Up Transitions
-  const [logoRef, logoVisible] = useSlideUp<HTMLImageElement>();
-  const [linksRef, linksVisible] = useSlideUp<HTMLDivElement>();
-  const [actionButtonsRef, actionButtonsVisible] = useSlideUp<HTMLDivElement>();
-  const [userProfileRef, userProfileVisible] = useSlideUp<HTMLAnchorElement>();
+  const [logoRef, logoVisible] = useIntersectionObserver<HTMLImageElement>();
+  const [linksRef, linksVisible] = useIntersectionObserver<HTMLDivElement>();
+  const [actionButtonsRef, actionButtonsVisible] = useIntersectionObserver<HTMLDivElement>();
+  const [userProfileRef, userProfileVisible] = useIntersectionObserver<HTMLAnchorElement>();
 
   //Mobile Slide Up Transitions
-  const [mobileLogoRef, mobileLogoVisible] = useSlideUp<HTMLImageElement>();
-  const [menuButtonRef, menuButtonVisible] = useSlideUp<HTMLButtonElement>();
+  const [mobileLogoRef, mobileLogoVisible] = useIntersectionObserver<HTMLImageElement>();
+  const [menuButtonRef, menuButtonVisible] = useIntersectionObserver<HTMLButtonElement>();
 
   return (
     <div className="sticky top-0 z-30">

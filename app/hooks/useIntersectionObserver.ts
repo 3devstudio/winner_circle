@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, MutableRefObject } from 'react';
 
-const useSlideUp = <T extends HTMLElement>(threshold = 0.1) => {
+const useIntersectionObserver = <T extends HTMLElement>(threshold = 0.1) => {
   const [isIntersecting, setIsIntersecting] = useState(false);
   
   const ref = useRef<T | null>(null);
@@ -34,4 +34,4 @@ const useSlideUp = <T extends HTMLElement>(threshold = 0.1) => {
   return [ref, isIntersecting] as const;
 };
 
-export default useSlideUp;
+export default useIntersectionObserver;
