@@ -8,10 +8,10 @@ import Button from "../../../Buttons/Button";
 import Dropdown from "../../../Dropdowns/Dropdown";
 import LoginButton from "./LoginButton";
 import MobileNav from "../../../Navigations/Frontend/MobileNav";
-import useSlideUp from "~/hooks/useSlideUp";
+import useIntersectionObserver from "~/hooks/useIntersectionObserver";
 
 export default function Navigation() {
-  const [navLinksRef, navLinksVisible] = useSlideUp<HTMLDivElement>();
+  const [navLinksRef, navLinksVisible] = useIntersectionObserver<HTMLDivElement>();
   const location = useLocation();
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
@@ -21,6 +21,7 @@ export default function Navigation() {
   const mobileLinks = [
     { path: "/", label: "Home" },
     { path: "/our-services", label: "Our Services" },
+    { path: "/our-equipment", label: "Our Equipment" },
     { path: "/our-principles", label: "Our Principles" },
     { path: "/meet-our-team", label: "Meet Our Team" },
     { path: "/submit-waiver", label: "Waiver" },
@@ -56,6 +57,12 @@ export default function Navigation() {
                 className="text-stone-700 hover:bg-stone-100 transition px-4 py-2 capitalize"
               >
                 Our Services
+              </Link>
+              <Link
+                to="/our-equipment"
+                className="text-stone-700 hover:bg-stone-100 transition px-4 py-2 capitalize"
+              >
+                Our Equipment
               </Link>
               <Link
                 to="/our-principles"

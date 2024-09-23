@@ -33,6 +33,21 @@ export async function createUser(email: User["email"], password: string, firstNa
   });
 }
 
+//Update
+export async function updateUser(
+  userId: User["id"],
+  updatedDetails: { firstName: string; lastName: string; email: string }
+) {
+  return prisma.user.update({
+    where: { id: userId },
+    data: {
+      firstName: updatedDetails.firstName,
+      lastName: updatedDetails.lastName,
+      email: updatedDetails.email,
+    },
+  });
+}
+
 //Soft Delete User by Id
 export async function softDeleteUserById(userId: User['id']) {
   return prisma.user.update({

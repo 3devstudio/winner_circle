@@ -1,9 +1,12 @@
 import PropTypes from "prop-types";
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 
 interface SelectProps {
   options: { label: string; value: string }[];
   onSelect: (value: string) => void;
+  onClick?: (e: React.MouseEvent<HTMLSelectElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLSelectElement>) => void;
+  onFocus?: (e: React.FocusEvent<HTMLSelectElement>) => void;
   placeholder?: string;
   label?: string;
   required?: boolean;
@@ -15,6 +18,9 @@ interface SelectProps {
 const Select: React.FC<SelectProps> = ({
   options,
   onSelect,
+  onClick,
+  onBlur,
+  onFocus,
   placeholder,
   label,
   required = false,
@@ -37,10 +43,13 @@ const Select: React.FC<SelectProps> = ({
       <select
         value={value || ""}
         onChange={handleSelect}
+        onClick={onClick}
+        onBlur={onBlur}
+        onFocus={onFocus}
         required={required}
         className={`p-2 border border-gray-300 rounded-md transition w-full text-sm text-stone-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
           error ? "ring-2 ring-rose-500 border-rose-500" : ""
-        } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`} // Apply opacity and cursor styles when disabled
+        } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
         disabled={disabled}
       >
         {placeholder && (
@@ -71,6 +80,9 @@ Select.propTypes = {
     }).isRequired,
   ).isRequired,
   onSelect: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
+  onBlur: PropTypes.func,
+  onFocus: PropTypes.func,
   placeholder: PropTypes.string,
   label: PropTypes.string,
   required: PropTypes.bool,

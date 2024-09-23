@@ -7,6 +7,7 @@ interface BreadcrumbProps {
   setStep: (step: number) => void;
   steps: string[];
   completedSteps?: boolean[];
+  resetCompletedSteps?: () => void;
 }
 
 const Breadcrumb: React.FC<BreadcrumbProps> = ({
@@ -14,8 +15,8 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
   setStep,
   steps,
   completedSteps = [],
+  resetCompletedSteps,
 }) => {
-
   return (
     <div className="flex mb-4 bg-stone-400 overflow-auto transform-skewX-16deg">
       {steps.map((title, index) => (
@@ -25,7 +26,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({
           onClick={() => setStep(index + 1)}
           role="button"
           tabIndex={0}
-          onKeyPress={(e) => e.key === 'Enter' && setStep(index + 1)}
+          onKeyPress={(e) => e.key === "Enter" && setStep(index + 1)}
         >
           <div className="flex justify-center breadcrumb-title text-xs md:text-sm whitespace-nowrap items-center gap-2 w-full min-w-[10rem]">
             <div>
