@@ -40,7 +40,9 @@ export default function RegularRoutes() {
   const [ReactLeaflet, setReactLeaflet] = useState<
     typeof import("react-leaflet") | null
   >(null);
-  const [customIcon, setCustomIcon] = useState<import("leaflet").Icon | null>(null);
+  const [customIcon, setCustomIcon] = useState<import("leaflet").Icon | null>(
+    null,
+  );
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -148,7 +150,9 @@ export default function RegularRoutes() {
       <div className="p-4">
         <SectionTitle
           title="Our Regular Routes"
-          description="With 16 routine routes, Winner Circle is able to provide a reliable and consistent service to all of our customers. We are always looking to add new routes to our schedule, so if you don’t see your location listed, please reach out to us and we will do our best to accommodate your needs."
+          description="With three rigs on the road, Winner Circle Trucking is able to provide a reliable and consistent service to all of our customers.
+          We regularly travel coast to coast and look forward to including you on an upcoming route!
+          If you don’t see your location listed, please reach out to us and we will do our best to accommodate your needs."
         />
       </div>
       <div className="relative">

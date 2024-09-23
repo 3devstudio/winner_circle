@@ -16,7 +16,7 @@ import Button from "~/components/Buttons/Button";
 import { Tooltip } from "@mui/material";
 import Sidebar from "~/components/Blocks/Sidebar";
 import AddHorse from "~/components/Pages/Frontend/Home/AddHorse";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 // Define the interface for a column in the table.
 interface Column {
@@ -70,13 +70,19 @@ const BasicTable = <T extends TableRow>({
 }: BasicTableProps<T>) => {
   // State for handling various actions.
   const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
-  const [confirmingRowDeletionId, setConfirmingRowDeletionId] = useState<string | null>(null);
-  const [confirmingRowRestorationId, setConfirmingRowRestorationId] = useState<string | null>(null);
+  const [confirmingRowDeletionId, setConfirmingRowDeletionId] = useState<
+    string | null
+  >(null);
+  const [confirmingRowRestorationId, setConfirmingRowRestorationId] = useState<
+    string | null
+  >(null);
   const [itemToDelete, setItemToDelete] = useState<T | null>(null);
   const [editingRowId, setEditingRowId] = useState<string | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
-  const [rowActionState, setRowActionState] = useState<{ [key: string]: "edit" | "delete" | "restore" | null }>({});
+  const [rowActionState, setRowActionState] = useState<{
+    [key: string]: "edit" | "delete" | "restore" | null;
+  }>({});
 
   // States to hold the current editing item data and initial data for comparison
   const [editingItem, setEditingItem] = useState<T | null>(null);
@@ -158,7 +164,7 @@ const BasicTable = <T extends TableRow>({
 
   // Function to handle changes from the AddHorse component
   const handleHorseChange = (updatedHorses: Horse[]) => {
-    handleEditChange('originalHorses', updatedHorses); // Update the horses in the local editing item state
+    handleEditChange("originalHorses", updatedHorses); // Update the horses in the local editing item state
   };
 
   // Function to confirm deletion
@@ -186,7 +192,7 @@ const BasicTable = <T extends TableRow>({
     setConfirmingRowRestorationId(null);
     setSelectedRowId(null);
     toast.success("Row restored successfully.");
-};
+  };
 
   // Function to render inputs based on the column data type.
   const renderInput = (
@@ -197,7 +203,7 @@ const BasicTable = <T extends TableRow>({
     const handleInputClick = (e: React.MouseEvent) => {
       e.stopPropagation();
     };
-  
+
     const formatDateForInput = (dateString: string) => {
       const date = new Date(dateString);
       const year = date.getFullYear();
@@ -205,9 +211,11 @@ const BasicTable = <T extends TableRow>({
       const day = String(date.getDate()).padStart(2, "0");
       return `${year}-${month}-${day}`;
     };
-  
-    if (accessor === 'horses') {
-      const horsesArray = Array.isArray(value) ? value : (editingItem?.originalHorses || []);
+
+    if (accessor === "horses") {
+      const horsesArray = Array.isArray(value)
+        ? value
+        : editingItem?.originalHorses || [];
       return (
         <AddHorse
           horses={horsesArray}
@@ -323,19 +331,23 @@ const BasicTable = <T extends TableRow>({
 
   // Render footer buttons for the sidebar
   const renderSidebarFooter = () => (
-    <>
-      <Button onClick={() => setIsSidebarOpen(false)} className="py-2">
-        Cancel
-      </Button>
-      <Button
-        primary
-        onClick={handleSaveEdit}
-        disabled={!isDirty}
-        className="py-2"
-      >
-        Save
-      </Button>
-    </>
+    <div className="flex justify-end gap-2 py-2">
+      <div className="w-40">
+        <Button secondary onClick={() => setIsSidebarOpen(false)} className="w-full">
+          Cancel
+        </Button>
+      </div>
+      <div className="w-40">
+        <Button
+          primary
+          onClick={handleSaveEdit}
+          disabled={!isDirty}
+          className="w-full"
+        >
+          Save
+        </Button>
+      </div>
+    </div>
   );
 
   return (
@@ -462,7 +474,9 @@ const BasicTable = <T extends TableRow>({
                           }}
                         >
                           <PencilIcon className="h-5 w-5 text-blue-500" />
-                          <span className="text-stone-600 text-xs my-auto">Edit</span>
+                          <span className="text-stone-600 text-xs my-auto">
+                            Edit
+                          </span>
                         </button>
                         {item.deletedAt ? (
                           <button

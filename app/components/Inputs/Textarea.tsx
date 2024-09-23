@@ -11,6 +11,7 @@ interface TextareaProps {
   onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
   onFocus?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
   error?: string;
+  whiteLabel?: boolean;
 }
 
 const Textarea: React.FC<TextareaProps> = ({
@@ -23,6 +24,7 @@ const Textarea: React.FC<TextareaProps> = ({
   onBlur,
   onFocus,
   error,
+  whiteLabel = false,
 }) => {
   const [formattedValue, setFormattedValue] = useState(value || "");
 
@@ -43,7 +45,11 @@ const Textarea: React.FC<TextareaProps> = ({
   return (
     <div className="flex flex-col">
       {label ? (
-        <label className="mb-1 text-sm text-gray-700 font-light">
+        <label
+          className={`mb-1 text-sm font-light ${
+            whiteLabel ? "text-gray-100" : "text-gray-700"
+          }`}
+        >
           {label} {required ? <span className="text-red-500">*</span> : null}
         </label>
       ) : null}
@@ -72,6 +78,7 @@ Textarea.propTypes = {
   onBlur: PropTypes.func,
   onFocus: PropTypes.func,
   error: PropTypes.string,
+  whiteLabel: PropTypes.bool,
 };
 
 export default Textarea;

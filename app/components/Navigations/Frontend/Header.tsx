@@ -1,14 +1,14 @@
 import { PhoneIcon, MapPinIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import NavLinks from "~/components/Navigations/Frontend/Partials/NavLinks";
-import useSlideUp from "~/hooks/useSlideUp";
+import useIntersectionObserver from "~/hooks/useIntersectionObserver";
 
 interface HeaderProps {
   className?: string;
 }
 
 export default function Header({ className = "" }: HeaderProps) {
-  const [logoRef, logoVisible] = useSlideUp<HTMLImageElement>();
+  const [logoRef, logoVisible] = useIntersectionObserver<HTMLImageElement>();
   const [scrollCount, setScrollCount] = useState(0);
   const [lastScrollY, setLastScrollY] = useState(0);
 

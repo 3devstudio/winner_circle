@@ -189,10 +189,10 @@ const AddHorse: React.FC<AddHorseProps> = ({
               </div>
             ))}
           </ul>
-          <div className="w-full md:w-1/3 mx-auto">
+          <div className="w-full md:w-1/3 mx-auto mt-4">
             <Button
               primary
-              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+              className="w-full"
               onClick={handleAddAnotherHorse}
             >
               Add another horse

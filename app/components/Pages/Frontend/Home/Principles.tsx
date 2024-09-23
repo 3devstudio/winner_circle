@@ -1,14 +1,14 @@
 import { CheckIcon } from "@heroicons/react/20/solid";
 
-import useSlideUp from "~/hooks/useSlideUp";
+import useIntersectionObserver from "~/hooks/useIntersectionObserver";
 
 const Principles = () => {
-  const [profTitleRef, profTitleVisible] = useSlideUp<HTMLDivElement>();
-  const [profPRef, profPVisible] = useSlideUp<HTMLDivElement>();
-  const [relTitleRef, relTitleVisible] = useSlideUp<HTMLDivElement>();
-  const [relPRef, relPVisible] = useSlideUp<HTMLDivElement>();
-  const [expTitleRef, expTitleVisible] = useSlideUp<HTMLDivElement>();
-  const [expPRef, expPVisible] = useSlideUp<HTMLDivElement>();
+  const [profTitleRef, profTitleVisible] = useIntersectionObserver<HTMLDivElement>();
+  const [profPRef, profPVisible] = useIntersectionObserver<HTMLDivElement>();
+  const [relTitleRef, relTitleVisible] = useIntersectionObserver<HTMLDivElement>();
+  const [relPRef, relPVisible] = useIntersectionObserver<HTMLDivElement>();
+  const [expTitleRef, expTitleVisible] = useIntersectionObserver<HTMLDivElement>();
+  const [expPRef, expPVisible] = useIntersectionObserver<HTMLDivElement>();
 
   return (
     <div className="flex flex-col lg:flex-row lg:justify-around">

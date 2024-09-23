@@ -128,18 +128,19 @@ model Waiver {
   lastName       String
   phone          String
   email          String
-  isUserContact  Boolean
-  pickUpContact  String?
-  dropOffContact String?
   pickUpDate     DateTime
   pickUpAddress  String
   pickUpCity     String
   pickUpState    String
   pickUpZip      String
+  pickUpContactName  String
+  pickUpContactPhone        String
   dropOffAddress String
   dropOffCity    String
   dropOffState   String
   dropOffZip     String
+  dropOffContactName String
+  dropOffContactPhone       String
   agreedBidAmount String
   cogginsHealthCert Boolean
   terms          Boolean

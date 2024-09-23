@@ -15,6 +15,7 @@ interface InputProps {
   name?: string;
   disabled?: boolean;
   checked?: boolean;
+  whiteLabel?: boolean;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -31,6 +32,7 @@ const Input: React.FC<InputProps> = ({
   name,
   disabled,
   checked,
+  whiteLabel = false,
 }) => {
   const [formattedValue, setFormattedValue] = useState(value || "");
 
@@ -77,7 +79,11 @@ const Input: React.FC<InputProps> = ({
   return (
     <div className="flex flex-col">
       {label ? (
-        <label className="mb-1 text-sm text-gray-700 font-light">
+        <label
+          className={`mb-1 text-sm font-light ${
+            whiteLabel ? "text-gray-100" : "text-gray-700"
+          }`}
+        >
           {label} {required ? <span className="text-red-500">*</span> : null}
         </label>
       ) : null}
@@ -135,6 +141,7 @@ Input.propTypes = {
   name: PropTypes.string,
   disabled: PropTypes.bool,
   checked: PropTypes.bool,
+  whiteLabel: PropTypes.bool,
 };
 
 export default Input;

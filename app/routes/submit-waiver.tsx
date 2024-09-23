@@ -10,11 +10,10 @@ export default function Waiver() {
     <AppLayout>
       <div className="flex flex-col">
         <BackgroundImage image="/assets/img/home_background.jpeg" size="md">
-          <div className="text-white text-center">
-            <h1 className="text-4xl md:text-6xl font-semibold">Book Now</h1>
+          <div className="text-white text-center px-4 pt-8">
+            <h1 className="text-4xl md:text-6xl font-semibold">Welcome to Winner Circle</h1>
             <p className="text-lg md:text-2xl">
-              Ready to book your next transport? Fill out the form below to get
-              started.
+              Please fill out the form to book your transport:
             </p>
           </div>
         </BackgroundImage>
