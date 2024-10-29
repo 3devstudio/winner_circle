@@ -1,6 +1,7 @@
 // /Users/connorkelly/Documents/winner_circle/src/quote.server.ts
 import { prisma } from "~/db.server";
 import { Prisma, Quote } from "@prisma/client"; // Correct the import
+import { sendQuoteNotificationEmail } from "~/services/email.server";
 
 export type { Quote } from "@prisma/client";
 
@@ -38,7 +39,7 @@ export async function createQuote(data: QuoteCreateInputWithHorses) {
       }
     });
 
-    return prisma.quote.create({
+    const newQuote = await prisma.quote.create({
       data: {
         firstName: data.firstName,
         lastName: data.lastName,
@@ -54,6 +55,10 @@ export async function createQuote(data: QuoteCreateInputWithHorses) {
         },
       },
     });
+
+    await sendQuoteNotificationEmail(data);
+
+    return newQuote;
   } catch (error) {
     console.error("Error creating quote:", error);
     throw new Error("Failed to create quote");
