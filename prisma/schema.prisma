@@ -85,11 +85,16 @@ model Horse {
   height    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 
-  quoteId String
-  quote   Quote   @relation(fields: [quoteId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  quoteId String?
+  quote   Quote?   @relation(fields: [quoteId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  
   tripId  String?
   trip    Trip?    @relation(fields: [tripId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  waiverId String?
+  waiver   Waiver?  @relation(fields: [waiverId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Review {
@@ -123,35 +128,26 @@ model Waiver {
   lastName       String
   phone          String
   email          String
-  isUserContact  Boolean
-  pickUpContact  Contact? @relation("PickUpContact", fields: [pickUpContactId], references: [id])
-  pickUpContactId String? 
-  dropOffContact Contact? @relation("DropOffContact", fields: [dropOffContactId], references: [id])
-  dropOffContactId String? 
   pickUpDate     DateTime
   pickUpAddress  String
   pickUpCity     String
   pickUpState    String
   pickUpZip      String
+  pickUpContactName  String
+  pickUpContactPhone        String
   dropOffAddress String
   dropOffCity    String
   dropOffState   String
   dropOffZip     String
+  dropOffContactName String
+  dropOffContactPhone       String
   agreedBidAmount String
   cogginsHealthCert Boolean
   terms          Boolean
   comments       String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-}
+  deletedAt      DateTime?
 
-model Contact {
-  id        String @id @default(uuid())
-  name      String
-  phone     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  pickUpWaivers  Waiver[] @relation("PickUpContact")
-  dropOffWaivers Waiver[] @relation("DropOffContact")
+  horses Horse[]
 }

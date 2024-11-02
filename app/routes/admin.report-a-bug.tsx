@@ -58,6 +58,7 @@ export default function ReportABug() {
       <div
         id="typeform-container"
         data-tf-live="01J4SSAP1RCEDXVR120X76CDY8"
+        className="w-full h-full"
       ></div>
     </AdminLayout>
   );

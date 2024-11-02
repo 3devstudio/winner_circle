@@ -2,7 +2,7 @@ import React from 'react';
 
 interface SectionTitleProps {
     title: string;
-    description?: string;
+    description?: React.ReactNode;
 }
 
 const SectionTitle: React.FC<SectionTitleProps> = ({ title, description }) => {

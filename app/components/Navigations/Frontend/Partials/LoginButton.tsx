@@ -1,9 +1,9 @@
 // LoginButton.tsx
 import { Link, Form, useOutletContext } from "@remix-run/react";
 import {
-  UserCircleIcon,
-  ArrowLeftOnRectangleIcon,
+  ArrowLeftOnRectangleIcon
 } from "@heroicons/react/20/solid";
+import { Squares2X2Icon, DocumentTextIcon, PencilSquareIcon, UserGroupIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import Dropdown from "~/components/Dropdowns/Dropdown";
 
 export default function LoginButton() {
@@ -23,45 +23,67 @@ export default function LoginButton() {
         >
           <Link
             to="/admin/dashboard"
-            className="block px-4 py-2 text-gray-500 hover:bg-gray-100 transition"
+            className="flex gap-2 px-4 py-2 text-gray-500 hover:bg-gray-100 transition"
           >
-            Dashboard
+            <div>
+              <Squares2X2Icon className="h-5 w-5" />
+            </div>
+            <span>Dashboard</span>
+          </Link>
+          <Link
+            to="/admin/waivers"
+            className="flex gap-2 px-4 py-2 text-gray-500 hover:bg-gray-100 transition"
+          >
+            <div>
+              <DocumentTextIcon className="h-5 w-5" />
+            </div>
+            <span>Waivers</span>
           </Link>
           <Link
             to="/admin/quotes"
-            className="block px-4 py-2 text-gray-500 hover:bg-gray-100 transition"
+            className="flex gap-2 px-4 py-2 text-gray-500 hover:bg-gray-100 transition"
           >
-            Quotes
+            <div>
+              <PencilSquareIcon className="h-5 w-5" />
+            </div>
+            <span>Quotes</span>
           </Link>
           {/* <Link
             to="/admin/trips"
-            className="block px-4 py-2 text-gray-500 hover:bg-gray-100 transition"
+            className="flex gap-2 px-4 py-2 text-gray-500 hover:bg-gray-100 transition"
           >
             Trips
           </Link> */}
           {/* <Link
             to="/admin/reviews"
-            className="block px-4 py-2 text-gray-500 hover:bg-gray-100 transition"
+            className="flex gap-2 px-4 py-2 text-gray-500 hover:bg-gray-100 transition"
           >
             Reviews
           </Link> */}
           {/* <Link
             to="/admin/photo-library"
-            className="block px-4 py-2 text-gray-500 hover:bg-gray-100 transition"
+            className="flex gap-2 px-4 py-2 text-gray-500 hover:bg-gray-100 transition"
           >
             Photo Library
           </Link> */}
           <Link
             to="/admin/users"
-            className="block px-4 py-2 text-gray-500 hover:bg-gray-100 transition"
+            className="flex gap-2 px-4 py-2 text-gray-500 hover:bg-gray-100 transition"
           >
-            Manage Users
+            <div>
+              <UserGroupIcon className="h-5 w-5" />
+            </div>
+            <span></span>
+            Users
           </Link>
           <Link
             to="/admin/profile"
-            className="block px-4 py-2 text-gray-500 hover:bg-gray-100 transition"
+            className="flex gap-2 px-4 py-2 text-gray-500 hover:bg-gray-100 transition"
           >
-            Profile
+            <div>
+              <UserCircleIcon className="h-5 w-5" />
+            </div>
+            <span>Your Profile</span>
           </Link>
           <Form
             action="/logout"

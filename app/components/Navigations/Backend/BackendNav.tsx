@@ -10,9 +10,10 @@ import {
   ArrowLeftOnRectangleIcon,
   Squares2X2Icon,
   BugAntIcon,
+  DocumentTextIcon
 } from "@heroicons/react/24/outline";
 import MobileNav from "~/components/Navigations/Frontend/MobileNav";
-import useSlideUp from "~/hooks/useSlideUp";
+import useIntersectionObserver from "~/hooks/useIntersectionObserver";
 
 interface SidebarNavProps {
   className?: string;
@@ -51,6 +52,7 @@ const BackendNav: React.FC<SidebarNavProps> = ({ className, ref }) => {
 
   const topLinks = [
     { path: "/admin/dashboard", label: "Dashboard", Icon: Squares2X2Icon },
+    { path: "/admin/waivers", label: "Waivers", Icon: DocumentTextIcon },
     { path: "/admin/quotes", label: "Quotes", Icon: PencilSquareIcon },
     // { path: "/admin/trips", label: "Trips", Icon: CalendarIcon },
     // { path: "/admin/reviews", label: "Reviews", Icon: StarIcon },
@@ -61,14 +63,14 @@ const BackendNav: React.FC<SidebarNavProps> = ({ className, ref }) => {
   const mobileLinks = topLinks.map(({ path, label }) => ({ path, label }));
 
   //Desktop Slide Up Transitions
-  const [logoRef, logoVisible] = useSlideUp<HTMLImageElement>();
-  const [linksRef, linksVisible] = useSlideUp<HTMLDivElement>();
-  const [actionButtonsRef, actionButtonsVisible] = useSlideUp<HTMLDivElement>();
-  const [userProfileRef, userProfileVisible] = useSlideUp<HTMLAnchorElement>();
+  const [logoRef, logoVisible] = useIntersectionObserver<HTMLImageElement>();
+  const [linksRef, linksVisible] = useIntersectionObserver<HTMLDivElement>();
+  const [actionButtonsRef, actionButtonsVisible] = useIntersectionObserver<HTMLDivElement>();
+  const [userProfileRef, userProfileVisible] = useIntersectionObserver<HTMLAnchorElement>();
 
   //Mobile Slide Up Transitions
-  const [mobileLogoRef, mobileLogoVisible] = useSlideUp<HTMLImageElement>();
-  const [menuButtonRef, menuButtonVisible] = useSlideUp<HTMLButtonElement>();
+  const [mobileLogoRef, mobileLogoVisible] = useIntersectionObserver<HTMLImageElement>();
+  const [menuButtonRef, menuButtonVisible] = useIntersectionObserver<HTMLButtonElement>();
 
   return (
     <div className="sticky top-0 z-30">
@@ -84,7 +86,7 @@ const BackendNav: React.FC<SidebarNavProps> = ({ className, ref }) => {
         <Link
           ref={userProfileRef}
           to="/admin/profile"
-          className={`flex gap-2 justify-center items-center h-14 border border-stone-700 slide-up
+          className={`flex gap-2 justify-start items-center h-14 border border-stone-700 slide-up
             ${getLinkClassNames("/admin/profile")}
             ${userProfileVisible ? "show" : ""}
           `}

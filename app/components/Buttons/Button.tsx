@@ -35,20 +35,20 @@ const Button: React.FC<ButtonProps> = ({
   textSize = "text-xs",
   openInNewTab = false,
 }) => {
-  const buttonClasses = `transition ${textSize} text-center w-full rounded-md whitespace-nowrap font-light
+  const buttonClasses = `transition uppercase ${textSize} text-center rounded-md whitespace-nowrap font-light
     ${
       primary
-        ? "px-4 py-2 min-w-[7rem] bg-primary hover:bg-primary/75 text-white"
+        ? "bg-primary hover:bg-primary/75 text-white px-4 py-2"
         : "bg-tertiary"
     }
     ${
       secondary
-        ? "px-4 py-2 min-w-[7rem] bg-tertiary hover:bg-tertiary/75 text-stone-700"
+        ? "bg-tertiary hover:bg-tertiary/75 text-stone-700 px-4 py-2"
         : ""
     }
     ${tertiary ? "bg-transparent text-stone-700" : ""}
-    ${danger ? "bg-rose-500 text-white" : ""}
-    ${active ? "border-2 border-primary" : ""}
+    ${danger ? "bg-rose-500 text-white px-4 py-2" : ""}
+    ${active ? "border-2 border-primary px-4 py-2" : ""}
     ${disabled ? "opacity-50 cursor-not-allowed" : ""}
     ${className ? className : ""}
   `;

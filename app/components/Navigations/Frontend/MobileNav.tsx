@@ -9,7 +9,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 import Button from "../../Buttons/Button";
-import useSlideUp from "~/hooks/useSlideUp";
+import useIntersectionObserver from "~/hooks/useIntersectionObserver";
 
 interface MobileNavProps {
   isOpen: boolean;
@@ -36,10 +36,10 @@ export default function MobileNav({
 
   const initials = user ? getInitials(user.firstName, user.lastName) : "";
 
-  const [logoRef, logoVisible] = useSlideUp<HTMLImageElement>();
-  const [closeButtonRef, closeButtonVisible] = useSlideUp<HTMLDivElement>();
-  const [linksRef, linksVisible] = useSlideUp<HTMLUListElement>();
-  const [actionButtonsRef, actionButtonsVisible] = useSlideUp<HTMLDivElement>();
+  const [logoRef, logoVisible] = useIntersectionObserver<HTMLImageElement>();
+  const [closeButtonRef, closeButtonVisible] = useIntersectionObserver<HTMLDivElement>();
+  const [linksRef, linksVisible] = useIntersectionObserver<HTMLUListElement>();
+  const [actionButtonsRef, actionButtonsVisible] = useIntersectionObserver<HTMLDivElement>();
 
   return (
     <div

@@ -1,31 +1,59 @@
-import React from 'react';
+import React from "react";
 
-interface ImageWithTextProps {
-    imageUrl: string;
-    altText: string;
-    text: string;
-    description?: string;
-    isRound?: boolean;
-}
+// Define types for the component props
+type ImageWithTextProps = {
+  imageUrl: string;
+  altText: string;
+  text: string;
+  description: string;
+  isRound?: boolean;
+  size?: "sm" | "md" | "lg" | "xl" | "2xl";
+  alternate?: boolean;
+};
 
-const ImageWithText: React.FC<ImageWithTextProps> = ({ imageUrl, altText, text, description, isRound = false }) => {
-    return (
-        <div className="flex flex-col md:flex-row p-4 md:p-8 items-center gap-4 md:gap-8">
-            <div className='w-full flex justify-center'>
-                <img
-                    src={imageUrl}
-                    alt={altText}
-                    className={`h-[30rem] md:h-[40rem] max-w-full overflow-hidden ${isRound ? 'rounded-full' : ''}`}
-                />
-            </div>
-            <div className='w-full flex flex-col gap-4 md:gap-8'>
-                <p className="text-lg md:text-3xl lg:text-5xl font-semibold text-stone-800">{text}</p>
-                {description ? (
-                    <p className="text-sm md:text-base text-gray-500 font-light">{description}</p>
-                ) : null}
-            </div>
-        </div>
-    );
+const ImageWithText: React.FC<ImageWithTextProps> = ({
+  imageUrl,
+  altText,
+  text,
+  description,
+  isRound = false,
+  size = "md",
+  alternate = false,
+}) => {
+  // Map size to TailwindCSS classes for image sizes
+  const imageSizeClasses = {
+    sm: "w-full md:w-32 h-32",  // Small size
+    md: "w-full md:w-64 h-64",  // Medium size (default)
+    lg: "w-full md:w-96 h-96",  // Large size
+    xl: "w-full md:w-[36rem] h-[36rem]", // Extra large size
+    "2xl": "w-full md:w-[52rem] h-[52rem]", // 2x large
+  };
+
+  return (
+    <div
+      className={`flex flex-col md:flex-row items-center ${
+        alternate ? "md:flex-row-reverse" : ""
+      }`}
+    >
+      {/* Image Section */}
+      <img
+        src={imageUrl}
+        alt={altText}
+        className={`object-cover ${isRound ? "rounded-full" : "rounded"} ${
+          imageSizeClasses[size]
+        }`}
+      />
+      {/* Text Section */}
+      <div
+        className={`mt-4 md:mt-0 ml-0 md:ml-6 ${
+          alternate ? "md:mr-6 md:text-right md:items-end" : ""
+        } flex flex-col`}
+      >
+        <h2 className="font-bold text-xl mb-2">{text}</h2>
+        <p className="text-gray-700">{description}</p>
+      </div>
+    </div>
+  );
 };
 
 export default ImageWithText;

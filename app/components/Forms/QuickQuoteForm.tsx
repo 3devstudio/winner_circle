@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useFetcher } from "@remix-run/react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import useSlideUp from "~/hooks/useSlideUp";
+import useIntersectionObserver from "~/hooks/useIntersectionObserver";
 import Button from "../Buttons/Button";
 import Input from "../Inputs/Input";
 import Textarea from "../Inputs/Textarea";
@@ -12,11 +15,23 @@ interface Horse {
   name: string;
   breed: string;
   gender: string;
-  age: string;
+  age: number;
   height: string;
 }
 
-const QuickQuoteForm: React.FC = () => {
+interface QuickQuoteFormProps {
+  title: string;
+}
+
+interface FetcherData {
+  success: boolean;
+  message?: string;
+  error?: string;
+}
+
+const QuickQuoteForm: React.FC<QuickQuoteFormProps> = ({ title }) => {
+  const fetcher = useFetcher<FetcherData>();
+
   const [formData, setFormData] = useState({
     timeFramePickUp: "",
     pickUpLocation: "",
@@ -31,9 +46,12 @@ const QuickQuoteForm: React.FC = () => {
 
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const [h1Ref, h1InView] = useSlideUp<HTMLDivElement>();
-  const [breadcrumRef, breadcrumbInView] = useSlideUp<HTMLDivElement>();
-  const [formRef, formInView] = useSlideUp<HTMLDivElement>();
+  const [h1Ref, h1InView] = useIntersectionObserver<HTMLDivElement>();
+  const [breadcrumRef, breadcrumbInView] =
+    useIntersectionObserver<HTMLDivElement>();
+  const [formRef, formInView] = useIntersectionObserver<HTMLDivElement>();
+  const [formTitleRef, formTitleInView] =
+    useIntersectionObserver<HTMLDivElement>();
 
   const [step, setStep] = useState(1);
   const [completedSteps, setCompletedSteps] = useState<boolean[]>([
@@ -44,15 +62,70 @@ const QuickQuoteForm: React.FC = () => {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [shouldValidate, setShouldValidate] = useState(false);
 
-  useEffect(() => {
-    if (successMessage) {
-      const timer = setTimeout(() => {
-        setSuccessMessage(null);
-      }, 8000);
-      return () => clearTimeout(timer);
-    }
-  }, [successMessage]);
+  const images = [
+    "/assets/img/hero/horses.jpeg",
+    "/assets/img/hero/unnamed.jpg",
+    "/assets/img/hero/unnamed-1.jpg",
+    "/assets/img/hero/unnamed-2.jpg",
+    "/assets/img/hero/unnamed-3.jpg",
+    "/assets/img/hero/unnamed-4.jpg",
+    "/assets/img/hero/unnamed-5.jpg",
+    "/assets/img/hero/unnamed-6.jpg",
+    "/assets/img/hero/unnamed-7.jpg",
+    "/assets/img/hero/unnamed-8.jpg",
+    "/assets/img/hero/unnamed-9.jpg",
+    "/assets/img/hero/unnamed-10.jpg",
+    "/assets/img/hero/unnamed-11.jpg",
+    "/assets/img/hero/unnamed-12.jpg",
+    "/assets/img/hero/unnamed-13.jpg",
+  ];
+  const [currentImage, setCurrentImage] = useState(0);
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentImage((prevImage) => (prevImage + 1) % images.length);
+    }, 5000);
+    return () => clearInterval(intervalId);
+  }, [images.length]);
+
+  const goToNextImage = () =>
+    setCurrentImage((prevImage) => (prevImage + 1) % images.length);
+  const goToPrevImage = () =>
+    setCurrentImage(
+      (prevImage) => (prevImage - 1 + images.length) % images.length,
+    );
+  const goToImage = (index: number) => setCurrentImage(index);
+
+  useEffect(() => {
+    if (fetcher.state === "idle" && fetcher.data) {
+      if (fetcher.data.success) {
+        setSuccessMessage("Your submission was received successfully!");
+        toast.success(
+          "Thanks for requesting a quote! Someone will be in contact with you very shortly.",
+        );
+        // Reset form
+        setFormData({
+          timeFramePickUp: "",
+          pickUpLocation: "",
+          dropOffLocation: "",
+          horses: [],
+          firstName: "",
+          lastName: "",
+          phoneNumber: "",
+          comments: "",
+          healthCert: false,
+        });
+        setHorses([]);
+        setStep(1);
+        setCompletedSteps([false, false]);
+        setShouldValidate(false);
+      } else {
+        toast.error(fetcher.data.error || "Failed to submit the form.");
+      }
+    }
+  }, [fetcher.state, fetcher.data]);
+
+  //Handle form input changes
   const handleInputChange = (field: string, value: string) => {
     setFormData((prevData) => ({ ...prevData, [field]: value }));
   };
@@ -72,6 +145,7 @@ const QuickQuoteForm: React.FC = () => {
     }));
   };
 
+  //Validation
   const validateStep1 = () => {
     const newErrors: { [key: string]: string } = {};
 
@@ -148,75 +222,57 @@ const QuickQuoteForm: React.FC = () => {
     }
   };
 
+  //Submit form
   const handleSubmit = async () => {
     setShouldValidate(true);
-    if (validateStep1() && validateStep2()) {
-      try {
-        const response = await fetch("/api/add-quote", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            ...formData,
-            horses: formData.horses.map((horse) => ({
-              name: horse.name,
-              breed: horse.breed,
-              gender: horse.gender,
-              age: parseInt(horse.age), // Ensure age is a number
-              height: horse.height,
-              tripId: "", // Ensure tripId is included if necessary
-            })),
-          }),
-        });
-        if (response.ok) {
-          setSuccessMessage(
-            "Thanks for requesting a quote! Someone will be in contact with you very shortly.",
-          );
-          // Reset form
-          setFormData({
-            timeFramePickUp: "",
-            pickUpLocation: "",
-            dropOffLocation: "",
-            horses: [],
-            firstName: "",
-            lastName: "",
-            phoneNumber: "",
-            comments: "",
-            healthCert: false,
-          });
-          setHorses([]);
-          setStep(1);
-          setCompletedSteps([false, false]);
-          setShouldValidate(false);
-        } else {
-          alert("Failed to submit the form.");
-        }
-      } catch (error) {
-        alert("An error occurred while submitting the form.");
-      }
+    if (validateStep2()) {
+      const submitData = {
+        ...formData,
+        horses: JSON.stringify(formData.horses),
+      };
+
+      fetcher.submit(submitData, {
+        method: "post",
+        action: "/quote/create",
+      });
     }
   };
 
   return (
     <div
-      style={{ backgroundImage: "url('/assets/img/horses.jpeg')" }}
+      style={{
+        backgroundImage: `url(${images[currentImage]})`,
+        transition: "background-image 1s ease-in-out",
+      }}
       className="relative w-full h-full bg-no-repeat bg-cover bg-center bg-fixed flex justify-center items-center"
     >
       <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
       <div className="flex flex-col lg:flex-row w-full h-full z-20">
-        <div className="w-full lg:w-1/2 min-h-[20rem] lg:min-h-[40rem] flex justify-center items-center">
+        {/* Title and Image Controls */}
+        <div className="relative w-full lg:w-1/2 min-h-[20rem] lg:min-h-[40rem] flex flex-col justify-center items-center">
           <h1
             ref={h1Ref}
             className={`h-fit md:w-5/6 text-3xl md:text-4xl lg:text-4xl xl:text-6xl text-stone-100 font-semibold px-8 pb-8 pt-16 md:mt-0 slide-up ${
               h1InView ? "show" : ""
             }`}
           >
-            Reliable Equine Transport, Every Mile of the Way.
+            {title}
           </h1>
+          <div className="absolute bottom-4 flex space-x-2 mt-4">
+            {images.map((_, index) => (
+              <button
+                key={index}
+                className={`w-3 h-3 rounded-full ${
+                  currentImage === index ? "bg-white" : "bg-gray-400"
+                }`}
+                onClick={() => goToImage(index)}
+              />
+            ))}
+          </div>
         </div>
+        {/* Form */}
         <div className="h-full w-full lg:w-1/2">
-          <div className="bg-tertiary/75 h-full w-full min-h-[20rem] md:min-h-[40rem] flex flex-col gap-2 px-4 py-6">
+          <div className="bg-tertiary/25 h-full w-full min-h-[20rem] md:min-h-[40rem] flex flex-col gap-2 px-4 py-6">
             <div
               ref={breadcrumRef}
               className={`slide-up ${breadcrumbInView ? "show" : ""}`}
@@ -228,6 +284,14 @@ const QuickQuoteForm: React.FC = () => {
                 completedSteps={completedSteps}
               />
             </div>
+            <h2
+              ref={formTitleRef}
+              className={`mb-4 text-white font-semibold text-lg md:text-2xl slide-up ${
+                formTitleInView ? "show" : ""
+              }`}
+            >
+              Get a Quick Quote Today!{" "}
+            </h2>
             <div
               ref={formRef}
               className={`slide-up ${formInView ? "show" : ""}`}
@@ -241,13 +305,11 @@ const QuickQuoteForm: React.FC = () => {
               {step === 1 ? (
                 <>
                   <div className="mb-4">
-                    <h2 className="text-2xl text-stone-800 font-semibold mb-4">
-                      Get a Free Quote Today!
-                    </h2>
                     <div className="flex flex-col gap-4">
                       <div className="w-full flex">
                         <div className="w-1/2">
                           <Input
+                            whiteLabel
                             label="When do you need transport?"
                             type="date"
                             placeholder="Select a date"
@@ -266,8 +328,9 @@ const QuickQuoteForm: React.FC = () => {
                       <div className="flex flex-col md:flex-row gap-4 w-full">
                         <div className="w-full">
                           <Input
+                            whiteLabel
                             label="Moving From"
-                            placeholder="State & Zip Code"
+                            placeholder="City & State"
                             required={true}
                             value={formData.pickUpLocation}
                             onChange={(e) =>
@@ -281,8 +344,9 @@ const QuickQuoteForm: React.FC = () => {
                         </div>
                         <div className="w-full">
                           <Input
+                            whiteLabel
                             label="Moving To"
-                            placeholder="State & Zip Code"
+                            placeholder="City & State"
                             required={true}
                             value={formData.dropOffLocation}
                             onChange={(e) =>
@@ -312,9 +376,11 @@ const QuickQuoteForm: React.FC = () => {
                   <div className="w-full flex justify-end">
                     <div className="w-40">
                       <Button
+                        secondary
                         text="Next"
                         onClick={handleNextClick}
-                        className="mt-4 py-2 bg-primary"
+                        className="w-full mt-4 py-2 px-4"
+                        textSize="md"
                       />
                     </div>
                   </div>
@@ -323,13 +389,11 @@ const QuickQuoteForm: React.FC = () => {
               {step === 2 ? (
                 <>
                   <div className="mb-4">
-                    <h2 className="text-2xl text-stone-800 font-semibold mb-4">
-                      Contact Information
-                    </h2>
                     <div className="flex flex-col gap-4">
                       <div className="flex flex-col md:flex-row gap-4">
                         <div className="w-full">
                           <Input
+                            whiteLabel
                             label="First Name"
                             placeholder="First Name"
                             required={true}
@@ -342,6 +406,7 @@ const QuickQuoteForm: React.FC = () => {
                         </div>
                         <div className="w-full">
                           <Input
+                            whiteLabel
                             label="Last Name"
                             placeholder="Last Name"
                             required={true}
@@ -355,6 +420,7 @@ const QuickQuoteForm: React.FC = () => {
                       </div>
                       <div className="w-full md:w-1/2">
                         <Input
+                          whiteLabel
                           label="Phone"
                           type="tel"
                           placeholder="Phone Number"
@@ -368,6 +434,7 @@ const QuickQuoteForm: React.FC = () => {
                       </div>
                       <div className="w-full">
                         <Textarea
+                          whiteLabel
                           label="Additional Comments"
                           placeholder="Anything else we should know?"
                           value={formData.comments}
@@ -389,7 +456,7 @@ const QuickQuoteForm: React.FC = () => {
                         />
                         <label
                           htmlFor="terms"
-                          className="text-stone-600 text-sm"
+                          className="text-gray-100 text-sm"
                         >
                           I acknowledge a current Coggins and Health Certificate
                           will be completed before pickup.
@@ -402,18 +469,25 @@ const QuickQuoteForm: React.FC = () => {
                       )}
                     </div>
                   </div>
-                  <div className="flex gap-4">
-                    <Button
-                      text="Back"
-                      onClick={handleBackClick}
-                      className="mt-4 bg-secondary py-2"
-                    />
-                    <Button
-                      primary
-                      text="Submit"
-                      onClick={handleSubmit}
-                      className={`mt-4 py-2 bg-primary`}
-                    />
+                  <div className="flex gap-4 justify-end">
+                    <div className="w-40 mt-4">
+                      <Button
+                        secondary
+                        text="Back"
+                        onClick={handleBackClick}
+                        className="w-full"
+                        textSize="md"
+                      />
+                    </div>
+                    <div className="w-40 mt-4">
+                      <Button
+                        primary
+                        text="Submit"
+                        onClick={handleSubmit}
+                        className={`w-full`}
+                        textSize="md"
+                      />
+                    </div>
                   </div>
                 </>
               ) : null}
@@ -421,6 +495,7 @@ const QuickQuoteForm: React.FC = () => {
           </div>
         </div>
       </div>
+      <ToastContainer position="bottom-right" autoClose={10000} />
     </div>
   );
 };
