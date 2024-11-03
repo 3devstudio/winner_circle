@@ -1,5 +1,6 @@
 import { prisma } from "~/db.server";
-import { Waiver } from "@prisma/client";
+import type { Waiver } from "@prisma/client";
+import { sendTripNotificationEmail } from "~/services/email.server";
 
 export type { Waiver } from "@prisma/client";
 
@@ -42,7 +43,7 @@ export interface WaiverWithHorses {
 // CREATE
 export async function createWaiver(data: WaiverWithHorses) {
   try {
-    return prisma.waiver.create({
+    const newWaiver = await prisma.waiver.create({
       data: {
         firstName: data.firstName,
         lastName: data.lastName,
@@ -70,6 +71,10 @@ export async function createWaiver(data: WaiverWithHorses) {
         },
       },
     });
+
+    await sendTripNotificationEmail(data);
+
+    return newWaiver;
   } catch (error) {
     console.error("Error creating waiver:", error);
     throw new Error("Failed to create waiver");
