@@ -1,7 +1,7 @@
 // app/services/email.server.ts
 import nodemailer from "nodemailer";
-import { QuoteCreateInputWithHorses } from "~/models/quote.server";
-import { WaiverCreateInput } from "~/models/waiver.server";
+import { QuoteCreateInputWithHorses } from "../models/quote.server";
+import { Waiver, WaiverWithHorses } from "../models/waiver.server";
 
 export async function sendPasswordSetupEmail(email: string, token: string) {
   try {
@@ -72,7 +72,7 @@ export async function sendQuoteNotificationEmail(data: QuoteCreateInputWithHorse
 }
 
 // Function to send a notification email for a trip request
-export async function sendTripNotificationEmail(data: WaiverCreateInput) {
+export async function sendTripNotificationEmail(data: WaiverWithHorses) {
   try {
     const transporter = nodemailer.createTransport({
       host: "smtp.mailgun.org",
