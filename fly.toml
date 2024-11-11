@@ -5,7 +5,7 @@ processes = [ ]
 
 [env]
 EMAIL_FROM = "no-reply@sandbox77bfc1a403ad411da00a0699d9bbe8ee.mailgun.org"
-NOTIFICATION_EMAIL = "nanette@winnercircletrucking.com"
+NOTIFICATION_EMAIL = "booking@winnercircletrucking.com"
 
 [experimental]
 allowed_public_ports = [ ]
