@@ -24,7 +24,7 @@ const OurEquipment: React.FC<EquipmentProps> = ({
       title: "Single stalls",
       description:
         "Ideal for transporting a single or multiple horses. These straight-load stalls offer a focused and stress-free environment. Perfect for owners who need to transport their horses individually, ensuring maximum comfort and attention to each horse’s specific needs. Water buckets and hay nets provided for each horse.",
-      imageSrc: "/assets/img/single-straight-load-stalls.jpg",
+      imageSrc: "/assets/img/single_full_divider.jpeg",
       imageAlt: "Single straight-load stall",
       link: "/our-equipment",
     },
@@ -32,7 +32,7 @@ const OurEquipment: React.FC<EquipmentProps> = ({
       title: "Stalls and a half with full dividers",
       description:
         "For those who have horses that need a bit more space, stalls and a half with full dividers provide extra room and privacy. This option is excellent for horses that may be nervous around others or need a bit more space to feel comfortable during transport.",
-      imageSrc: "/assets/img/stalls-and-half-dividers.jpg",
+      imageSrc: "/assets/img/stalls_and_half.jpeg",
       imageAlt: "Stalls and a half with full dividers",
       link: "/our-equipment",
     },
@@ -40,7 +40,7 @@ const OurEquipment: React.FC<EquipmentProps> = ({
       title: "Box stalls",
       description:
         "Box stalls offer ample space for horses to move around freely during the journey. Available in various sizes, these stalls are perfect for long-distance travel, providing a roomy and relaxed environment that reduces stress and ensures the horse’s well-being.",
-      imageSrc: "/assets/img/box-stall.jpg",
+      imageSrc: "/assets/img/box_stalls.jpeg",
       imageAlt: "Box stall",
       link: "/our-equipment",
     },
