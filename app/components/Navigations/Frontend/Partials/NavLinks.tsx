@@ -98,11 +98,11 @@ export default function Navigation() {
               Quick Quote
             </Button>
           </div>
-          <div className="my-auto">
+          {/* <div className="my-auto">
             <Button primary link="/submit-waiver" className="text-lg">
               Book Now
             </Button>
-          </div>
+          </div> */}
           <LoginButton />
         </div>
       </div>

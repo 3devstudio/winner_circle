@@ -54,6 +54,9 @@ export async function sendQuoteNotificationEmail(data: QuoteCreateInputWithHorse
         <li>Phone: ${data.phoneNumber}</li>
         <li>Pick-up Location: ${data.pickUpLocation}</li>
         <li>Drop-off Location: ${data.dropOffLocation}</li>
+        <li>Pick-up Timeframe: ${data.timeFramePickUp}</li>
+        <li>Coggins Health Certificate: ${data.healthCert}</li>
+        <li>Horses: ${data.horses}</li>
         <li>Comments: ${data.comments}</li>
       </ul>
     `;
@@ -91,8 +94,18 @@ export async function sendTripNotificationEmail(data: WaiverWithHorses) {
       <ul>
         <li>Name: ${data.firstName} ${data.lastName}</li>
         <li>Phone: ${data.phone}</li>
-        <li>Pick-up Address: ${data.pickUpAddress}</li>
-        <li>Drop-off Address: ${data.dropOffAddress}</li>
+        <li>Email: ${data.email}</li>
+        <li>Pick-up Date: ${data.pickUpDate}</li>
+        <li>Pick-up Address: ${data.pickUpAddress}, ${data.pickUpCity} ${data.pickUpState}, ${data.pickUpZip}</li>
+        <li>Pick-up Contact Name: ${data.pickUpContactName}</li>
+        <li>Pick-up Contact Phone: ${data.pickUpContactPhone}</li>
+        <li>Drop-off Address: ${data.dropOffAddress}, ${data.dropOffCity} ${data.dropOffState}, ${data.dropOffZip}</li>
+        <li>Drop-off Contact Name: ${data.dropOffContactName}</li>
+        <li>Drop-off Contact Phone: ${data.dropOffContactPhone}</li>
+        <li>Agreed Bid Amount: ${data.agreedBidAmount}</li>
+        <li>Coggins Health Certificate: ${data.cogginsHealthCert}</li>
+        <li>Terms: ${data.terms}</li>
+        <li>Horses: ${data.horses}</li>
         <li>Comments: ${data.comments}</li>
       </ul>
     `;
