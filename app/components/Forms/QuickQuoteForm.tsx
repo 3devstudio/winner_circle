@@ -266,7 +266,7 @@ const QuickQuoteForm: React.FC<QuickQuoteFormProps> = ({ title }) => {
         backgroundPosition: "center",
         backgroundSize: isMobile ? "contain" : "cover",
         backgroundRepeat: "no-repeat",
-        transition: "background-image 1s ease-in-out",
+        transition: isMobile ? "" : "background-image 1s ease-in-out",
       }}
       className="relative w-full h-full bg-no-repeat responsive-image bg-cover bg-center bg-fixed flex justify-center items-center"
     >
