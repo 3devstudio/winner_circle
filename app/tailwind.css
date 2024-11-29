@@ -35,6 +35,25 @@ body {
   animation: fadeIn 1s ease-in;
 }
 
+.responsive-background {
+  background-size: cover;
+  background-position: center center;
+}
+
+@media (max-width: 768px) {
+  .resonsive-background {
+    background-size: contain;
+    background-position: center;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 768px) {
+  /* For tablets */
+  .responsive-background {
+    background-position: top center; /* Shift up for better alignment */
+  }
+}
+
 @layer utilities {
   .slide-up {
     @apply transform translate-y-10 opacity-0 transition-all duration-700;
@@ -61,3 +80,5 @@ body {
     @apply translate-y-0 opacity-100;
   }
 }
+
+
