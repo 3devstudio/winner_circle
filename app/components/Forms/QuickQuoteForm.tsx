@@ -263,7 +263,7 @@ const QuickQuoteForm: React.FC<QuickQuoteFormProps> = ({ title }) => {
         ? `url('/assets/img/mobile-horses.jpg')`
         : `url(${images[currentImage]})`,
         backgroundPosition: "center",
-        backgroundSize: isMobile ? "contain" : "cover",
+        backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         transition: "background-image 1s ease-in-out",
       }}
