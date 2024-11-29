@@ -100,9 +100,9 @@ export default function MobileNav({
             <Button secondary link="/quick-quote" textSize="text-lg">
               Quick Quote
             </Button>
-            <Button primary link="/submit-waiver" textSize="text-lg">
+            {/* <Button primary link="/submit-waiver" textSize="text-lg">
               Book Now
-            </Button>
+            </Button> */}
           </div>
         )}
         {/* ONLY SHOW THESE IF ON ADMIN PORTAL */}

@@ -45,15 +45,47 @@ export async function sendQuoteNotificationEmail(data: QuoteCreateInputWithHorse
       },
     });
 
+    const horsesList = data.horses.create
+      .map((horse, index) => {
+        const horseDetails = Object.entries(horse)
+          .map(([key, value]) => `<li>${key}: ${value}</li>`)
+          .join("");
+
+        return `
+          <li>
+            <strong>Horse ${index + 1}:</strong>
+            <ul>${horseDetails}</ul>
+          </li>
+        `;
+      })
+      .join("");
+
+    const formattedTimestamp = new Date()
+      .toLocaleString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+    })
+
     const subject = "New Quote Request Submitted";
     const htmlContent = `
       <p>A new quote request has been submitted.</p>
+      <p>Submission Time: ${formattedTimestamp}</p>
       <p>Details:</p>
       <ul>
         <li>Name: ${data.firstName} ${data.lastName}</li>
         <li>Phone: ${data.phoneNumber}</li>
         <li>Pick-up Location: ${data.pickUpLocation}</li>
         <li>Drop-off Location: ${data.dropOffLocation}</li>
+        <li>Pick-up Timeframe: ${data.timeFramePickUp}</li>
+        <li>Coggins Health Certificate: ${data.healthCert}</li>
+        <li>Horses:</li>
+        <ul>
+          ${horsesList}
+        </ul>
         <li>Comments: ${data.comments}</li>
       </ul>
     `;
@@ -84,15 +116,53 @@ export async function sendTripNotificationEmail(data: WaiverWithHorses) {
       },
     });
 
+    const horsesList = data.horses.create
+      .map((horse, index) => {
+        const horseDetails = Object.entries(horse)
+          .map(([key, value]) => `<li>${key}: ${value}</li>`)
+          .join("");
+
+        return `
+          <li>
+            <strong>Horse ${index + 1}:</strong>
+            <ul>${horseDetails}</ul>
+          </li>
+        `;
+      })
+      .join("");
+
+    const formattedTimestamp = new Date()
+      .toLocaleString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+    })
+
     const subject = "New Trip Request Submitted";
     const htmlContent = `
       <p>A new trip request has been submitted.</p>
-      <p>Details:</p>
+      <p>Submission Time: ${formattedTimestamp}</p>
       <ul>
         <li>Name: ${data.firstName} ${data.lastName}</li>
         <li>Phone: ${data.phone}</li>
-        <li>Pick-up Address: ${data.pickUpAddress}</li>
-        <li>Drop-off Address: ${data.dropOffAddress}</li>
+        <li>Email: ${data.email}</li>
+        <li>Pick-up Date: ${data.pickUpDate}</li>
+        <li>Pick-up Address: ${data.pickUpAddress}, ${data.pickUpCity} ${data.pickUpState}, ${data.pickUpZip}</li>
+        <li>Pick-up Contact Name: ${data.pickUpContactName}</li>
+        <li>Pick-up Contact Phone: ${data.pickUpContactPhone}</li>
+        <li>Drop-off Address: ${data.dropOffAddress}, ${data.dropOffCity} ${data.dropOffState}, ${data.dropOffZip}</li>
+        <li>Drop-off Contact Name: ${data.dropOffContactName}</li>
+        <li>Drop-off Contact Phone: ${data.dropOffContactPhone}</li>
+        <li>Agreed Bid Amount: ${data.agreedBidAmount}</li>
+        <li>Coggins Health Certificate: ${data.cogginsHealthCert}</li>
+        <li>Terms: ${data.terms}</li>
+        <li>Horses:</li>
+        <ul>
+          ${horsesList}
+        </ul>
         <li>Comments: ${data.comments}</li>
       </ul>
     `;
