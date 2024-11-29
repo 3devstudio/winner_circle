@@ -42,9 +42,12 @@ body {
 
 @media (max-width: 768px) {
   .resonsive-background {
-    background-size: 100% auto;
+    width: 100%;
+    height: auto; /* or a fixed height */
+    background-image: url('path-to-your-image.jpg');
+    background-size: cover; /* or contain if needed */
     background-position: center;
-    background-repeat: no repeat;
+    background-repeat: no-repeat;
   }
 }
 
