@@ -32,6 +32,8 @@ interface FetcherData {
 const QuickQuoteForm: React.FC<QuickQuoteFormProps> = ({ title }) => {
   const fetcher = useFetcher<FetcherData>();
 
+  const [isMobile, setIsMobile] = useState(false);
+
   const [formData, setFormData] = useState({
     timeFramePickUp: "",
     pickUpLocation: "",
@@ -80,6 +82,22 @@ const QuickQuoteForm: React.FC<QuickQuoteFormProps> = ({ title }) => {
     "/assets/img/hero/unnamed-13.jpg",
   ];
   const [currentImage, setCurrentImage] = useState(0);
+
+  useEffect(() => {
+    // Function to check screen size
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768); // Adjust breakpoint as needed
+    };
+
+    // Set initial state
+    handleResize();
+
+    // Add event listener for resizing
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup event listener
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -241,7 +259,12 @@ const QuickQuoteForm: React.FC<QuickQuoteFormProps> = ({ title }) => {
   return (
     <div
       style={{
-        backgroundImage: `url(${images[currentImage]})`,
+        backgroundImage: isMobile
+        ? `url('/assets/img/hero/horses.jpeg')`
+        : `url(${images[currentImage]})`,
+        backgroundPosition: isMobile ? "30% center" : "center center",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
         transition: "background-image 1s ease-in-out",
       }}
       className="relative w-full h-full bg-no-repeat responsive-image bg-cover bg-center bg-fixed flex justify-center items-center"
@@ -249,27 +272,32 @@ const QuickQuoteForm: React.FC<QuickQuoteFormProps> = ({ title }) => {
       <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
       <div className="flex flex-col lg:flex-row w-full h-full z-20">
         {/* Title and Image Controls */}
-        <div className="relative w-full lg:w-1/2 min-h-[20rem] lg:min-h-[40rem] flex flex-col justify-center items-center">
-          <h1
-            ref={h1Ref}
-            className={`h-fit md:w-5/6 text-3xl md:text-4xl lg:text-4xl xl:text-6xl text-stone-100 font-semibold px-8 pb-8 pt-16 md:mt-0 slide-up ${
-              h1InView ? "show" : ""
-            }`}
-          >
-            {title}
-          </h1>
-          <div className="absolute bottom-4 flex space-x-2 mt-4">
-            {images.map((_, index) => (
-              <button
-                key={index}
-                className={`w-3 h-3 rounded-full ${
-                  currentImage === index ? "bg-white" : "bg-gray-400"
-                }`}
-                onClick={() => goToImage(index)}
-              />
-            ))}
+        {!isMobile ? (
+          <div className="relative w-full lg:w-1/2 min-h-[20rem] lg:min-h-[40rem] flex flex-col justify-center items-center">
+            <h1
+              ref={h1Ref}
+              className={`h-fit md:w-5/6 text-3xl md:text-4xl lg:text-4xl xl:text-6xl text-stone-100 font-semibold px-8 pb-8 pt-16 md:mt-0 slide-up ${
+                h1InView ? "show" : ""
+              }`}
+            >
+              {title}
+            </h1>
+            <div className="absolute bottom-4 flex space-x-2 mt-4">
+              {images.map((_, index) => (
+                <button
+                  key={index}
+                  className={`w-3 h-3 rounded-full ${
+                    currentImage === index ? "bg-white" : "bg-gray-400"
+                  }`}
+                  onClick={() => goToImage(index)}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="relative w-full lg:w-1/2 min-h-[20rem] flex justify-center items-center">
+          </div>
+        )}
         {/* Form */}
         <div className="h-full w-full lg:w-1/2">
           <div className="bg-tertiary/25 h-full w-full min-h-[20rem] md:min-h-[40rem] flex flex-col gap-2 px-4 py-6">

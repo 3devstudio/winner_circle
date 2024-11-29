@@ -69,7 +69,7 @@ const MeetOurTeam: React.FC = () => {
           <ContactCard
             imageUrl="/assets/img/IMG_5253.jpg"
             name="Nanette Child"
-            phone="(435) 552-0959"
+            phone="(435) 602-0959"
             nameWidthClass="w-44 sm:w-52 md:w-64"
             namePaddingClass="pl-48 sm:pl-56 md:pl-[17rem]"
             hoverText="A brief description of Nanette..."
