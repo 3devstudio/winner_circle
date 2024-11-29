@@ -244,7 +244,7 @@ const QuickQuoteForm: React.FC<QuickQuoteFormProps> = ({ title }) => {
         backgroundImage: `url(${images[currentImage]})`,
         transition: "background-image 1s ease-in-out",
       }}
-      className="relative w-full h-full bg-no-repeat bg-cover bg-center bg-fixed flex justify-center items-center"
+      className="relative w-full h-full bg-no-repeat responsive-image bg-cover bg-center bg-fixed flex justify-center items-center"
     >
       <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
       <div className="flex flex-col lg:flex-row w-full h-full z-20">
