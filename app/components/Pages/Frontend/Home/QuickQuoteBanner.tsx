@@ -3,7 +3,7 @@ import Button from "../../../Buttons/Button";
 const Hero = () => {
   return (
     <div
-      style={{ backgroundImage: "url('/assets/img/home_background.jpeg')" }}
+      style={{ backgroundImage: "url('/assets/img/hero/unnamed-5.jpg')" }}
       className="relative w-full h-[70vh] md:h-[50vh] bg-no-repeat bg-cover bg-center flex justify-center items-center"
     >
       <div className="absolute inset-0 bg-black opacity-70 z-10"></div>
